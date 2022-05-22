@@ -10,7 +10,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name = "members")
+@Table(name = "member")
 public class Member {
 
     @Id
@@ -19,8 +19,17 @@ public class Member {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<StudyMember> studyMembers = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "member")
     private List<MemberLanguage> memberLanguages = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<Comment> comments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<StudyLike> studyLikes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<StudyBlog> studyBlogs = new ArrayList<>();
 
     @Column(name = "display_name")
     private String displayName;

@@ -4,14 +4,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @NoArgsConstructor
 @Entity
-@Table(name = "study_blogs")
-public class StudyBlogs {
+@Table(name = "study_blog")
+public class StudyBlog {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,6 +24,7 @@ public class StudyBlogs {
     @Column(name = "study_id")
     private Long studyId;
 
-    @OneToMany(mappedBy = "studyBlogs")
-    private List<Member> members = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "uid")
+    private Member member;
 }

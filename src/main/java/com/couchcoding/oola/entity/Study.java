@@ -15,7 +15,7 @@ import java.util.List;
 public class Study {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long studyId;
 
     @OneToMany(mappedBy = "study", cascade = CascadeType.ALL)
     private List<StudyMember> studyMembers = new ArrayList<>();

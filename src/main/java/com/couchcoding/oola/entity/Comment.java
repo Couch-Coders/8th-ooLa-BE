@@ -11,18 +11,19 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @Entity
-@Table(name = "comments")
+@Table(name = "comment")
 public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "comment")
-    private List<Member> members = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "uid")
+    private Member member;
 
-    @Column(name = "comment")
-    private String comment;
+    @Column(name = "content")
+    private String content;
 
     @Column(name = "parent_no")
     private Long parentNo;

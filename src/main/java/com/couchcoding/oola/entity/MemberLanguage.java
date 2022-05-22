@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @Entity
-@Table(name = "member_languages")
+@Table(name = "memberlanguages")
 public class MemberLanguage {
 
     @Id
@@ -20,7 +20,7 @@ public class MemberLanguage {
     private Member member;
 
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "languageId")
     private Language language;
 
 
