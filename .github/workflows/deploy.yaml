@@ -19,8 +19,6 @@ jobs:
     steps:
       - name: checkout backend
         uses: actions/checkout@v2
-        with:
-           repository: Couch-Coders/8th-ooLa-BE
       #- name: checkout frontend
       #  uses: actions/checkout@v2
       #  with:
