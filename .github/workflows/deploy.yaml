@@ -19,11 +19,11 @@ jobs:
     steps:
       - name: checkout backend
         uses: actions/checkout@v2
-      - name: checkout frontend
-        uses: actions/checkout@v2
-        with:
-          repository: Couch-Coders/8th-ooLa-fe
-          path: ./frontend
+      #- name: checkout frontend
+      #  uses: actions/checkout@v2
+      #  with:
+      #    repository: Couch-Coders/8th-ooLa-fe
+      #    path: ./frontend
       - uses: actions/setup-java@v2
         with:
          distribution: 'temurin'
@@ -31,14 +31,14 @@ jobs:
       - uses: actions/setup-node@v2
         with:
          node-version: '14'
-      - name: build frontend to resources
-        run: |
-          cd frontend
-          npm install
-          npm run build
-          cd ..
-          mkdir src/main/resources/static/
-          cp -r frontent/build/* src/main/resources/static/
+      #- name: build frontend to resources
+      #  run: |
+      #    cd frontend
+      #    npm install
+      #    npm run build
+      #    cd ..
+      #    mkdir src/main/resources/static/
+      #    cp -r frontent/build/* src/main/resources/static/
         env:
           CI: ""
       - name: deploy to heroku
