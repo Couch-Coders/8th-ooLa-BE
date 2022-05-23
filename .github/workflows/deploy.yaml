@@ -6,7 +6,7 @@ name: CI
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [ main ]
+    branches: [ main, meeyoungchoi-patch-2 ]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -22,7 +22,7 @@ jobs:
       - name: checkout frontend
         uses: actions/checkout@v2
         with:
-          repository: couch-coding/heroku-actions-front
+          repository: Couch-Coders/8th-ooLa-fe
           path: ./frontend
       - uses: actions/setup-java@v2
         with:
@@ -32,7 +32,15 @@ jobs:
         with:
          node-version: '14'
       - name: build frontend to resources
-        run: sh build.sh
+        run: |
+          cd frontend
+          npm install
+          npm run build
+          cd ..
+          mkdir src/main/resources/static/
+          cp -r frontent/build/* src/main/resources/static/
+        env:
+          CI: ""
       - name: deploy to heroku
         uses: akhileshns/heroku-deploy@v3.12.12
         with:
