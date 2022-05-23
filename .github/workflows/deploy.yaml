@@ -49,4 +49,4 @@ jobs:
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "studyoola"
-          heroky_email: "goodlife1359@gmail.com"
+          heroku_email: "goodlife1359@gmail.com"
