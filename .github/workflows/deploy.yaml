@@ -21,7 +21,6 @@ jobs:
         uses: actions/checkout@v2
         with:
          repository: Couch-Coders/8th-ooLa-BE
-         path: ./backend
       #- name: checkout frontend
       #  uses: actions/checkout@v2
       #  with:
