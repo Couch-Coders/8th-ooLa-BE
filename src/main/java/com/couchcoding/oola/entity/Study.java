@@ -59,6 +59,6 @@ public class Study {
     @Column(name = "end_date")
     private Date endDate;
 
-
-
+    @Column(name = "count")
+    private Long likeCount; // 프론트에서 스터디별 좋아요 개수를 구해달라는 요청이 있어 추가하였습니다.
 }

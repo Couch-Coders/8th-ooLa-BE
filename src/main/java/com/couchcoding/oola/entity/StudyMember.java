@@ -15,16 +15,14 @@ public class StudyMember {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "uid")
     private Member member;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "studyId")
     private Study study;
 
     private String role;
     private Date applicationDate;
-
-
 }

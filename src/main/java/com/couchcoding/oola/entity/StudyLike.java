@@ -8,7 +8,6 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @Entity
-@Table(name = "studylike")
 public class StudyLike {
 
     @Id
@@ -19,11 +18,10 @@ public class StudyLike {
     @JoinColumn(name = "uid")
     private Member member;
 
-    @Column(name = "studyid")
-    private Long studyId;
+    @ManyToOne
+    @JoinColumn(name = "studyId")
+    private Study study;
 
     @Column(name = "like_status")
     private boolean likeStatus;
-
-
 }
