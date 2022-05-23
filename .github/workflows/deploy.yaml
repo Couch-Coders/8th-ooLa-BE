@@ -6,7 +6,7 @@ name: deploy
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [ main, meeyoungchoi-patch-2 ]
+    branches: [ main, meeyoungchoi-patch-3 ]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
