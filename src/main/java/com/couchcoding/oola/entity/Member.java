@@ -4,8 +4,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import javax.validation.constraints.NotBlank;
+
 
 @Entity
 @Getter
@@ -16,25 +16,12 @@ public class Member {
     @Id
     private String uid;
 
-//    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-//    private List<StudyMember> studyMembers = new ArrayList<>();
-//
-//    @OneToMany(mappedBy = "member")
-//    private List<MemberLanguage> memberLanguages = new ArrayList<>();
-//
-//    @OneToMany(mappedBy = "member")
-//    private List<Comment> comments = new ArrayList<>();
-//
-//    @OneToMany(mappedBy = "member")
-//    private List<StudyLike> studyLikes = new ArrayList<>();
-//
-//    @OneToMany(mappedBy = "member")
-//    private List<StudyBlog> studyBlogs = new ArrayList<>();
-
     @Column(name = "display_name")
+    @NotBlank(message = "displayName은 필수 값입니다")
     private String displayName;
 
     @Column(name = "email")
+    @NotBlank(message = "email은 필수 값입니다")
     private String email;
 
     @Column(name = "blog_url")
@@ -44,5 +31,14 @@ public class Member {
     private String githubUrl;
 
     @Column(name = "photo_url")
+    @NotBlank(message = "photoUrl은 필수 값입니다")
     private String photoUrl;
+
+    public Member(@NotBlank(message = "displayName은 필수 값입니다") String displayName, @NotBlank(message = "email은 필수 값입니다") String email, String blogUrl, String githubUrl, @NotBlank(message = "photoUrl은 필수 값입니다") String photoUrl) {
+        this.displayName = displayName;
+        this.email = email;
+        this.blogUrl = blogUrl;
+        this.githubUrl = githubUrl;
+        this.photoUrl = photoUrl;
+    }
 }
