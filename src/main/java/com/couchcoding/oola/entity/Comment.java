@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -23,6 +24,7 @@ public class Comment {
     private Member member;
 
     @Column(name = "content")
+    @NotBlank(message = "content는 필수 값입니다")
     private String content;
 
     @Column(name = "parent_no")

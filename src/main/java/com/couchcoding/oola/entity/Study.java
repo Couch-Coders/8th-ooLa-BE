@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -21,30 +22,38 @@ public class Study {
     private List<StudyMember> studyMembers = new ArrayList<>();
 
     @Column(name = "type")
+    @NotBlank(message = "studyType은 필수 값입니다")
     private String studyType;
 
     @Column(name = "name")
+    @NotBlank(message = "studyName은 필수 값입니다")
     private String studyName;
 
     @Column(name = "timezone")
+    @NotBlank(message = "timeZone은 필수 값입니다")
     private String timeZone;
 
     @Column(name = "participants")
+    @NotBlank(message = "participants은 필수 값입니다")
     private int participants;
 
     @Column(name = "current_participants")
     private int currentParticipants;
 
     @Column(name = "start_date")
+    @NotBlank(message = "startDate은 필수 값입니다")
     private Date startDate;
 
     @Column(name = "open_chat_url")
+    @NotBlank(message = "openChatUrl은 필수 값입니다")
     private String openChatUrl;
 
     @Column(name = "introduce")
+    @NotBlank(message = "studyIntroduce은 필수 값입니다")
     private String studyIntroduce;
 
     @Column(name = "goal")
+    @NotBlank(message = "studyGoal은 필수 값입니다")
     private String studyGoal;
 
     @Column(name = "status")
@@ -57,6 +66,7 @@ public class Study {
     private Date createdDate;
 
     @Column(name = "end_date")
+    @NotBlank(message = "openChatUrl은 필수 값입니다")
     private Date endDate;
 
     @Column(name = "count")

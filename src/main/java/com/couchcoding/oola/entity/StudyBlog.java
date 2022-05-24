@@ -4,11 +4,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Getter
 @NoArgsConstructor
 @Entity
-@Table(name = "study_blog")
 public class StudyBlog {
 
     @Id
@@ -16,13 +16,16 @@ public class StudyBlog {
     private Long id;
 
     @Column(name = "comment")
+    @NotBlank(message = "comment는 필수 값입니다")
     private String comment;
 
     @Column(name = "share_link")
+    @NotBlank(message = "shareLink는 필수 값입니다")
     private String shareLink;
 
-    @Column(name = "study_id")
-    private Long studyId;
+    @ManyToOne
+    @JoinColumn(name = "studyId")
+    private Study study;
 
     @ManyToOne
     @JoinColumn(name = "uid")
