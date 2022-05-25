@@ -44,6 +44,6 @@ jobs:
       - name: deploy to heroku
         uses: akhileshns/heroku-deploy@v3.12.12
         with:
-          heroku_api_key: d040ac48-54dc-4e37-9e4d-39d1d9504dcc
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: studyoola
           heroku_email: goodlife1359@gmail.com
