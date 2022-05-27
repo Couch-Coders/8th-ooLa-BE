@@ -25,7 +25,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-
         http
                 .httpBasic().disable() // Http basic Auth 기반으로 로그인 인증창이 뜨는데 disable 시 인증창이 뜨지 않는다
                 .csrf().disable() // rest api이므로 csrf 보안이 필요없다
@@ -34,10 +33,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests() // 요청에 대한 권한 지정
                 .anyRequest().authenticated() // 모든 요청이 인증되어야 한다
                 .and()
-                .addFilterBefore(authFilterContainer.getAuthFilter(), UsernamePasswordAuthenticationFilter.class); //컨트롤러로 요청이 넘어가기 전에 검증이 필요한 요청인 경우 해당 유저의 로긍니 정보를 검증하는 JwtFilter가 실행된다
+                .addFilterBefore(authFilterContainer.getAuthFilter(), UsernamePasswordAuthenticationFilter.class); //컨트롤러로 요청이 넘어가기 전에 검증이 필요한 요청인 경우 해당 유저의 로그인
+                // 정보를 검증하는 JwtFilter가 실행되고 난후 UsernamePasswordAuthenticationFilter가 실행된다
     }
 
-    // spring security 인증시 제외될 항목 정의
+    // spring security 인증시 제외할 항목 정의
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring()
