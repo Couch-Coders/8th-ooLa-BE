@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://ec2-52-4-104-184.compute-1.amazonaws.com:5432/dafifikentqcii
+    username: gegewnfrwwvlnl
+    password: 29d67f0796752200cb45303ae443734520edfa9d11adfd7a46acb488d8a0e753
+    post: 5432
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        show_sql: true
+        format_ssql: true
+
+  logging:
+    level:
+      org.hibernate.SQL: debug
+      org.hibernate.type: trace

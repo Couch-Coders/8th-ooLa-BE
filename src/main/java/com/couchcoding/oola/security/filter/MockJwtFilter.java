@@ -1,5 +1,7 @@
 package com.couchcoding.oola.security.filter;
 
+import com.couchcoding.oola.service.MemberService;
+import com.couchcoding.oola.util.RequestUtil;
 import com.couchcoding.oola.validation.error.CustomException;
 import com.couchcoding.oola.validation.error.ErrorCode;
 import com.google.firebase.auth.FirebaseAuthException;
@@ -23,7 +25,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class MockJwtFilter extends OncePerRequestFilter {
 
-    private final UserDetailsService userDetailsService;
+    private final MemberService memberService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -33,18 +35,8 @@ public class MockJwtFilter extends OncePerRequestFilter {
         FirebaseToken decodedToken;
         String header;
         try {
-            header = request.getHeader("Authorization");
-
-            if (header == null || !header.startsWith("Bearer ")) {
-                throw new CustomException(ErrorCode.LoginForbidden);
-            }
-
-            String[] parts = header.split(" ");
-            if(parts.length != 2) {
-                throw new CustomException(ErrorCode.LoginForbidden);
-            }
-
-        } catch (IllegalArgumentException | CustomException e) {
+            header = RequestUtil.getAuthorizationToken(request.getHeader("Authorization"));
+        } catch (CustomException e) {
             response.setStatus(HttpStatus.SC_UNAUTHORIZED);// 유효한 토큰이 아닌경우, 인증 정보가 부족하여 인증이 거부되었다
             response.setContentType("application/json");
             response.getWriter().write("{\"code\":\"INVALID_TOKEN\", \"message\":\"" + e.getMessage() + "\"}");
@@ -52,7 +44,7 @@ public class MockJwtFilter extends OncePerRequestFilter {
         }
 
         try {
-            UserDetails user = userDetailsService.loadUserByUsername(header);// uid를 사용하여 유저 정보를 불러온다
+            UserDetails user = memberService.loadUserByUsername(header);// uid를 사용하여 유저 정보를 불러온다
 
             // 인증이 끝나고 SecurityContextHolder.getContext에 등록될 Authentication 객체
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(

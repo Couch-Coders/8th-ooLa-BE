@@ -1,10 +1,8 @@
 package com.couchcoding.oola.controller;
 
 import com.couchcoding.oola.entity.Member;
-import com.couchcoding.oola.validation.CommentNotFoundException;
 import com.couchcoding.oola.validation.ParameterBadRequestException;
 import com.couchcoding.oola.validation.URLNotFoundException;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -43,7 +41,7 @@ class TestControllerTest {
 
     @Test
     public void invalidMembmerDtoTest() throws Exception {
-        Member memberDto = new Member("test", null, "githubUrl", "blogUrl", null);
+        Member memberDto = new Member("test","displayName", null, "githubUrl", "blogUrl", null);
 
         String memberDtoJson = objectMapper.writeValueAsString(memberDto);
 

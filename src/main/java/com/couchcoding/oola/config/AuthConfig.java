@@ -1,11 +1,11 @@
 package com.couchcoding.oola.config;
 
-import com.couchcoding.oola.security.filter.AuthFilterContainer;
 import com.couchcoding.oola.security.filter.JwtFilter;
 import com.couchcoding.oola.security.filter.MockJwtFilter;
 import com.couchcoding.oola.service.MemberService;
 import com.google.firebase.auth.FirebaseAuth;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -15,14 +15,14 @@ import org.springframework.context.annotation.Profile;
 @RequiredArgsConstructor
 public class AuthConfig {
 
+    private final MemberService userService;
     private final FirebaseAuth firebaseAuth;
-    private final MemberService memberService;
 
     @Bean
-    @Profile("local") // spring 실행시 환경을 @Profile 어노테이션을 통해 구분한다 
+    @Profile({"local","default"}) // spring 실행시 환경을 @Profile 어노테이션을 통해 구분한다
     public AuthFilterContainer mockAuthFilter() {
         AuthFilterContainer authFilterContainer = new AuthFilterContainer();
-        authFilterContainer.setAuthFilter(new MockJwtFilter(memberService));
+        authFilterContainer.setAuthFilter(new MockJwtFilter(userService));
         return authFilterContainer;
     }
 
@@ -30,7 +30,7 @@ public class AuthConfig {
     @Profile("prod")
     public AuthFilterContainer firebaseAuthFilter() {
         AuthFilterContainer authFilterContainer = new AuthFilterContainer();
-        authFilterContainer.setAuthFilter(new JwtFilter(memberService, firebaseAuth));
+        authFilterContainer.setAuthFilter(new JwtFilter(userService, firebaseAuth));
         return authFilterContainer;
     }
 }

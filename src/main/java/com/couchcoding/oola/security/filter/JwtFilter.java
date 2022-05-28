@@ -1,5 +1,7 @@
 package com.couchcoding.oola.security.filter;
 
+import com.couchcoding.oola.service.MemberService;
+import com.couchcoding.oola.util.RequestUtil;
 import com.couchcoding.oola.validation.error.CustomException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
@@ -28,7 +30,7 @@ public class JwtFilter extends OncePerRequestFilter {
     // DB에서 유저 정보를 가져오는 역할을 한다
     // DB의 유저 정보를 가져와서 AuthenticationProvider 인터페이스로 유저 정보를 반환하면
     // 사용자가 입력한 정보와 DB에 있는 유저 정보를 비교한다
-    private final UserDetailsService userDetailsService;
+    private final MemberService memberService;
     private final FirebaseAuth firebaseAuth;
 
     @Override
@@ -39,7 +41,8 @@ public class JwtFilter extends OncePerRequestFilter {
         FirebaseToken decodedToken;
 
         try {
-            String header = request.getHeader("Authorization");
+            //String header = request.getHeader("Authorization");
+            String header = RequestUtil.getAuthorizationToken(request.getHeader("Authorization"));
             decodedToken =firebaseAuth.verifyIdToken(header);// 토큰이 유효한지 확인한다 (토큰이 올바르게 서명 되었는지 확인한다)
         } catch (FirebaseAuthException | IllegalArgumentException | CustomException e) {
             response.setStatus(HttpStatus.SC_UNAUTHORIZED);// 유효한 토큰이 아닌경우, 인증 정보가 부족하여 인증이 거부되었다
@@ -49,7 +52,7 @@ public class JwtFilter extends OncePerRequestFilter {
         }
 
         try {
-            UserDetails user = userDetailsService.loadUserByUsername(decodedToken.getUid());// uid를 사용하여 유저 정보를 불러온다
+            UserDetails user = memberService.loadUserByUsername(decodedToken.getUid());// uid를 사용하여 유저 정보를 불러온다
             
             // 인증이 끝나고 SecurityContextHolder.getContext에 등록될 Authentication 객체
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
