@@ -41,7 +41,7 @@ class TestControllerTest {
 
     @Test
     public void invalidMembmerDtoTest() throws Exception {
-        Member memberDto = new Member("test","displayName", null, "githubUrl", "blogUrl", null);
+        Member memberDto = new Member("test","displayName", null, "githubUrl", "blogUrl", null , null , null);
 
         String memberDtoJson = objectMapper.writeValueAsString(memberDto);
 

@@ -25,46 +25,40 @@ import java.io.IOException;
 // 로그인 정보를 검증하는 JwtFilter
 // 헤더에 담긴 authorization 토큰을 검증하고 유저 정보를 확인한다
 @RequiredArgsConstructor
-public class JwtFilter extends OncePerRequestFilter {
+public class JwtFilter extends OncePerRequestFilter{
 
-    // DB에서 유저 정보를 가져오는 역할을 한다
-    // DB의 유저 정보를 가져와서 AuthenticationProvider 인터페이스로 유저 정보를 반환하면
-    // 사용자가 입력한 정보와 DB에 있는 유저 정보를 비교한다
-    private final MemberService memberService;
+    private final UserDetailsService userDetailsService;
     private final FirebaseAuth firebaseAuth;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
-        // 디코딩 및 확인된 Firebase 토큰
-        // uid 와 사용자 속성을 가져오는데 사용할 수 있다
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
+        // get the token from the request
         FirebaseToken decodedToken;
-
-        try {
-            //String header = request.getHeader("Authorization");
+        try{
             String header = RequestUtil.getAuthorizationToken(request.getHeader("Authorization"));
-            decodedToken =firebaseAuth.verifyIdToken(header);// 토큰이 유효한지 확인한다 (토큰이 올바르게 서명 되었는지 확인한다)
+            decodedToken = firebaseAuth.verifyIdToken(header);//디코딩한 firebase 토큰을 반환
         } catch (FirebaseAuthException | IllegalArgumentException | CustomException e) {
-            response.setStatus(HttpStatus.SC_UNAUTHORIZED);// 유효한 토큰이 아닌경우, 인증 정보가 부족하여 인증이 거부되었다
+            // ErrorMessage 응답 전송
+            response.setStatus(HttpStatus.SC_UNAUTHORIZED);
             response.setContentType("application/json");
             response.getWriter().write("{\"code\":\"INVALID_TOKEN\", \"message\":\"" + e.getMessage() + "\"}");
             return;
         }
 
-        try {
-            UserDetails user = memberService.loadUserByUsername(decodedToken.getUid());// uid를 사용하여 유저 정보를 불러온다
-            
-            // 인증이 끝나고 SecurityContextHolder.getContext에 등록될 Authentication 객체
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                    user, null, user.getAuthorities());// 세션 쿠키 방식의 인증이 이루어 진다
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);// SecurityContextHolder에 인증객체(authenticationToken)를 저장한다
-        } catch (UsernameNotFoundException e) {
+        // User를 가져와 SecurityContext에 저장한다.
+        try{
+            UserDetails user = userDetailsService.loadUserByUsername(decodedToken.getUid());//uid 를 통해 회원 엔티티 조회
+            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                    user, null, user.getAuthorities());//인증 객체 생성
+            SecurityContextHolder.getContext().setAuthentication(authentication);//securityContextHolder 에 인증 객체 저장
+        } catch(UsernameNotFoundException e){
+            // ErrorMessage 응답 전송
             response.setStatus(HttpStatus.SC_NOT_FOUND);
             response.setContentType("application/json");
             response.getWriter().write("{\"code\":\"USER_NOT_FOUND\"}");
             return;
         }
-        filterChain.doFilter(request, response);// 다음 차례 필터 클래스 객체의 doFilter 메서드를 호출하는 기능을 한다
-        // 더이상 실행될 필터가 없다면 request 객체와 response 객체를 서블릿으로 넘겨 처리한다
+        filterChain.doFilter(request, response);
     }
 }

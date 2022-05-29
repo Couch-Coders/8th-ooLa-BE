@@ -3,16 +3,20 @@ package com.couchcoding.oola.service;
 import com.couchcoding.oola.dto.member.response.MemberResponseDto;
 import com.couchcoding.oola.entity.Member;
 import com.couchcoding.oola.repository.MemberRepository;
+import com.couchcoding.oola.util.RequestUtil;
 import com.couchcoding.oola.validation.error.CustomException;
 import com.couchcoding.oola.validation.error.ErrorCode;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
@@ -49,6 +53,17 @@ public class MemberService implements UserDetailsService {
         Optional<Member> optionalMember = memberRepository.findByUid(member.getUid());
         if (optionalMember.isPresent()) {
             throw new CustomException(ErrorCode.MemberExist);
+        }
+    }
+
+    // 헤더에서 토큰을 꺼낸다
+    public FirebaseToken decodeToken(String header) {
+        try {
+            String token = RequestUtil.getAuthorizationToken(header);
+            return firebaseAuth.verifyIdToken(token);
+        } catch (IllegalArgumentException | FirebaseAuthException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
+                    "{\"code\":\"INVALID_TOKEN\", \"message\":\"" + e.getMessage() + "\"}");
         }
     }
 }

@@ -6,6 +6,7 @@ import com.couchcoding.oola.repository.MemberRepository;
 import com.couchcoding.oola.service.MemberService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.google.firebase.auth.FirebaseAuth;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -44,12 +45,15 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 class MemberControllerTest {
 
-    private static final String uid = "abcdefghij";
-    private static final String displayName = "meeyoungchoi14";
+    private static final String uid = "DpKLjE6P5bRd4aAqWzl1gnbaKHr1";
+    private static final String displayName = "최미영";
     private static final String email = "goodlife1359@gmail.com";
     private static final String blogUrl = "https://junior-developer-myc.tistory.com/";
     private static final String githubUrl = "https://github.com/meeyoungchoi";
     private static final String photoUrl = "https://www.flaticon.com/free-icon/girl_146005";
+    private static final String nickName = "backRookie";
+    private static final String introduce = "안녕하세요 자기소개입니다";
+
 
     @Autowired
     private WebApplicationContext wac;
@@ -73,7 +77,7 @@ class MemberControllerTest {
     void setUp() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(wac)
                 .addFilter(springSecurityFilterChain)
-               .build();
+                .build();
     }
 
     @Test
@@ -87,12 +91,15 @@ class MemberControllerTest {
                 .blogUrl(blogUrl)
                 .displayName(displayName)
                 .photoUrl(photoUrl)
+                .nickName(nickName)
+                .introduce(introduce)
                 .build();
+
 
         System.out.println(memberSaveRequestDto);
         String memberDtoJson= objectMapper.writeValueAsString(memberSaveRequestDto);
 
-         ResultActions resultActions = mockMvc.perform(
+        ResultActions resultActions = mockMvc.perform(
                 post("/members/local")
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding(StandardCharsets.UTF_8)
@@ -101,7 +108,7 @@ class MemberControllerTest {
         )
                 .andDo(print());
         resultActions
-                .andExpect(status().is2xxSuccessful())
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("uid").value(uid))
                 .andExpect(jsonPath("email").value(email))
                 .andExpect(jsonPath("displayName").value(displayName))
@@ -115,13 +122,11 @@ class MemberControllerTest {
     public void id조회() {
         Optional<Member> byId = memberRepository.findByUid(uid);
         System.out.println("user:" + byId);
-        assertThat(byId.get().getUid()).isEqualTo("abcdefghij");
+        assertThat(byId.get().getUid()).isEqualTo("DpKLjE6P5bRd4aAqWzl1gnbaKHr1");
     }
 
-
-
     @Test
-    @DisplayName("prod 배포환경에서 로그인 테스트")
+    @DisplayName("로컬환경에서 로그인 테스트")
     void 로그인_테스트() throws Exception {
 
         ResultActions resultActions = mockMvc.perform(
