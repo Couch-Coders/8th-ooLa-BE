@@ -16,7 +16,7 @@ spring:
         format_ssql: true
   config:
     activate:
-      on-profile: prod
+      on-profile: local
 
   logging:
     level:

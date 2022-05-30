@@ -1,19 +1,26 @@
 package com.couchcoding.oola.entity;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-
+import java.util.Collection;
 
 @Entity
 @Getter
 @NoArgsConstructor
 @Table(name = "member")
-public class Member {
+public class Member implements UserDetails {
 
     @Id
+    @GeneratedValue
+    @Column(name = "member_id")
+    private Long id;
+
     private String uid;
 
     @Column(name = "display_name")
@@ -34,11 +41,61 @@ public class Member {
     @NotBlank(message = "photoUrl은 필수 값입니다")
     private String photoUrl;
 
-    public Member(@NotBlank(message = "displayName은 필수 값입니다") String displayName, @NotBlank(message = "email은 필수 값입니다") String email, String blogUrl, String githubUrl, @NotBlank(message = "photoUrl은 필수 값입니다") String photoUrl) {
+    @Column(name = "nick_name")
+    @NotBlank(message = "nickName은 필수 값입니다")
+    private String nickName;
+
+    @Column(name = "introduce")
+    @NotBlank(message = "introduce는 필수 값입니다")
+    private String introduce;
+
+    @Builder
+    public Member(String uid, @NotBlank(message = "displayName은 필수 값입니다") String displayName, @NotBlank(message = "email은 필수 값입니다") String email, String blogUrl, String githubUrl, @NotBlank(message = "photoUrl은 필수 값입니다") String photoUrl, @NotBlank(message = "nickName은 필수 값입니다") String nickName, @NotBlank(message = "introduce는 필수 값입니다") String introduce) {
+        this.uid = uid;
         this.displayName = displayName;
         this.email = email;
         this.blogUrl = blogUrl;
         this.githubUrl = githubUrl;
         this.photoUrl = photoUrl;
+        this.nickName = nickName;
+        this.introduce = introduce;
+    }
+
+
+
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+    @Override
+    public String getPassword() {
+        return null;
+    }
+
+    @Override
+    public String getUsername() {
+        return null;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
     }
 }

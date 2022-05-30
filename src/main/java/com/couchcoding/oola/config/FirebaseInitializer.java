@@ -20,7 +20,7 @@ public class FirebaseInitializer {
     @Bean
     public FirebaseApp firebaseApp() throws IOException {
         log.info("Initializing Firebase.");
-        FileInputStream serviceAccount = new FileInputStream("firebase.json");
+        FileInputStream serviceAccount = new FileInputStream("./firebase.json");
 
         FirebaseOptions options = new FirebaseOptions.Builder()
                 .setCredentials(GoogleCredentials.fromStream(serviceAccount))
