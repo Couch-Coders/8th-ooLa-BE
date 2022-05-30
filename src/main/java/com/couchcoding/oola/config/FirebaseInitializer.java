@@ -24,6 +24,7 @@ public class FirebaseInitializer {
 
         FirebaseOptions options = new FirebaseOptions.Builder()
                 .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+                .setStorageBucket("heroku-sample.appspot.com")
                 .build();
 
         FirebaseApp app = FirebaseApp.initializeApp(options);

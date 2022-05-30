@@ -1,6 +1,5 @@
 package com.couchcoding.oola.security.filter;
 
-import com.couchcoding.oola.service.MemberService;
 import com.couchcoding.oola.util.RequestUtil;
 import com.couchcoding.oola.validation.error.CustomException;
 import com.google.firebase.auth.FirebaseAuth;
@@ -12,6 +11,7 @@ import org.apache.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.filter.OncePerRequestFilter;
