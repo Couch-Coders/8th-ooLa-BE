@@ -23,7 +23,6 @@ import javax.servlet.Filter;
 
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -39,7 +38,7 @@ class StudyControllerTest {
 
     private static final String uid = "DpKLjE6P5bRd4aAqWzl1gnbaKHr1";
     private static final String studyType = "프론트엔드";
-    private static final String studyName = "씹어먹자 HTML&CSS11";
+    private static final String studyName = "씹어먹자 HTML&CSS13";
     private static String studyDays = "평일";
     private static final String timeZone = "오후 12 ~ 18시";
     private static final int participants = 5;
@@ -73,7 +72,6 @@ class StudyControllerTest {
     @Test
     @DisplayName("로컬 study create 테스트")
     void createStudy() throws Exception {
-//        LocalDateTime past = LocalDateTime.of(2022,6,1,0,0,0);
 
         String date = "2022.06.06";
         SimpleDateFormat fDate = new SimpleDateFormat("yyyy.MM.dd");
@@ -136,7 +134,7 @@ class StudyControllerTest {
     @Test
     @DisplayName("스터디 수정 테스트")
     void updateStudy() throws Exception {
-        int studyId = 9;
+        int studyId = 31;
 
         String date = "2022.06.06";
         SimpleDateFormat fDate = new SimpleDateFormat("yyyy.MM.dd");
@@ -188,7 +186,7 @@ class StudyControllerTest {
     @Test
     @DisplayName("스터디 종료시 수정 테스트")
     void updateCompleteStudy() throws Exception {
-        int studyId = 9;
+        int studyId = 31;
 
         String date = "2022.06.06";
         SimpleDateFormat fDate = new SimpleDateFormat("yyyy.MM.dd");
@@ -228,7 +226,6 @@ class StudyControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
         )
                 .andDo(print());
-
         resultActions
                 .andExpect(status().isOk());
     }
