@@ -25,4 +25,11 @@ public class StudyMember {
 
     private String role;
     private Date applicationDate;
+
+    public StudyMember(Member member, Study study, String role, Date applicationDate) {
+        this.member = member;
+        this.study = study;
+        this.role = role;
+        this.applicationDate = applicationDate;
+    }
 }

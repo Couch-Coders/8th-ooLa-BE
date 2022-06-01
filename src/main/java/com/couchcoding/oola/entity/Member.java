@@ -61,9 +61,6 @@ public class Member implements UserDetails {
         this.introduce = introduce;
     }
 
-
-
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
@@ -97,5 +94,20 @@ public class Member implements UserDetails {
     @Override
     public boolean isEnabled() {
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return "Member{" +
+                "id=" + id +
+                ", uid='" + uid + '\'' +
+                ", displayName='" + displayName + '\'' +
+                ", email='" + email + '\'' +
+                ", blogUrl='" + blogUrl + '\'' +
+                ", githubUrl='" + githubUrl + '\'' +
+                ", photoUrl='" + photoUrl + '\'' +
+                ", nickName='" + nickName + '\'' +
+                ", introduce='" + introduce + '\'' +
+                '}';
     }
 }

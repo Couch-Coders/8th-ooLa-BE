@@ -66,4 +66,14 @@ public class MemberService implements UserDetailsService {
                     "{\"code\":\"INVALID_TOKEN\", \"message\":\"" + e.getMessage() + "\"}");
         }
     }
+
+
+    // 회원 단건 조회
+    public Member findByUid(String uid) {
+        return (Member) memberRepository.findByUid(uid).orElseThrow(() -> {
+            throw new UsernameNotFoundException("해당 회원이 존재하지 않습니다.");
+        });
+    }
+
+
 }
