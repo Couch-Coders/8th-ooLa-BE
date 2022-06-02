@@ -2,10 +2,12 @@ package com.couchcoding.oola.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
 @Getter
+@ToString
 @NoArgsConstructor
 @Entity
 @Table(name = "memberlanguages")
@@ -22,7 +24,4 @@ public class MemberLanguage {
     @ManyToOne
     @JoinColumn(name = "languageId")
     private Language language;
-
-
-
 }

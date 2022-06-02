@@ -6,17 +6,19 @@ import com.couchcoding.oola.entity.StudyMember;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Getter
 @NoArgsConstructor
+@ToString
 public class StudyResponseDetailDto {
 
     private Long studyId;
-
-    private List<StudyMember> studyMembers = new ArrayList<>();
 
     private String studyType;
 
@@ -30,7 +32,7 @@ public class StudyResponseDetailDto {
 
     private int currentParticipants;
 
-    private Date startDate;
+    private LocalDateTime startDate;
 
     private String openChatUrl;
 
@@ -42,14 +44,13 @@ public class StudyResponseDetailDto {
 
     private String joinStatus;
 
-    private Date endDate;
+    private LocalDateTime endDate;
 
     private boolean likeStatus;
 
     @Builder
-    public StudyResponseDetailDto(Long studyId, List<StudyMember> studyMembers, String studyType, String studyName, String studyDays, String timeZone, int participants, int currentParticipants, Date startDate, String openChatUrl, String studyIntroduce, String studyGoal, String status, String joinStatus, Date endDate, boolean likeStatus) {
+    public StudyResponseDetailDto(Long studyId, String studyType, String studyName, String studyDays, String timeZone, int participants, int currentParticipants, LocalDateTime startDate, String openChatUrl, String studyIntroduce, String studyGoal, String status, String joinStatus, LocalDateTime endDate, boolean likeStatus) {
         this.studyId = studyId;
-        this.studyMembers = studyMembers;
         this.studyType = studyType;
         this.studyName = studyName;
         this.studyDays = studyDays;
@@ -69,7 +70,6 @@ public class StudyResponseDetailDto {
     public StudyResponseDetailDto toDto(Study study) {
         StudyResponseDetailDto studyResponseDetailDto = StudyResponseDetailDto.builder()
                 .studyId(study.getStudyId())
-                .studyMembers(study.getStudyMembers())
                 .studyType(study.getStudyType())
                 .studyDays(study.getStudyDays())
                 .timeZone(study.getTimeZone())

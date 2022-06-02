@@ -3,10 +3,12 @@ package com.couchcoding.oola.dto.member.response;
 import com.couchcoding.oola.entity.Member;
 
 import lombok.Getter;
+import lombok.ToString;
 
 import java.util.Optional;
 
 @Getter
+@ToString
 public class MemberResponseDto {
     private String uid;
     private String displayName;
