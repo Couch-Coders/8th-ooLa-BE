@@ -3,6 +3,7 @@ package com.couchcoding.oola.entity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -12,6 +13,7 @@ import java.util.Collection;
 
 @Entity
 @Getter
+@ToString
 @NoArgsConstructor
 @Table(name = "member")
 public class Member implements UserDetails {
@@ -60,9 +62,6 @@ public class Member implements UserDetails {
         this.nickName = nickName;
         this.introduce = introduce;
     }
-
-
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

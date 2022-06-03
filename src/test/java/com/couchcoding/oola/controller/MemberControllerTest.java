@@ -22,7 +22,6 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-
 import javax.servlet.Filter;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
@@ -40,13 +39,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @SpringBootTest
 class MemberControllerTest {
 
-    private static final String uid = "DpKLjE6P5bRd4aAqWzl1gnbaKHr1";
-    private static final String displayName = "최미영";
-    private static final String email = "goodlife1359@gmail.com";
+    //private static final String uid = "DpKLjE6P5bRd4aAqWzl1gnbaKHr1";
+    private static final String uid = "abc";
+    private static final String displayName = "홍길동";
+    private static final String email = "test@gmail.com";
     private static final String blogUrl = "https://junior-developer-myc.tistory.com/";
     private static final String githubUrl = "https://github.com/meeyoungchoi";
     private static final String photoUrl = "https://www.flaticon.com/free-icon/girl_146005";
-    private static final String nickName = "backRookie";
+    private static final String nickName = "testNickName";
     private static final String introduce = "안녕하세요 자기소개입니다";
 
 
@@ -103,7 +103,7 @@ class MemberControllerTest {
         )
                 .andDo(print());
         resultActions
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(jsonPath("uid").value(uid))
                 .andExpect(jsonPath("email").value(email))
                 .andExpect(jsonPath("displayName").value(displayName))

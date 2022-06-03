@@ -2,11 +2,13 @@ package com.couchcoding.oola.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
 @Getter
+@ToString
 @NoArgsConstructor
 @Entity
 public class StudyBlog {

@@ -2,10 +2,12 @@ package com.couchcoding.oola.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
 @Getter
+@ToString
 @NoArgsConstructor
 @Entity
 @Table(name = "languages")
@@ -20,5 +22,4 @@ public class Language {
 
     @Column(name = "category")
     private String categoryName;
-
 }

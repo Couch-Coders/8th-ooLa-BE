@@ -1,25 +1,34 @@
 package com.couchcoding.oola.entity;
 
+import com.couchcoding.oola.dto.study.request.StudyRequestDto;
+import com.couchcoding.oola.entity.base.BaseTimeEntity;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.NoArgsConstructor;;
+import lombok.ToString;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import javax.validation.constraints.NotNull;
 
-@NoArgsConstructor
+import java.io.Serializable;
+
+import java.time.LocalDateTime;
+
+import static lombok.AccessLevel.PROTECTED;
+
+@EntityListeners(AuditingEntityListener.class)
+@NoArgsConstructor(access = PROTECTED)
 @Getter
+@ToString
 @Entity
 @Table(name = "study")
-public class Study {
+public class Study extends BaseTimeEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long studyId;
-
-    @OneToMany(mappedBy = "study", cascade = CascadeType.ALL)
-    private List<StudyMember> studyMembers = new ArrayList<>();
 
     @Column(name = "type")
     @NotBlank(message = "studyType은 필수 값입니다")
@@ -29,20 +38,25 @@ public class Study {
     @NotBlank(message = "studyName은 필수 값입니다")
     private String studyName;
 
+    @Column(name = "studydays")
+    @NotBlank(message = "studydays는 필수 값입니다")
+    private String studyDays;
+
     @Column(name = "timezone")
     @NotBlank(message = "timeZone은 필수 값입니다")
     private String timeZone;
 
     @Column(name = "participants")
-    @NotBlank(message = "participants은 필수 값입니다")
+    @NotNull(message = "participants은 필수 값입니다")
     private int participants;
 
     @Column(name = "current_participants")
     private int currentParticipants;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name = "start_date")
-    @NotBlank(message = "startDate은 필수 값입니다")
-    private Date startDate;
+    @NotNull(message = "startDate은 필수 값입니다")
+    private LocalDateTime startDate;
 
     @Column(name = "open_chat_url")
     @NotBlank(message = "openChatUrl은 필수 값입니다")
@@ -62,13 +76,73 @@ public class Study {
     @Column(name = "joinStatus")
     private String joinStatus;
 
-    @Column(name = "created_date")
-    private Date createdDate;
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name = "end_date")
-    @NotBlank(message = "openChatUrl은 필수 값입니다")
-    private Date endDate;
+    @NotNull(message = "openChatUrl은 필수 값입니다")
+    private LocalDateTime endDate;
 
     @Column(name = "count")
-    private Long likeCount; // 프론트에서 스터디별 좋아요 개수를 구해달라는 요청이 있어 추가하였습니다.
+    private Long likeCount;
+
+    @Column(name = "create_uid")
+    private String createUid;
+
+    @Builder
+    public Study(Long studyId, @NotBlank(message = "studyType은 필수 값입니다") String studyType, @NotBlank(message = "studyName은 필수 값입니다") String studyName, @NotBlank(message = "studydays는 필수 값입니다") String studyDays, @NotBlank(message = "timeZone은 필수 값입니다") String timeZone, @NotNull(message = "participants은 필수 값입니다") int participants, int currentParticipants, @NotNull(message = "startDate은 필수 값입니다") LocalDateTime startDate, @NotBlank(message = "openChatUrl은 필수 값입니다") String openChatUrl, @NotBlank(message = "studyIntroduce은 필수 값입니다") String studyIntroduce, @NotBlank(message = "studyGoal은 필수 값입니다") String studyGoal, String status, String joinStatus, @NotNull(message = "openChatUrl은 필수 값입니다") LocalDateTime endDate, Long likeCount, String createUid) {
+        this.studyId = studyId;
+        this.studyType = studyType;
+        this.studyName = studyName;
+        this.studyDays = studyDays;
+        this.timeZone = timeZone;
+        this.participants = participants;
+        this.currentParticipants = currentParticipants;
+        this.startDate = startDate;
+        this.openChatUrl = openChatUrl;
+        this.studyIntroduce = studyIntroduce;
+        this.studyGoal = studyGoal;
+        this.status = status;
+        this.joinStatus = joinStatus;
+        this.endDate = endDate;
+        this.likeCount = likeCount;
+        this.createUid = createUid;
+    }
+
+    public Study update(Long studyId, StudyRequestDto studyRequestDto, String uid) {
+         Study study = Study.builder()
+                 .studyId(studyId)
+                 .studyType(studyRequestDto.getStudyType())
+                 .studyName(studyRequestDto.getStudyName())
+                 .studyDays(studyRequestDto.getStudyDays())
+                 .timeZone(studyRequestDto.getTimeZone())
+                 .participants(studyRequestDto.getParticipants())
+                 .startDate(studyRequestDto.getStartDate())
+                 .endDate(studyRequestDto.getEndDate())
+                 .openChatUrl(studyRequestDto.getOpenChatUrl())
+                 .studyGoal(studyRequestDto.getStudyGoal())
+                 .status(studyRequestDto.getStatus())
+                 .joinStatus(studyRequestDto.getJoinStatus())
+                 .studyIntroduce(studyRequestDto.getStudyIntroduce())
+                 .createUid(uid)
+                 .build();
+        return study;
+    }
+
+    public Study updateCompleteStatus(Long studyId, String completeStatus, StudyRequestDto studyRequestDto) {
+        Study study = Study.builder()
+                .studyId(studyId)
+                .studyType(studyRequestDto.getStudyType())
+                .studyName(studyRequestDto.getStudyName())
+                .studyDays(studyRequestDto.getStudyDays())
+                .timeZone(studyRequestDto.getTimeZone())
+                .participants(studyRequestDto.getParticipants())
+                .startDate(studyRequestDto.getStartDate())
+                .endDate(studyRequestDto.getEndDate())
+                .openChatUrl(studyRequestDto.getOpenChatUrl())
+                .studyGoal(studyRequestDto.getStudyGoal())
+                .status(completeStatus)
+                .joinStatus(studyRequestDto.getJoinStatus())
+                .studyIntroduce(studyRequestDto.getStudyIntroduce())
+                .build();
+        return study;
+    }
 }
