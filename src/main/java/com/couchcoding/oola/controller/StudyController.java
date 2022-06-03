@@ -47,18 +47,16 @@ public class StudyController {
 
         Member member = ((Member) authentication.getPrincipal());
         String uid = member.getUid();
-
-        Member memberFinded = memberService.findByUid(uid);
-        if (memberFinded.equals(null)) {
+        if (uid.equals(null)) {
             throw new MemberNotFoundException();
         }
 
         // 스터디 생성
-        Study studyCreate = studyRequestDto.toEntity(studyRequestDto, uid, memberFinded);
+        Study studyCreate = studyRequestDto.toEntity(studyRequestDto, uid, member);
 
         // 스터디에 참여하는 멤버 생성
         StudyMember studyMember = StudyMember.builder()
-                .member(memberFinded)
+                .member(member)
                 .study(studyCreate)
                 .role("leader")
                 .build();
@@ -106,7 +104,7 @@ public class StudyController {
 
         Member member = ((Member) authentication.getPrincipal());
         String uid = member.getUid();
-        if (uid == null) {
+        if (uid.equals(null)) {
             throw new MemberUnAuthorizedException();
         }
 
