@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import javax.validation.constraints.Email;
+
 @Getter
 @ToString
 @NoArgsConstructor
@@ -13,6 +15,8 @@ public class MemberSaveRequestDto {
 
     private String uid;
     private String displayName;
+
+    @Email
     private String email;
     private String blogUrl;
     private String githubUrl;
