@@ -14,6 +14,9 @@ import com.couchcoding.oola.util.RequestUtil;
 import com.couchcoding.oola.validation.MemberNotFoundException;
 import com.couchcoding.oola.validation.MemberUnAuthorizedException;
 import com.couchcoding.oola.validation.ParameterBadRequestException;
+import com.google.rpc.context.AttributeContext;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -26,6 +29,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.text.ParseException;
+import java.util.List;
 
 
 @Slf4j
@@ -77,6 +81,13 @@ public class StudyController {
         StudyResponseDetailDto studyResponseDetailDto = new StudyResponseDetailDto();
         studyResponseDetailDto = studyResponseDetailDto.toDto(study);
         return ResponseEntity.status(HttpStatus.OK).body(studyResponseDetailDto);
+    }
+
+    // 스터디 필터링 (조건검색)
+    @GetMapping("")
+    public List<Study> studySearch(Authentication authentication, Pageable pageable, @RequestParam(value = "studyType", required = false ) String studyType,
+                                   @RequestParam( value = "studyDays", required = false)  String studyDays, @RequestParam(value = "timeZone", required = false) String timeZone , @RequestParam(value = "status",required = false)  String status) {
+        return studyService.findByAllCategory(pageable,studyType, studyDays, timeZone,status);
     }
 
     // 스터디 수정 (단일 수정)

@@ -30,7 +30,7 @@ public class Study extends BaseTimeEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long studyId;
 
-    @Column(name = "type")
+    @Column(name = "study_type")
     @NotBlank(message = "studyType은 필수 값입니다")
     private String studyType;
 
@@ -87,8 +87,11 @@ public class Study extends BaseTimeEntity implements Serializable {
     @Column(name = "create_uid")
     private String createUid;
 
+    @Column(name = "like_status")
+    private Boolean likeStatus; // 한명이라도 스터디 관심을 눌렀다면 true
+
     @Builder
-    public Study(Long studyId, @NotBlank(message = "studyType은 필수 값입니다") String studyType, @NotBlank(message = "studyName은 필수 값입니다") String studyName, @NotBlank(message = "studydays는 필수 값입니다") String studyDays, @NotBlank(message = "timeZone은 필수 값입니다") String timeZone, @NotNull(message = "participants은 필수 값입니다") int participants, int currentParticipants, @NotNull(message = "startDate은 필수 값입니다") LocalDateTime startDate, @NotBlank(message = "openChatUrl은 필수 값입니다") String openChatUrl, @NotBlank(message = "studyIntroduce은 필수 값입니다") String studyIntroduce, @NotBlank(message = "studyGoal은 필수 값입니다") String studyGoal, String status, String joinStatus, @NotNull(message = "openChatUrl은 필수 값입니다") LocalDateTime endDate, Long likeCount, String createUid) {
+    public Study(Long studyId, @NotBlank(message = "studyType은 필수 값입니다") String studyType, @NotBlank(message = "studyName은 필수 값입니다") String studyName, @NotBlank(message = "studydays는 필수 값입니다") String studyDays, @NotBlank(message = "timeZone은 필수 값입니다") String timeZone, @NotNull(message = "participants은 필수 값입니다") int participants, int currentParticipants, @NotNull(message = "startDate은 필수 값입니다") LocalDateTime startDate, @NotBlank(message = "openChatUrl은 필수 값입니다") String openChatUrl, @NotBlank(message = "studyIntroduce은 필수 값입니다") String studyIntroduce, @NotBlank(message = "studyGoal은 필수 값입니다") String studyGoal, String status, String joinStatus, @NotNull(message = "openChatUrl은 필수 값입니다") LocalDateTime endDate, Long likeCount, String createUid, Boolean likeStatus) {
         this.studyId = studyId;
         this.studyType = studyType;
         this.studyName = studyName;
@@ -105,6 +108,7 @@ public class Study extends BaseTimeEntity implements Serializable {
         this.endDate = endDate;
         this.likeCount = likeCount;
         this.createUid = createUid;
+        this.likeStatus = likeStatus;
     }
 
     public Study update(Long studyId, StudyRequestDto studyRequestDto, String uid) {
@@ -123,6 +127,7 @@ public class Study extends BaseTimeEntity implements Serializable {
                  .joinStatus(studyRequestDto.getJoinStatus())
                  .studyIntroduce(studyRequestDto.getStudyIntroduce())
                  .createUid(uid)
+                 .likeStatus(false)
                  .build();
         return study;
     }
