@@ -19,8 +19,9 @@ import java.util.List;
 
 import static com.couchcoding.oola.entity.QStudy.*;
 
-@Repository
+
 @Slf4j
+@Repository
 public class StudyRepositoryImpl extends QuerydslRepositorySupport implements StudyRepositoryCustom {
 
     @Autowired
@@ -31,35 +32,43 @@ public class StudyRepositoryImpl extends QuerydslRepositorySupport implements St
     }
 
     @Override
-    public List<Study> findBySearchOption( String studyType, String studyDays,String timeZone, String status) {
-        List<Study> query = (List<Study>) queryFactory.selectFrom(study)
-                .where(eqStudyType(studyType), eqStudyDays(studyDays), eqTimeZone(timeZone), eqStatus(status)).fetch();
-        log.info("query1: {}" +  query.toString());
-        return query;
+    public Page<Study> findBySearchOption(Pageable pageable, String studyType, String studyDays,String timeZone, String status) {
+        JPQLQuery<Study> query = queryFactory.selectFrom(study)
+                .where(eqStudyType(studyType), eqStudyDays(studyDays), eqTimeZone(timeZone), eqStatus(status));
+
+        List<Study> studies = this.getQuerydsl().applyPagination(pageable,query).fetch();
+        log.info("query1: {}" +  studies.toString());
+        return new PageImpl<Study>(studies, pageable, query.fetchCount());
     }
 
     @Override
-    public List<Study> findBySearchOption(String studyType, String studyDays, String timeZone) {
-        List<Study> query = (List<Study>) queryFactory.selectFrom(study)
-                .where(eqStudyType(studyType), eqStudyDays(studyDays), eqTimeZone(timeZone)).fetch();
-        log.info("query2: {}" +  query.toString());
-        return query;
+    public Page<Study> findBySearchOption(Pageable pageable, String studyType, String studyDays, String timeZone) {
+        JPQLQuery<Study> query = queryFactory.selectFrom(study)
+                .where(eqStudyType(studyType), eqStudyDays(studyDays), eqTimeZone(timeZone));
+
+        List<Study> studies = this.getQuerydsl().applyPagination(pageable,query).fetch();
+        log.info("query2: {}" +  studies.toString());
+        return new PageImpl<Study>(studies, pageable, query.fetchCount());
     }
 
     @Override
-    public List<Study> findBySearchOption( String studyType, String studyDays) {
-        List<Study> query = (List<Study>) queryFactory.selectFrom(study)
-                .where(eqStudyType(studyType), eqStudyDays(studyDays)).fetch();
-        log.info("query3: {}" +  query.toString());
-        return query;
+    public Page<Study> findBySearchOption(Pageable pageable, String studyType, String studyDays) {
+        JPQLQuery<Study> query = queryFactory.selectFrom(study)
+                .where(eqStudyType(studyType), eqStudyDays(studyDays));
+
+        List<Study> studies = this.getQuerydsl().applyPagination(pageable,query).fetch();
+        log.info("query3: {}" +  studies.toString());
+        return new PageImpl<Study>(studies, pageable, query.fetchCount());
     }
 
     @Override
-    public List<Study> findBySearchOption( String studyType) {
-        List<Study> query = (List<Study>) queryFactory.selectFrom(study)
-                .where(eqStudyType(studyType)).fetch();
-        log.info("query4: {}" +  query.toString());
-        return query;
+    public Page<Study> findBySearchOption(Pageable pageable,  String studyType) {
+        JPQLQuery<Study> query = queryFactory.selectFrom(study)
+                .where(eqStudyType(studyType));
+
+        List<Study> studies = this.getQuerydsl().applyPagination(pageable,query).fetch();
+        log.info("query4: {}" +  studies.toString());
+        return  new PageImpl<Study>(studies, pageable, query.fetchCount());
     }
 
     private BooleanExpression eqStudyType(String studyType) {
@@ -82,7 +91,6 @@ public class StudyRepositoryImpl extends QuerydslRepositorySupport implements St
         }
         return study.timeZone.eq(timeZone);
     }
-
 
     private BooleanExpression eqStatus(String status) {
         if (status == null || status.isEmpty()) {

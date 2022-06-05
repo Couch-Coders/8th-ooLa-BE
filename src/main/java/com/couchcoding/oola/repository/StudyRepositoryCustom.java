@@ -9,12 +9,11 @@ import java.util.List;
 
 public interface StudyRepositoryCustom {
 
-    List<Study> findBySearchOption( String studyType , String studyDays, String timeZone , String status);
+    Page<Study> findBySearchOption(Pageable pageable, String studyType , String studyDays, String timeZone , String status);
 
-    List<Study> findBySearchOption( String studyType , String studyDays, String timeZone);
+    Page<Study> findBySearchOption(Pageable pageable, String studyType , String studyDays, String timeZone);
 
-    List<Study> findBySearchOption(String studyType , String studyDays);
+    Page<Study> findBySearchOption(Pageable pageable, String studyType , String studyDays);
 
-    List<Study> findBySearchOption( String studyType );
-
+    Page<Study> findBySearchOption(Pageable pageable, String studyType );
 }

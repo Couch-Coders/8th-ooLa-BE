@@ -44,16 +44,16 @@ public class StudyService {
     }
 
     // 스터디 조건 검색 및 페이징 처리
-    public List<Study> findByAllCategory(Pageable pageable, String studyType, String studyDays, String timeZone , String status) {
-        List<Study> studies = null;
+    public Page<Study> findByAllCategory(Pageable pageable, String studyType, String studyDays, String timeZone , String status) {
+        Page<Study> studies = null;
         if (studyType != null && studyDays != null && timeZone != null && status != null) {
-            studies =  studyRepositoryImpl.findBySearchOption(studyType, studyDays, timeZone,status);
+            studies =  studyRepositoryImpl.findBySearchOption(pageable ,studyType, studyDays, timeZone,status);
         } else if (studyType != null && studyDays != null && timeZone != null && status == null) {
-            studies =  studyRepositoryImpl.findBySearchOption(studyType, studyDays, timeZone);
+            studies =  studyRepositoryImpl.findBySearchOption(pageable ,studyType, studyDays, timeZone);
         } else if (studyType != null && studyDays != null && timeZone == null && status == null) {
-            studies = studyRepositoryImpl.findBySearchOption(studyType, studyDays );
+            studies = studyRepositoryImpl.findBySearchOption(pageable ,studyType, studyDays );
         } else if (studyType != null && studyDays == null && timeZone == null && status == null) {
-            studies = studyRepositoryImpl.findBySearchOption(studyType );
+            studies = studyRepositoryImpl.findBySearchOption(pageable ,studyType );
         }
 
         return studies;
