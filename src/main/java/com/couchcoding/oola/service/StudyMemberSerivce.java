@@ -15,5 +15,4 @@ public class StudyMemberSerivce {
         StudyMember result = studyMemberRepository.saveAndFlush(studyMember);
         return result;
     }
-
 }

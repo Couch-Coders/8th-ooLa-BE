@@ -1,4 +1,13 @@
 spring:
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+  server:
+    servlet:
+      encoding:
+        force-response: true
   datasource:
     url: jdbc:postgresql://ec2-52-4-104-184.compute-1.amazonaws.com:5432/dafifikentqcii
     username: gegewnfrwwvlnl
