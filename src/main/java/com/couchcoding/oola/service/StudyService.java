@@ -4,17 +4,30 @@ import com.couchcoding.oola.dto.study.request.StudyRequestDto;
 import com.couchcoding.oola.dto.study.response.StudyResponseDetailDto;
 import com.couchcoding.oola.dto.study.response.StudyResponseDto;
 
+import com.couchcoding.oola.entity.Member;
 import com.couchcoding.oola.entity.Study;
 
 import com.couchcoding.oola.repository.StudyRepository;
+import com.couchcoding.oola.repository.impl.StudyRepositoryImpl;
 import com.couchcoding.oola.validation.MemberForbiddenException;
 
+import com.couchcoding.oola.validation.MemberNotFoundException;
 import com.couchcoding.oola.validation.StudyNotFoundException;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.FirebaseToken;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Profile;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Slf4j
 @Service
@@ -22,6 +35,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class StudyService {
 
     private final StudyRepository studyRepository;
+    private final StudyRepositoryImpl studyRepositoryImpl;
+    private final UserDetailsService userDetailsService;
+    private final FirebaseAuth firebaseAuth;
 
     // 스터디 만들기
     @Transactional
@@ -35,6 +51,11 @@ public class StudyService {
        return (Study) studyRepository.findById(studyId).orElseThrow(() -> {
             throw new StudyNotFoundException();
         });
+    }
+
+    // 스터디 조건 검색 및 페이징 처리
+    public Page<Study> findByAllCategory(Pageable pageable, String studyType, String studyDays, String timeZone , String status, String studyName) {
+        return studyRepositoryImpl.findBySearchOption(pageable ,studyType, studyDays, timeZone,status , studyName);
     }
 
     // 스터디 수정
