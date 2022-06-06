@@ -34,7 +34,7 @@ public class Study extends BaseTimeEntity implements Serializable {
     @NotBlank(message = "studyType은 필수 값입니다")
     private String studyType;
 
-    @Column(name = "name")
+    @Column(name = "study_name")
     @NotBlank(message = "studyName은 필수 값입니다")
     private String studyName;
 

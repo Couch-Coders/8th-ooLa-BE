@@ -32,43 +32,13 @@ public class StudyRepositoryImpl extends QuerydslRepositorySupport implements St
     }
 
     @Override
-    public Page<Study> findBySearchOption(Pageable pageable, String studyType, String studyDays,String timeZone, String status) {
+    public Page<Study> findBySearchOption(Pageable pageable, String studyType, String studyDays,String timeZone, String status, String studyName) {
         JPQLQuery<Study> query = queryFactory.selectFrom(study)
-                .where(eqStudyType(studyType), eqStudyDays(studyDays), eqTimeZone(timeZone), eqStatus(status));
+                .where(eqStudyType(studyType), eqStudyDays(studyDays), eqTimeZone(timeZone), eqStatus(status), eqStudyName(studyName));
 
         List<Study> studies = this.getQuerydsl().applyPagination(pageable,query).fetch();
-        log.info("query1: {}" +  studies.toString());
+        log.info("stuides: {}" +  studies.toString());
         return new PageImpl<Study>(studies, pageable, query.fetchCount());
-    }
-
-    @Override
-    public Page<Study> findBySearchOption(Pageable pageable, String studyType, String studyDays, String timeZone) {
-        JPQLQuery<Study> query = queryFactory.selectFrom(study)
-                .where(eqStudyType(studyType), eqStudyDays(studyDays), eqTimeZone(timeZone));
-
-        List<Study> studies = this.getQuerydsl().applyPagination(pageable,query).fetch();
-        log.info("query2: {}" +  studies.toString());
-        return new PageImpl<Study>(studies, pageable, query.fetchCount());
-    }
-
-    @Override
-    public Page<Study> findBySearchOption(Pageable pageable, String studyType, String studyDays) {
-        JPQLQuery<Study> query = queryFactory.selectFrom(study)
-                .where(eqStudyType(studyType), eqStudyDays(studyDays));
-
-        List<Study> studies = this.getQuerydsl().applyPagination(pageable,query).fetch();
-        log.info("query3: {}" +  studies.toString());
-        return new PageImpl<Study>(studies, pageable, query.fetchCount());
-    }
-
-    @Override
-    public Page<Study> findBySearchOption(Pageable pageable,  String studyType) {
-        JPQLQuery<Study> query = queryFactory.selectFrom(study)
-                .where(eqStudyType(studyType));
-
-        List<Study> studies = this.getQuerydsl().applyPagination(pageable,query).fetch();
-        log.info("query4: {}" +  studies.toString());
-        return  new PageImpl<Study>(studies, pageable, query.fetchCount());
     }
 
     private BooleanExpression eqStudyType(String studyType) {
@@ -97,5 +67,12 @@ public class StudyRepositoryImpl extends QuerydslRepositorySupport implements St
             return null;
         }
         return study.status.eq(status);
+    }
+
+    private BooleanExpression eqStudyName(String studyName) {
+        if (studyName == null || studyName.isEmpty()) {
+            return null;
+        }
+        return study.studyName.contains(studyName);
     }
 }

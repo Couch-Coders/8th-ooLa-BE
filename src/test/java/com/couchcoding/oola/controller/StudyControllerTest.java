@@ -3,6 +3,7 @@ package com.couchcoding.oola.controller;
 import com.couchcoding.oola.dto.study.request.StudyRequestDto;
 import com.couchcoding.oola.validation.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.firebase.auth.FirebaseAuth;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -40,8 +41,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 class StudyControllerTest {
 
-    //private static final String uid = "DpKLjE6P5bRd4aAqWzl1gnbaKHr1";
-    private static  final String uid = "abc";
+    private static final String uid = "DpKLjE6P5bRd4aAqWzl1gnbaKHr1";
+    //private static  final String uid = "abc";
+    //private static final String uid = "eyJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJodHRwczovL2lkZW50aXR5dG9vbGtpdC5nb29nbGVhcGlzLmNvbS9nb29nbGUuaWRlbnRpdHkuaWRlbnRpdHl0b29sa2l0LnYxLklkZW50aXR5VG9vbGtpdCIsImV4cCI6MTY1NDUwNzM1NSwiaWF0IjoxNjU0NTAzNzU1LCJpc3MiOiJmaXJlYmFzZS1hZG1pbnNkay1qM3YzOUBvb2xhLW9hdXRoLmlhbS5nc2VydmljZWFjY291bnQuY29tIiwic3ViIjoiZmlyZWJhc2UtYWRtaW5zZGstajN2MzlAb29sYS1vYXV0aC5pYW0uZ3NlcnZpY2VhY2NvdW50LmNvbSIsInVpZCI6ImFiY2RlZmcxMjMifQ.iiJcZf4vekGaVAkQI7Kq54cl3csv9dH0g4GsuZkfMXoRKsQnBGP1qT3fJAj-6lOupBd3zVmKL2hZ6cIKQmNKOuAaVnin9DbfqjBBghC7hMDvlXWIElR4l2uN5qbrsSGJsKN4sMBvaNq50lwKYNyHMThZ20wFzsQZH1SK5kxRHxdBdaYSoVD-Ow57P3kt3dUzd5y7vz9THlQR5t8Uso6zWOiCBHyvR_4Fn_hDpuo-wjftjkgPiXmcfqpI5AlyhBBNcx7tFfiqbJ4o_pK879A4DUsph2NXZSGC0P0wwXvDOUWM1vGmXeGLT6Xs69fze2b-7rsuvJxqV1-fZ4qazZjLZA";
     private static final String studyType = "알고리즘/자료구조";
     private static final String studyName = "DO IT 자바스크립트 알고리즘3";
     private static String studyDays = "평일";
@@ -135,7 +137,7 @@ class StudyControllerTest {
     }
 
     @Test
-    @DisplayName("스터디 필터링 (검색) 테스트 - 검색조건 4개")
+    @DisplayName("스터디 필터링 (검색) 테스트")
     void studySearch() throws Exception {
 
         MultiValueMap<String, String> info = new LinkedMultiValueMap<>();
@@ -143,6 +145,7 @@ class StudyControllerTest {
         info.add("studyDays", "주말");
         info.add("timeZone", "오후 12 ~ 18시");
         info.add("status", "모집중");
+        info.add("studyName", "씹어먹자");
 
         ResultActions resultActions = mockMvc.perform(
                 get("/studies")
@@ -157,6 +160,33 @@ class StudyControllerTest {
         resultActions
                 .andExpect(status().isOk());
     }
+
+    @Test
+    @DisplayName("스터디 필터링 (검색) 테스트 - 검색조건 4개  + studyName 검색")
+    void studySearchLogin() throws Exception {
+
+        MultiValueMap<String, String> info = new LinkedMultiValueMap<>();
+        info.add("studyType", "백엔드");
+        info.add("studyDays", "주말");
+        info.add("timeZone", "오후 12 ~ 18시");
+        info.add("status", "모집중");
+        info.add("studyName", "씹어먹자");
+
+        ResultActions resultActions = mockMvc.perform(
+                get("/studies")
+                        .header("Authorization", "Bearer " + uid)
+                        .params(info)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding("UTF-8")
+                        .accept(MediaType.APPLICATION_JSON)
+        )
+                .andDo(print());
+
+        resultActions
+                .andExpect(status().isOk());
+    }
+
+
 
     @Test
     @DisplayName("스터디 필터링 (검색) 테스트 - 검색조건 3개")
@@ -182,12 +212,13 @@ class StudyControllerTest {
     }
 
     @Test
-    @DisplayName("스터디 필터링 (검색) 테스트 - 검색조건 2개")
+    @DisplayName("스터디 필터링 (검색) 테스트 - 검색조건 2개 + studyName 검색")
     void studySearch3() throws Exception {
 
         MultiValueMap<String, String> info = new LinkedMultiValueMap<>();
         info.add("studyType", "백엔드");
         info.add("studyDays", "주말");
+        info.add("studyName", "NodeJS");
 
         ResultActions resultActions = mockMvc.perform(
                 get("/studies")
@@ -204,11 +235,12 @@ class StudyControllerTest {
     }
 
     @Test
-    @DisplayName("스터디 필터링 (검색) 테스트 - 검색조건 한개")
+    @DisplayName("스터디 필터링 (검색) 테스트 - 검색조건 한개 + studyName 검색")
     void studySearch4() throws Exception {
 
         MultiValueMap<String, String> info = new LinkedMultiValueMap<>();
         info.add("studyType", "백엔드");
+        info.add("studyName", "springboot");
 
         ResultActions resultActions = mockMvc.perform(
                 get("/studies")
@@ -223,7 +255,7 @@ class StudyControllerTest {
         resultActions
                 .andExpect(status().isOk());
     }
-
+    
     @Test
     @DisplayName("스터디 수정 테스트")
     void updateStudy() throws Exception {
@@ -241,7 +273,6 @@ class StudyControllerTest {
         String status = "진행중";
 
         StudyRequestDto studyRequestDto = StudyRequestDto.builder()
-                //.memberUid(null)
                 .studyType(studyType)
                 .studyName(studyName)
                 .studyDays(studyDays)
@@ -273,6 +304,7 @@ class StudyControllerTest {
                 .andExpect(status().isOk());
 
     }
+
 
 
     @Test

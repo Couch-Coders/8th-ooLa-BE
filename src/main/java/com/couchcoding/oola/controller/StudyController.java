@@ -3,6 +3,8 @@ package com.couchcoding.oola.controller;
 import com.couchcoding.oola.dto.study.request.StudyRequestDto;
 import com.couchcoding.oola.dto.study.response.StudyResponseDetailDto;
 import com.couchcoding.oola.dto.study.response.StudyResponseDto;
+import com.couchcoding.oola.dto.studymember.request.StudyMemberRequestDto;
+import com.couchcoding.oola.dto.studymember.response.StudyMemberResponseDto;
 import com.couchcoding.oola.entity.Member;
 import com.couchcoding.oola.entity.Study;;
 import com.couchcoding.oola.entity.StudyMember;
@@ -14,6 +16,7 @@ import com.couchcoding.oola.util.RequestUtil;
 import com.couchcoding.oola.validation.MemberNotFoundException;
 import com.couchcoding.oola.validation.MemberUnAuthorizedException;
 import com.couchcoding.oola.validation.ParameterBadRequestException;
+import com.couchcoding.oola.validation.StudySearchNotFoundException;
 import com.google.rpc.context.AttributeContext;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -86,8 +89,16 @@ public class StudyController {
     // 스터디 필터링 (조건검색)
     @GetMapping("")
     public Page<Study> studySearch(Authentication authentication, Pageable pageable, @RequestParam(value = "studyType", required = false ) String studyType,
-                                   @RequestParam( value = "studyDays", required = false)  String studyDays, @RequestParam(value = "timeZone", required = false) String timeZone , @RequestParam(value = "status",required = false)  String status) {
-        return studyService.findByAllCategory(pageable,studyType, studyDays, timeZone,status);
+                                   @RequestParam( value = "studyDays", required = false)  String studyDays, @RequestParam(value = "timeZone", required = false) String timeZone
+                                 , @RequestParam(value = "status",required = false)  String status, @RequestParam(value = "studyName", required = false) String studyName) {
+        Page<Study> searchResult = null;
+        authentication.getPrincipal();
+
+        searchResult = studyService.findByAllCategory(pageable, studyType, studyDays, timeZone, status , studyName);
+        if (searchResult == null) {
+            throw new StudySearchNotFoundException();
+        }
+        return searchResult;
     }
 
     // 스터디 수정 (단일 수정)

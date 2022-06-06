@@ -6,6 +6,7 @@ import com.couchcoding.oola.repository.MemberRepository;
 import com.couchcoding.oola.service.MemberService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.google.firebase.auth.FirebaseAuth;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -40,8 +41,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 class MemberControllerTest {
 
     //private static final String uid = "DpKLjE6P5bRd4aAqWzl1gnbaKHr1";
-    private static final String uid = "abc";
-    private static final String displayName = "홍길동";
+    private static  String uid = "aaabbccdd";
+    private static final String displayName = "장길동";
     private static final String email = "test@gmail.com";
     private static final String blogUrl = "https://junior-developer-myc.tistory.com/";
     private static final String githubUrl = "https://github.com/meeyoungchoi";
@@ -76,11 +77,50 @@ class MemberControllerTest {
     }
 
     @Test
-    @DisplayName("로컬 회원 가입 테스트")
-    void registerMemberTest() throws Exception {
-
+    @DisplayName("서버 회원 가입 테스트")
+    void registerMemberTestServer() throws Exception {
+        String customToken = FirebaseAuth.getInstance().createCustomToken(uid);
         MemberSaveRequestDto memberSaveRequestDto = MemberSaveRequestDto.builder()
                 .uid(uid)
+                .email(email)
+                .githubUrl(githubUrl)
+                .blogUrl(blogUrl)
+                .displayName(displayName)
+                .photoUrl(photoUrl)
+                .nickName(nickName)
+                .introduce(introduce)
+                .build();
+
+
+        System.out.println(memberSaveRequestDto);
+        String memberDtoJson= objectMapper.writeValueAsString(memberSaveRequestDto);
+
+        ResultActions resultActions = mockMvc.perform(
+                post("/members")
+                        .header("Authorization", "Bearer " + customToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding(StandardCharsets.UTF_8)
+                        .content(memberDtoJson)
+                        .accept(MediaType.APPLICATION_JSON)
+        )
+                .andDo(print());
+        resultActions
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("uid").value(customToken))
+                .andExpect(jsonPath("email").value(email))
+                .andExpect(jsonPath("displayName").value(displayName))
+                .andExpect(jsonPath("blogUrl").value(blogUrl))
+                .andExpect(jsonPath("githubUrl").value(githubUrl))
+                .andExpect(jsonPath("photoUrl").value(photoUrl));
+    }
+
+
+    @Test
+    @DisplayName("로컬 회원 가입 테스트")
+    void registerMemberTest() throws Exception {
+        String customToken = FirebaseAuth.getInstance().createCustomToken(uid);
+        MemberSaveRequestDto memberSaveRequestDto = MemberSaveRequestDto.builder()
+                .uid(customToken)
                 .email(email)
                 .githubUrl(githubUrl)
                 .blogUrl(blogUrl)
