@@ -18,6 +18,8 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
 import javax.servlet.Filter;
 import java.nio.charset.StandardCharsets;
@@ -36,8 +38,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 class StudyControllerTest {
 
-    //private static final String uid = "DpKLjE6P5bRd4aAqWzl1gnbaKHr1";
-    private static  final String uid = "abc";
+    private static final String uid = "DpKLjE6P5bRd4aAqWzl1gnbaKHr1";
+    //private static  final String uid = "abc";
     private static final String studyType = "알고리즘/자료구조";
     private static final String studyName = "DO IT 자바스크립트 알고리즘3";
     private static String studyDays = "평일";
@@ -129,6 +131,122 @@ class StudyControllerTest {
                 .andExpect(status().isOk());
     }
 
+    @Test
+    @DisplayName("스터디 필터링 (검색) 테스트")
+    void studySearch() throws Exception {
+
+        MultiValueMap<String, String> info = new LinkedMultiValueMap<>();
+        info.add("studyType", "백엔드");
+        info.add("studyDays", "주말");
+        info.add("timeZone", "오후 12 ~ 18시");
+        info.add("status", "모집중");
+
+        ResultActions resultActions = mockMvc.perform(
+                get("/studies")
+                        .header("Authorization", "Bearer " + uid)
+                        .params(info)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding("UTF-8")
+                        .accept(MediaType.APPLICATION_JSON)
+        )
+                .andDo(print());
+
+        resultActions
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("스터디 필터링 (검색) 테스트 - 검색조건 4개  + studyName 검색")
+    void studySearchLogin() throws Exception {
+
+        MultiValueMap<String, String> info = new LinkedMultiValueMap<>();
+        info.add("studyType", "백엔드");
+        info.add("studyDays", "주말");
+        info.add("timeZone", "오후 12 ~ 18시");
+        info.add("status", "모집중");
+        info.add("studyName", "씹어먹자");
+
+        ResultActions resultActions = mockMvc.perform(
+                get("/studies")
+                        .header("Authorization", "Bearer " + uid)
+                        .params(info)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding("UTF-8")
+                        .accept(MediaType.APPLICATION_JSON)
+        )
+                .andDo(print());
+
+        resultActions
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("스터디 필터링 (검색) 테스트 - 검색조건 3개")
+    void studySearch2() throws Exception {
+
+        MultiValueMap<String, String> info = new LinkedMultiValueMap<>();
+        info.add("studyType", "백엔드");
+        info.add("studyDays", "주말");
+        info.add("timeZone", "오후 12 ~ 18시");
+
+        ResultActions resultActions = mockMvc.perform(
+                get("/studies")
+                        .header("Authorization", "Bearer " + uid)
+                        .params(info)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding("UTF-8")
+                        .accept(MediaType.APPLICATION_JSON)
+        )
+                .andDo(print());
+
+        resultActions
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("스터디 필터링 (검색) 테스트 - 검색조건 2개 + studyName 검색")
+    void studySearch3() throws Exception {
+
+        MultiValueMap<String, String> info = new LinkedMultiValueMap<>();
+        info.add("studyType", "백엔드");
+        info.add("studyDays", "주말");
+        info.add("studyName", "NodeJS");
+
+        ResultActions resultActions = mockMvc.perform(
+                get("/studies")
+                        .header("Authorization", "Bearer " + uid)
+                        .params(info)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding("UTF-8")
+                        .accept(MediaType.APPLICATION_JSON)
+        )
+                .andDo(print());
+
+        resultActions
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("스터디 필터링 (검색) 테스트 - 검색조건 한개 + studyName 검색")
+    void studySearch4() throws Exception {
+
+        MultiValueMap<String, String> info = new LinkedMultiValueMap<>();
+        info.add("studyType", "백엔드");
+        info.add("studyName", "springboot");
+
+        ResultActions resultActions = mockMvc.perform(
+                get("/studies")
+                        .header("Authorization", "Bearer " + uid)
+                        .params(info)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding("UTF-8")
+                        .accept(MediaType.APPLICATION_JSON)
+        )
+                .andDo(print());
+
+        resultActions
+                .andExpect(status().isOk());
+    }
 
     @Test
     @DisplayName("스터디 수정 테스트")
