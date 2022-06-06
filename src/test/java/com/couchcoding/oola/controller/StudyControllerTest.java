@@ -145,7 +145,6 @@ class StudyControllerTest {
         info.add("studyDays", "주말");
         info.add("timeZone", "오후 12 ~ 18시");
         info.add("status", "모집중");
-        info.add("studyName", "씹어먹자");
 
         ResultActions resultActions = mockMvc.perform(
                 get("/studies")

@@ -34,7 +34,7 @@ public class StudyRepositoryImpl extends QuerydslRepositorySupport implements St
     @Override
     public Page<Study> findBySearchOption(Pageable pageable, String studyType, String studyDays,String timeZone, String status, String studyName) {
         JPQLQuery<Study> query = queryFactory.selectFrom(study)
-                .where(eqStudyType(studyType), eqStudyDays(studyDays), eqTimeZone(timeZone), eqStatus(status), eqStudyName(studyName));
+                .where(eqStudyType(studyType), eqStudyDays(studyDays), eqTimeZone(timeZone), eqStatus(status), containsName(studyName));
 
         List<Study> studies = this.getQuerydsl().applyPagination(pageable,query).fetch();
         log.info("stuides: {}" +  studies.toString());
@@ -69,7 +69,7 @@ public class StudyRepositoryImpl extends QuerydslRepositorySupport implements St
         return study.status.eq(status);
     }
 
-    private BooleanExpression eqStudyName(String studyName) {
+    private BooleanExpression containsName(String studyName) {
         if (studyName == null || studyName.isEmpty()) {
             return null;
         }
