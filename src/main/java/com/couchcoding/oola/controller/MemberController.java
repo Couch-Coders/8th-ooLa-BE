@@ -68,6 +68,7 @@ public class MemberController {
     @GetMapping("/me")
     public ResponseEntity<MemberResponseDto> login(Authentication authentication) {
         Member member = ((Member) authentication.getPrincipal());
+        log.info("member: {}", member.toString());
         return ResponseEntity.ok(new MemberResponseDto(member));
     }
 }
