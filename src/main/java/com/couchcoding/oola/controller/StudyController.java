@@ -87,6 +87,7 @@ public class StudyController {
     public Page<Study> studySearch(Pageable pageable, @RequestParam(value = "studyType", required = false ) String studyType,
                                    @RequestParam( value = "studyDays", required = false)  String studyDays, @RequestParam(value = "timeZone", required = false) String timeZone
             , @RequestParam(value = "status",required = false)  String status, @RequestParam(value = "studyName", required = false) String studyName) {
+
         Page<Study> searchResult = null;
         searchResult = studyService.findByAllCategory(pageable, studyType, studyDays, timeZone, status , studyName);
         if (searchResult.equals(null)) {

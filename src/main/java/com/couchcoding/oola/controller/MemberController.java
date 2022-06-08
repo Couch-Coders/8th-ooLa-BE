@@ -68,6 +68,9 @@ public class MemberController {
     @GetMapping("/me")
     public ResponseEntity<MemberResponseDto> login(Authentication authentication) {
         Member member = ((Member) authentication.getPrincipal());
-        return ResponseEntity.ok(new MemberResponseDto(member));
+        if (member.getNickName().equals(null)) {
+            return ResponseEntity.ok(new MemberResponseDto(member, "회원가입이 필요합니다"));
+        }
+        return ResponseEntity.ok(new MemberResponseDto(member, "이미 회원 입니다"));
     }
 }
