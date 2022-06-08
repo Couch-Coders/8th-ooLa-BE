@@ -68,6 +68,9 @@ public class MemberController {
     @GetMapping("/me")
     public ResponseEntity<MemberResponseDto> login(Authentication authentication) {
         Member member = ((Member) authentication.getPrincipal());
+        if (member.equals(null)) {
+            return (ResponseEntity<MemberResponseDto>) ResponseEntity.notFound();
+        }
         log.info("member: {}", member.toString());
         return ResponseEntity.ok(new MemberResponseDto(member));
     }
