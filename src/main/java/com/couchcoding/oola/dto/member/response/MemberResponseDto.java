@@ -16,15 +16,13 @@ public class MemberResponseDto {
     private String blogUrl;
     private String githubUrl;
     private String photoUrl;
-    private String status;
 
-    public MemberResponseDto(Member member , String message) {
+    public MemberResponseDto(Member member) {
         this.uid = member.getUid();
         this.displayName = member.getDisplayName();
         this.email = member.getEmail();
         this.blogUrl = member.getBlogUrl();
         this.githubUrl = member.getGithubUrl();
         this.photoUrl = member.getPhotoUrl();
-        this.status = message;
     }
 }
