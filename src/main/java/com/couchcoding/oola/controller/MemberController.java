@@ -42,7 +42,7 @@ public class MemberController {
         // TOKEN을 가져온다.
         FirebaseToken decodedToken = memberService.decodeToken(header);
 
-        log.error("techStack: {}" + memberSaveRequestDto.getTechSetck().toString());
+        log.error("techStack: {}" + memberSaveRequestDto.getTechStack().toString());
 
         // 사용자를 등록한다.
         Member memberRegister = Member.builder()
@@ -54,7 +54,7 @@ public class MemberController {
                 .photoUrl(decodedToken.getPicture())
                 .nickName(memberSaveRequestDto.getNickName())
                 .introduce(memberSaveRequestDto.getIntroduce())
-                .techStack(memberSaveRequestDto.getTechSetck().toString())
+                .techStack(memberSaveRequestDto.getTechStack().toString())
                 .build();
 
 
@@ -71,7 +71,7 @@ public class MemberController {
     // 로컬 회원 가입 테스트용
     @PostMapping("/local")
     public ResponseEntity<MemberResponseDto> registerLocalMember(@RequestBody MemberSaveRequestDto memberSaveRequestDto) {
-       List<String> list = memberSaveRequestDto.getTechSetck();
+       List<String> list = memberSaveRequestDto.getTechStack();
        Member member = memberSaveRequestDto.toEntity(memberSaveRequestDto , list);
 
         MemberResponseDto responseDto = memberService.register(member);

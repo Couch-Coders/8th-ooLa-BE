@@ -133,7 +133,7 @@ class MemberControllerTest {
                 .photoUrl(photoUrl)
                 .nickName(nickName)
                 .introduce(introduce)
-                .techSetck(teckSteck)
+                .techStack(teckSteck)
                 .build();
 
 
@@ -201,7 +201,7 @@ class MemberControllerTest {
                 .photoUrl(photoUrl)
                 .nickName(nickName)
                 .introduce(introduce)
-                .techSetck(teckSteck)
+                .techStack(teckSteck)
                 .build();
 
 
