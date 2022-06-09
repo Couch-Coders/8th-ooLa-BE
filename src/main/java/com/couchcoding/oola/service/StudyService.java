@@ -26,7 +26,6 @@ public class StudyService {
 
     private final StudyRepository studyRepository;
     private final StudyRepositoryImpl studyRepositoryImpl;
-    private final StudyMemberRepository studyMemberRepository;
 
     // 스터디 만들기
     @Transactional
