@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.validation.constraints.Email;
+import java.util.List;
 
 @Getter
 @ToString
@@ -23,9 +24,10 @@ public class MemberSaveRequestDto {
     private String photoUrl;
     private String nickName;
     private String introduce;
+    private List<String> techSetck;
 
     @Builder
-    public MemberSaveRequestDto(String uid, String displayName, String email, String blogUrl, String githubUrl, String photoUrl, String nickName, String introduce) {
+    public MemberSaveRequestDto(String uid, String displayName, @Email String email, String blogUrl, String githubUrl, String photoUrl, String nickName, String introduce, List<String> techSetck) {
         this.uid = uid;
         this.displayName = displayName;
         this.email = email;
@@ -34,9 +36,10 @@ public class MemberSaveRequestDto {
         this.photoUrl = photoUrl;
         this.nickName = nickName;
         this.introduce = introduce;
+        this.techSetck = techSetck;
     }
 
-    public Member toEntity(MemberSaveRequestDto dto) {
+    public Member toEntity(MemberSaveRequestDto dto , List<String> list) {
         Member member = Member.builder()
                 .uid(dto.getUid())
                 .displayName(dto.getDisplayName())
@@ -46,6 +49,7 @@ public class MemberSaveRequestDto {
                 .photoUrl(dto.getPhotoUrl())
                 .nickName(dto.getNickName())
                 .introduce(dto.getIntroduce())
+                .techStack(list.toString())
                 .build();
         return member;
     }

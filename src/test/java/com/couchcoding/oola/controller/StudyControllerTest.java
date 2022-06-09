@@ -36,8 +36,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 class StudyControllerTest {
 
-    //private static final String uid = "DpKLjE6P5bRd4aAqWzl1gnbaKHr1";
-    private static  final String uid = "abc";
+    private static final String uid = "DpKLjE6P5bRd4aAqWzl1gnbaKHr1";
+    //private static  final String uid = "abc";
     private static final String studyType = "알고리즘/자료구조";
     private static final String studyName = "DO IT 자바스크립트 알고리즘3";
     private static String studyDays = "평일";
@@ -46,7 +46,7 @@ class StudyControllerTest {
     private static  LocalDateTime startDate =  null;
     private static  LocalDateTime endDate = null;
     private static final String openChatUrl = "https://open.kakao.com/o/gihbQV0d";
-    private static final String studyIntroduce = "안녕하세요 오전타임 자바스크립트 알고리즘 스터디를 진행하고자 합니다";
+    private static final String studyIntroduce = "안녕하세요 오전타임 자바스크립트 알고리즘 스터디를 진행하고자 합니다 수정수정 테스트";
     private static final String studyGoal = "알고리즘 마스터";
     private static final String status = "모집중";
     private static final Integer currentParticipants = 1;

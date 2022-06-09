@@ -20,6 +20,6 @@ public class Language {
     @Column(name = "name")
     private String languageName;
 
-    @Column(name = "category")
-    private String categoryName;
+//    @Column(name = "category")
+//    private String categoryName;
 }
