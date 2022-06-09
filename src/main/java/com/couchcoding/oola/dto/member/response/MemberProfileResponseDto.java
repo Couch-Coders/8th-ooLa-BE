@@ -18,7 +18,7 @@ public class MemberProfileResponseDto {
     public Member profileUpdate(String uid, MemberSaveRequestDto memberSaveRequestDto) {
         Member member = Member.builder()
                 .uid(uid)
-                .techStack(memberSaveRequestDto.getTechSetck().toString())
+                .techStack(memberSaveRequestDto.getTechStack().toString())
                 .introduce(memberSaveRequestDto.getIntroduce())
                 .nickName(memberSaveRequestDto.getNickName())
                 .photoUrl(memberSaveRequestDto.getPhotoUrl())
