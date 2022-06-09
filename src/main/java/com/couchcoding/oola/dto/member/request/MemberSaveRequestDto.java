@@ -36,7 +36,7 @@ public class MemberSaveRequestDto {
         this.photoUrl = photoUrl;
         this.nickName = nickName;
         this.introduce = introduce;
-        this.techStack = techSetck;
+        this.techStack = techStack;
     }
 
     public Member toEntity(MemberSaveRequestDto dto , List<String> list) {
