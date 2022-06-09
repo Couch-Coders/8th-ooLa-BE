@@ -24,10 +24,10 @@ public class MemberSaveRequestDto {
     private String photoUrl;
     private String nickName;
     private String introduce;
-    private List<String> techSetck;
+    private List<String> techStack;
 
     @Builder
-    public MemberSaveRequestDto(String uid, String displayName, @Email String email, String blogUrl, String githubUrl, String photoUrl, String nickName, String introduce, List<String> techSetck) {
+    public MemberSaveRequestDto(String uid, String displayName, @Email String email, String blogUrl, String githubUrl, String photoUrl, String nickName, String introduce, List<String> techStack) {
         this.uid = uid;
         this.displayName = displayName;
         this.email = email;
@@ -36,7 +36,7 @@ public class MemberSaveRequestDto {
         this.photoUrl = photoUrl;
         this.nickName = nickName;
         this.introduce = introduce;
-        this.techSetck = techSetck;
+        this.techStack = techSetck;
     }
 
     public Member toEntity(MemberSaveRequestDto dto , List<String> list) {

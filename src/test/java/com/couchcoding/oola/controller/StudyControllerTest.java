@@ -1,8 +1,10 @@
 package com.couchcoding.oola.controller;
 
 import com.couchcoding.oola.dto.study.request.StudyRequestDto;
+import com.couchcoding.oola.dto.studymember.request.StudyMemberRequestDto;
 import com.couchcoding.oola.validation.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -38,8 +40,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 class StudyControllerTest {
 
-    private static final String uid = "DpKLjE6P5bRd4aAqWzl1gnbaKHr1";
-    //private static  final String uid = "abc";
+    //private static final String uid = "DpKLjE6P5bRd4aAqWzl1gnbaKHr1";
+    private static  final String uid = "abcd";
     private static final String studyType = "알고리즘/자료구조";
     private static final String studyName = "DO IT 자바스크립트 알고리즘3";
     private static String studyDays = "평일";
@@ -592,5 +594,39 @@ class StudyControllerTest {
                 .andExpect(
                         (result -> assertTrue(result.getResolvedException().getClass().isAssignableFrom(MemberForbiddenException.class)))
                 ).andReturn();
+    }
+
+    @Test
+    @DisplayName("스터디 참여 신청 테스트")
+    void 스터디참여신청테스트() throws Exception {
+        // 참여하려는 studyId : 35
+        // uid abc의 id:2
+        // uid abcd의 id:3
+        Long studyId = 35L;
+
+        ResultActions resultActions = mockMvc.perform(
+                post("/studies/" + studyId + "/members")
+                        .header("Authorization", "Bearer " + uid)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding(StandardCharsets.UTF_8)
+                        .accept(MediaType.APPLICATION_JSON)
+        ).andDo(print());
+        resultActions.andExpect(status().isOk());
+    }
+    
+    @Test
+    @DisplayName("스터디 참여자 조회 테스트")
+    void 스터디참여자조회테스트() throws Exception {
+        // 조회하려는 스터디 id: 35
+        int studyId = 35;
+
+        ResultActions resultActions = mockMvc.perform(
+                get("/studies/" + studyId + "/members")
+                        //.header("Authorization", "Bearer " + uid)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding(StandardCharsets.UTF_8)
+                        .accept(MediaType.APPLICATION_JSON)
+        ).andDo(print());
+        resultActions.andExpect(status().isOk());
     }
 }

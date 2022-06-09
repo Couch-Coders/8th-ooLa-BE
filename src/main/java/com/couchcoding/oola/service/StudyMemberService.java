@@ -3,16 +3,27 @@ package com.couchcoding.oola.service;
 import com.couchcoding.oola.entity.StudyMember;
 import com.couchcoding.oola.repository.StudyMemberRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-@Service
+import java.util.List;
+
+@Slf4j
 @RequiredArgsConstructor
-public class StudyMemberSerivce {
+@Service
+public class StudyMemberService {
 
     private final StudyMemberRepository studyMemberRepository;
+    private final StudyMemberRepositoryImpl studyMemberRepositoryImpl;
+
+
 
     public StudyMember create(StudyMember studyMember) {
         StudyMember result = studyMemberRepository.saveAndFlush(studyMember);
         return result;
+    }
+
+    public List<StudyMember> studyMembersDetail(Long studyId) {
+        return studyMemberRepositoryImpl.findByStudyId(studyId);
     }
 }

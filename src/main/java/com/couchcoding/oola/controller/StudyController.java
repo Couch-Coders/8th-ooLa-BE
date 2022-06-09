@@ -3,20 +3,20 @@ package com.couchcoding.oola.controller;
 import com.couchcoding.oola.dto.study.request.StudyRequestDto;
 import com.couchcoding.oola.dto.study.response.StudyResponseDetailDto;
 import com.couchcoding.oola.dto.study.response.StudyResponseDto;
+import com.couchcoding.oola.dto.studymember.response.StudyMemberResponseDto;
 import com.couchcoding.oola.entity.Member;
 import com.couchcoding.oola.entity.Study;;
 import com.couchcoding.oola.entity.StudyMember;
-import com.couchcoding.oola.service.MemberService;
-import com.couchcoding.oola.service.StudyMemberSerivce;
+import com.couchcoding.oola.service.StudyMemberService;
 import com.couchcoding.oola.service.StudyService;
 
-import com.couchcoding.oola.util.RequestUtil;
 import com.couchcoding.oola.validation.MemberNotFoundException;
 import com.couchcoding.oola.validation.MemberUnAuthorizedException;
 import com.couchcoding.oola.validation.ParameterBadRequestException;
 import com.couchcoding.oola.validation.StudySearchNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.relational.core.sql.In;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -29,17 +29,17 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.text.ParseException;
+import java.util.List;
 
 
 @Slf4j
-@RestController
-@RequestMapping("/studies")
 @RequiredArgsConstructor
+@RequestMapping("/studies")
+@RestController
 public class StudyController {
 
-    private final MemberService memberService;
     private final StudyService studyService;
-    private final StudyMemberSerivce studyMemberSerivce;
+    private final StudyMemberService studyMemberService;
 
     @PostMapping("")
     public ResponseEntity<StudyResponseDto> createStudy(Authentication authentication,
@@ -64,7 +64,7 @@ public class StudyController {
                 .role("leader")
                 .build();
         StudyResponseDto responseDto = studyService.createStudy(studyCreate);
-        studyMemberSerivce.create(studyMember);
+        studyMemberService.create(studyMember);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -114,7 +114,7 @@ public class StudyController {
 
     // 스터디 완료시 수정
     @PatchMapping("/{studyId}/completion")
-    public ResponseEntity<StudyResponseDetailDto> studyComplete(Authentication authentication, @PathVariable Long studyId, @RequestBody @Valid StudyRequestDto studyRequestDto, BindingResult bindingResult, HttpServletRequest request) {
+    public ResponseEntity<StudyResponseDetailDto> studyComplete(Authentication authentication, @PathVariable Long studyId, @RequestBody @Valid StudyRequestDto studyRequestDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new ParameterBadRequestException(bindingResult);
         }

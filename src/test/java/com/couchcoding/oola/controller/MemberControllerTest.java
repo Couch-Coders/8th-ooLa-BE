@@ -159,9 +159,6 @@ class MemberControllerTest {
                 .andExpect(jsonPath("photoUrl").value(photoUrl));
     }
 
-
-
-
     @Test
     @DisplayName("로컬 로그인 테스트 id조회")
     public void id조회() {

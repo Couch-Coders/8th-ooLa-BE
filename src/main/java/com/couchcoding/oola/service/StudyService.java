@@ -4,8 +4,13 @@ import com.couchcoding.oola.dto.study.request.StudyRequestDto;
 import com.couchcoding.oola.dto.study.response.StudyResponseDetailDto;
 import com.couchcoding.oola.dto.study.response.StudyResponseDto;
 
+import com.couchcoding.oola.dto.studymember.request.StudyMemberRequestDto;
+import com.couchcoding.oola.dto.studymember.response.StudyMemberResponseDto;
+import com.couchcoding.oola.entity.Member;
 import com.couchcoding.oola.entity.Study;
 
+import com.couchcoding.oola.entity.StudyMember;
+import com.couchcoding.oola.repository.StudyMemberRepository;
 import com.couchcoding.oola.repository.StudyRepository;
 import com.couchcoding.oola.repository.impl.StudyRepositoryImpl;
 import com.couchcoding.oola.validation.MemberForbiddenException;
@@ -19,13 +24,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+
 @Slf4j
-@Service
 @RequiredArgsConstructor
+@Service
 public class StudyService {
 
     private final StudyRepository studyRepository;
     private final StudyRepositoryImpl studyRepositoryImpl;
+    private final StudyMemberRepository studyMemberRepository;
 
     // 스터디 만들기
     @Transactional
