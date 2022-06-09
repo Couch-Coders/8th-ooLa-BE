@@ -16,7 +16,6 @@ public class MemberSaveRequestDto {
 
     private String uid;
     private String displayName;
-
     @Email
     private String email;
     private String blogUrl;
