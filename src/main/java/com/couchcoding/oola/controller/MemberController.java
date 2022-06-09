@@ -52,6 +52,7 @@ public class MemberController {
                 .photoUrl(decodedToken.getPicture())
                 .nickName(memberSaveRequestDto.getNickName())
                 .introduce(memberSaveRequestDto.getIntroduce())
+                .techStack(memberSaveRequestDto.getTechSetck().toString())
                 .build();
 
         MemberResponseDto responseDto = memberService.register(
