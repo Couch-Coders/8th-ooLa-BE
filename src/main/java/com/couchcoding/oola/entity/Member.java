@@ -21,6 +21,10 @@ import java.util.List;
 public class Member implements UserDetails {
 
     @Id
+    @GeneratedValue
+    @Column(name = "member_id")
+    private Long id;
+
     private String uid;
 
     @Column(name = "display_name")
