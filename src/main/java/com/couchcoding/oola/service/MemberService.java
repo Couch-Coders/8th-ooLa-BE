@@ -1,9 +1,12 @@
 package com.couchcoding.oola.service;
 
+import com.couchcoding.oola.dto.member.request.MemberSaveRequestDto;
+import com.couchcoding.oola.dto.member.response.MemberProfileResponseDto;
 import com.couchcoding.oola.dto.member.response.MemberResponseDto;
 import com.couchcoding.oola.entity.Member;
 import com.couchcoding.oola.repository.MemberRepository;
 import com.couchcoding.oola.util.RequestUtil;
+import com.couchcoding.oola.validation.MemberForbiddenException;
 import com.couchcoding.oola.validation.error.CustomException;
 import com.couchcoding.oola.validation.error.ErrorCode;
 import com.google.firebase.auth.FirebaseAuth;
@@ -22,13 +25,12 @@ import java.util.Optional;
 
 // UserDetailsService 인터페이스를 구현한다
 // spring security에서 유저의 정보를 가져오기 위해 사용
-@Service
 @RequiredArgsConstructor
+@Service
 public class MemberService implements UserDetailsService {
 
     private final MemberRepository memberRepository;
     private final FirebaseAuth firebaseAuth;
-
 
     // 유저의 정보를 불러와서 UserDetails로 반환해준다
     // spring security에서 사용자의 정보를 담는 인터페이스
@@ -67,9 +69,27 @@ public class MemberService implements UserDetailsService {
     }
 
     // 회원 단건 조회
-    public Member findByUid(String uid) {
-        return (Member) memberRepository.findByUid(uid).orElseThrow(() -> {
+    public MemberProfileResponseDto findByUid(String uid) {
+        Member member = null;
+
+        member =  memberRepository.findByUid(uid).orElseThrow(() -> {
             throw new UsernameNotFoundException("해당 회원이 존재하지 않습니다.");
         });
+        return new MemberProfileResponseDto(member);
+    }
+
+    // 마이프로필 수정
+    @Transactional
+    public Member memberProfileUpdate(String uid, MemberSaveRequestDto memberSaveRequestDto) {
+        Member updated = null;
+
+        if (!uid.equals(memberSaveRequestDto.getUid())) {
+            throw new MemberForbiddenException();
+        }
+
+        MemberProfileResponseDto result = findByUid(uid);
+        updated = result.profileUpdate(uid, memberSaveRequestDto);
+        updated = memberRepository.save(updated);
+        return updated;
     }
 }

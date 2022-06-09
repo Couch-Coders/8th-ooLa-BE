@@ -1,9 +1,11 @@
 package com.couchcoding.oola.controller;
 
 import com.couchcoding.oola.dto.member.request.MemberSaveRequestDto;
+import com.couchcoding.oola.dto.member.response.MemberProfileResponseDto;
 import com.couchcoding.oola.entity.Member;
 import com.couchcoding.oola.repository.MemberRepository;
 import com.couchcoding.oola.service.MemberService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -11,6 +13,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.shadow.com.univocity.parsers.common.input.LineSeparatorDetector;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,6 +28,8 @@ import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.Filter;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
@@ -41,14 +46,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 class MemberControllerTest {
 
     //private static final String uid = "DpKLjE6P5bRd4aAqWzl1gnbaKHr1";
-    private static  String uid = "aaabbccdd";
-    private static final String displayName = "장길동";
-    private static final String email = "test@gmail.com";
+    private static final String uid = "abcabcabcddddeee";
+    private static final String displayName = "배길동";
+    private static final String email = "test5@gmail.com";
     private static final String blogUrl = "https://junior-developer-myc.tistory.com/";
     private static final String githubUrl = "https://github.com/meeyoungchoi";
     private static final String photoUrl = "https://www.flaticon.com/free-icon/girl_146005";
-    private static final String nickName = "testNickName";
-    private static final String introduce = "안녕하세요 자기소개입니다";
+    private static final String nickName = "testNickName5";
+    private static final String introduce = "안녕하세요 자기소개 수정수정";
+    private static List<String> teckSteck = Arrays.asList("NodeJS, React, Javascript, Python");
 
 
     @Autowired
@@ -128,11 +134,13 @@ class MemberControllerTest {
                 .photoUrl(photoUrl)
                 .nickName(nickName)
                 .introduce(introduce)
+                .techSetck(teckSteck)
                 .build();
 
 
-        System.out.println(memberSaveRequestDto);
+        System.out.println("memberSaveRequestDto: " + memberSaveRequestDto.toString());
         String memberDtoJson= objectMapper.writeValueAsString(memberSaveRequestDto);
+        System.out.println("JSON: " + memberDtoJson);
 
         ResultActions resultActions = mockMvc.perform(
                 post("/members/local")
@@ -150,6 +158,15 @@ class MemberControllerTest {
                 .andExpect(jsonPath("blogUrl").value(blogUrl))
                 .andExpect(jsonPath("githubUrl").value(githubUrl))
                 .andExpect(jsonPath("photoUrl").value(photoUrl));
+    }
+
+
+    @Test
+    @DisplayName("회원 프로필 조회")
+    void 프로필조회테스트() {
+        MemberProfileResponseDto memberProfileResponseDto = memberService.findByUid(uid);
+        System.out.println("memberProfile: " + memberProfileResponseDto.getMember().toString());
+        assertThat(memberProfileResponseDto.getMember().getTechStack()).isEqualTo(teckSteck.toString());
     }
 
     @Test
@@ -172,7 +189,6 @@ class MemberControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
         )
                 .andDo(print());
-
         resultActions
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("uid").value(uid))
@@ -181,5 +197,37 @@ class MemberControllerTest {
                 .andExpect(jsonPath("blogUrl").value(blogUrl))
                 .andExpect(jsonPath("githubUrl").value(githubUrl))
                 .andExpect(jsonPath("photoUrl").value(photoUrl));
+    }
+    
+    @Test
+    @DisplayName("로컬환경에서 회원 마이프로필 수정 테스트")
+    void 마이프로필_수정_테스트() throws Exception {
+        MemberSaveRequestDto memberSaveRequestDto = MemberSaveRequestDto.builder()
+                .uid(uid)
+                .email(email)
+                .githubUrl(githubUrl)
+                .blogUrl(blogUrl)
+                .displayName(displayName)
+                .photoUrl(photoUrl)
+                .nickName(nickName)
+                .introduce(introduce)
+                .techSetck(teckSteck)
+                .build();
+
+
+        String memberDtoJson = objectMapper.writeValueAsString(memberSaveRequestDto);
+
+        ResultActions resultActions = mockMvc.perform(
+                patch("/members/me")
+                        .header("Authorization", "Bearer " + uid)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding(StandardCharsets.UTF_8)
+                        .content(memberDtoJson)
+                        .accept(MediaType.APPLICATION_JSON)
+        )
+                .andDo(print());
+
+        resultActions
+                .andExpect(status().isOk());
     }
 }

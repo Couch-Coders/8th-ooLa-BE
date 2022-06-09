@@ -2,9 +2,13 @@ package com.couchcoding.oola.controller;
 
 import com.couchcoding.oola.dto.member.request.MemberSaveRequestDto;
 import com.couchcoding.oola.dto.member.response.MemberResponseDto;
+import com.couchcoding.oola.entity.Language;
 import com.couchcoding.oola.entity.Member;
+import com.couchcoding.oola.entity.MemberLanguage;
 import com.couchcoding.oola.service.MemberService;
 
+import com.couchcoding.oola.validation.MemberForbiddenException;
+import com.couchcoding.oola.validation.ParameterBadRequestException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseToken;
 import lombok.extern.slf4j.Slf4j;
@@ -13,9 +17,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 
 @Slf4j
@@ -58,8 +64,11 @@ public class MemberController {
     // 로컬 회원 가입 테스트용
     @PostMapping("/local")
     public ResponseEntity<MemberResponseDto> registerLocalMember(@RequestBody MemberSaveRequestDto memberSaveRequestDto) {
-       Member member = memberSaveRequestDto.toEntity(memberSaveRequestDto);
-       MemberResponseDto responseDto = memberService.register(member);
+       List<String> list = memberSaveRequestDto.getTechSetck();
+       Member member = memberSaveRequestDto.toEntity(memberSaveRequestDto , list);
+
+        MemberResponseDto responseDto = memberService.register(member);
+        //MemberResponseDto responseDto = memberService.register(member);
        return ResponseEntity.status(HttpStatus.CREATED)
                .body(responseDto);
     }
@@ -73,5 +82,23 @@ public class MemberController {
         }
         log.info("member: {}", member.toString());
         return ResponseEntity.ok(new MemberResponseDto(member));
+    }
+
+    // 마이프로필 수정
+    @PatchMapping("/me")
+    public ResponseEntity<MemberResponseDto> memberProfileUpdate(Authentication authentication, @RequestBody MemberSaveRequestDto memberSaveRequestDto , BindingResult result) {
+        if (result.hasErrors()) {
+            throw new ParameterBadRequestException(result);
+        }
+
+        Member member = (Member) authentication.getPrincipal();
+        String uid = member.getUid();
+
+        if (!uid.equals(memberSaveRequestDto.getUid())) {
+            throw new MemberForbiddenException();
+        }
+
+        MemberResponseDto responseDto = new MemberResponseDto(memberService.memberProfileUpdate(uid, memberSaveRequestDto));
+        return ResponseEntity.ok(responseDto);
     }
 }

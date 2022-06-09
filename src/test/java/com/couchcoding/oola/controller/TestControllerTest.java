@@ -39,20 +39,20 @@ class TestControllerTest {
         this.mockMvc = MockMvcBuilders.standaloneSetup(new TestController()).build();
     }
 
-    @Test
-    public void invalidMembmerDtoTest() throws Exception {
-        Member memberDto = new Member("test","displayName", null, "githubUrl", "blogUrl", null , null , null);
-
-        String memberDtoJson = objectMapper.writeValueAsString(memberDto);
-
-        mockMvc.perform(
-                post("/member").contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(memberDtoJson)
-        )
-        .andExpect(
-                (result) -> assertTrue(result.getResolvedException().getClass().isAssignableFrom(ParameterBadRequestException.class))
-        ).andReturn();
-    }
+//    @Test
+//    public void invalidMembmerDtoTest() throws Exception {
+//        Member memberDto = new Member("test","displayName", null, "githubUrl", "blogUrl", null , null , null);
+//
+//        String memberDtoJson = objectMapper.writeValueAsString(memberDto);
+//
+//        mockMvc.perform(
+//                post("/member").contentType(MediaType.APPLICATION_JSON_UTF8)
+//                .content(memberDtoJson)
+//        )
+//        .andExpect(
+//                (result) -> assertTrue(result.getResolvedException().getClass().isAssignableFrom(ParameterBadRequestException.class))
+//        ).andReturn();
+//    }
 
     @Test
     public void customExceptionExtendsExceptionTest() throws Exception {
