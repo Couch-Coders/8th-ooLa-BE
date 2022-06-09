@@ -161,13 +161,7 @@ class MemberControllerTest {
     }
 
 
-    @Test
-    @DisplayName("회원 프로필 조회")
-    void 프로필조회테스트() {
-        MemberProfileResponseDto memberProfileResponseDto = memberService.findByUid(uid);
-        System.out.println("memberProfile: " + memberProfileResponseDto.getMember().toString());
-        assertThat(memberProfileResponseDto.getMember().getTechStack()).isEqualTo(teckSteck.toString());
-    }
+
 
     @Test
     @DisplayName("로컬 로그인 테스트 id조회")
