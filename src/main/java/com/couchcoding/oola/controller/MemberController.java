@@ -42,6 +42,8 @@ public class MemberController {
         // TOKEN을 가져온다.
         FirebaseToken decodedToken = memberService.decodeToken(header);
 
+        log.error("techStack: {}" + memberSaveRequestDto.getTechSetck().toString());
+
         // 사용자를 등록한다.
         Member memberRegister = Member.builder()
                 .uid(decodedToken.getUid())
@@ -54,6 +56,9 @@ public class MemberController {
                 .introduce(memberSaveRequestDto.getIntroduce())
                 .techStack(memberSaveRequestDto.getTechSetck().toString())
                 .build();
+
+
+
 
         MemberResponseDto responseDto = memberService.register(
                 memberRegister);
