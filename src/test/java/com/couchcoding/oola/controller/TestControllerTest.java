@@ -66,7 +66,4 @@ class TestControllerTest {
                 (result -> assertTrue(result.getResolvedException().getClass().isAssignableFrom(URLNotFoundException.class)))
         ).andReturn();
     }
-
-
-
 }

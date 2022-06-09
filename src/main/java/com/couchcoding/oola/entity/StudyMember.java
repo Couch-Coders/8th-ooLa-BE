@@ -27,7 +27,7 @@ public class StudyMember extends BaseTimeEntity {
     @JoinColumn(name = "uid")
     private Member member;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "studyId")
     private Study study;
     private String role;
