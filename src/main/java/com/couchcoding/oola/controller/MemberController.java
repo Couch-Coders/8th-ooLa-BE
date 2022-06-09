@@ -3,9 +3,8 @@ package com.couchcoding.oola.controller;
 import com.couchcoding.oola.dto.member.request.MemberSaveRequestDto;
 import com.couchcoding.oola.dto.member.response.MemberProfileResponseDto;
 import com.couchcoding.oola.dto.member.response.MemberResponseDto;
-import com.couchcoding.oola.entity.Language;
 import com.couchcoding.oola.entity.Member;
-import com.couchcoding.oola.entity.MemberLanguage;
+
 import com.couchcoding.oola.service.MemberService;
 
 import com.couchcoding.oola.validation.MemberForbiddenException;

@@ -15,7 +15,7 @@ import com.couchcoding.oola.validation.ParameterBadRequestException;
 import com.couchcoding.oola.validation.StudySearchNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.relational.core.sql.In;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
