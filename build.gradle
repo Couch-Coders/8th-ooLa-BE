@@ -1,7 +1,7 @@
 //querydsl 추가
 buildscript {
-	dependencies {
-		classpath("gradle.plugin.com.ewerk.gradle.plugins:querydsl-plugin:1.0.10")
+	ext {
+		queryDslVersion = "5.0.0"
 	}
 }
 
@@ -9,6 +9,8 @@ buildscript {
 plugins {
 	id 'org.springframework.boot' version '2.7.0'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	//querydsl 추가
+	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
 	id 'java'
 }
 
@@ -17,7 +19,7 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
 //apply plugin: 'io.spring.dependency-management'
-apply plugin: "com.ewerk.gradle.plugins.querydsl"
+//apply plugin: "com.ewerk.gradle.plugins.querydsl"
 
 configurations {
 	compileOnly {
@@ -42,14 +44,14 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	//추가
-	testImplementation("org.junit.vintage:junit-vintage-engine") {
-		exclude group: "org.hamcrest", module: "hamcrest-core"
-	}
+//	testImplementation("org.junit.vintage:junit-vintage-engine") {
+//		exclude group: "org.hamcrest", module: "hamcrest-core"
+//	}
 
 
 	// querydsl 추가
-	implementation "com.querydsl:querydsl-jpa"
-	implementation "com.querydsl:querydsl-apt"
+	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
+	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
 
 }
 
@@ -57,26 +59,28 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
+//querydsl 추가 시작
 def querydslDir = "$buildDir/generated/querydsl"
 
 querydsl {
-	library = "com.querydsl:querydsl-apt"
 	jpa = true
 	querydslSourcesDir = querydslDir
 }
-
 sourceSets {
-	main {
-		java {
-			srcDirs = ['src/main/java', querydslDir]
-		}
-	}
+	main.java.srcDir querydslDir
 }
-
-compileQuerydsl{
-	options.annotationProcessorPath = configurations.querydsl
-}
-
 configurations {
 	querydsl.extendsFrom compileClasspath
 }
+compileQuerydsl {
+	options.annotationProcessorPath = configurations.querydsl
+}
+
+// querydsl 이 compileClassPath 를 상속하도록 설정
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+	querydsl.extendsFrom compileClasspath
+}
+//querydsl 추가 끝

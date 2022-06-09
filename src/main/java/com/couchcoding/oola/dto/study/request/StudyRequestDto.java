@@ -23,10 +23,6 @@ import java.util.List;
 @ToString
 public class StudyRequestDto {
 
-    // 로그인된 사용자의 uid를 저장하기 위함
-//    @Null
-//    private String memberUid;
-
     @NotBlank(message = "studyType은 필수 값입니다")
     private String studyType;
 
@@ -64,15 +60,11 @@ public class StudyRequestDto {
     private String joinStatus;
 
     private Integer currentParticipants;
-//
-//
-//    public void setMemberUid(String memberUid) {
-//        this.memberUid = memberUid;
-//    }
 
+    private Boolean likeStatus;
 
     @Builder
-    public StudyRequestDto(@NotBlank(message = "studyType은 필수 값입니다") String studyType, @NotBlank(message = "studyName은 필수 값입니다") String studyName, @NotBlank(message = "studydays는 필수 값입니다") String studyDays, @NotBlank(message = "timeZone은 필수 값입니다") String timeZone, @NotNull(message = "participants은 필수 값입니다") int participants, @NotNull(message = "startDate은 필수 값입니다") LocalDateTime startDate, @NotNull(message = "openChatUrl은 필수 값입니다") LocalDateTime endDate, @NotBlank(message = "openChatUrl은 필수 값입니다") String openChatUrl, @NotBlank(message = "studyIntroduce은 필수 값입니다") String studyIntroduce, @NotBlank(message = "studyGoal은 필수 값입니다") String studyGoal, String status, String joinStatus, Integer currentParticipants) {
+    public StudyRequestDto(@NotBlank(message = "studyType은 필수 값입니다") String studyType, @NotBlank(message = "studyName은 필수 값입니다") String studyName, @NotBlank(message = "studydays는 필수 값입니다") String studyDays, @NotBlank(message = "timeZone은 필수 값입니다") String timeZone, @NotNull(message = "participants은 필수 값입니다") int participants, @NotNull(message = "startDate은 필수 값입니다") LocalDateTime startDate, @NotNull(message = "endDate는 필수 값입니다") LocalDateTime endDate, @NotBlank(message = "openChatUrl은 필수 값입니다") String openChatUrl, @NotBlank(message = "studyIntroduce은 필수 값입니다") String studyIntroduce, @NotBlank(message = "studyGoal은 필수 값입니다") String studyGoal, String status, String joinStatus, Integer currentParticipants, Boolean likeStatus) {
         this.studyType = studyType;
         this.studyName = studyName;
         this.studyDays = studyDays;
@@ -86,6 +78,7 @@ public class StudyRequestDto {
         this.status = status;
         this.joinStatus = joinStatus;
         this.currentParticipants = currentParticipants;
+        this.likeStatus = likeStatus;
     }
 
     public Study toEntity(StudyRequestDto studyRequestDto , String uid, Member member) {
@@ -102,11 +95,11 @@ public class StudyRequestDto {
                 .studyGoal(studyRequestDto.getStudyGoal())
                 .status(studyRequestDto.getStatus())
                 .joinStatus(studyRequestDto.getJoinStatus())
-//                .createdDate(null)
                 .endDate(studyRequestDto.getEndDate())
                 .likeCount(0L)
                 .currentParticipants(studyRequestDto.getCurrentParticipants())
                 .createUid(uid)
+                .likeStatus(studyRequestDto.getLikeStatus())
                 .build();
 
         return study;
