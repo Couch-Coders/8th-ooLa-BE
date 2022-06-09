@@ -3,7 +3,7 @@ package com.couchcoding.oola.service;
 import com.couchcoding.oola.dto.member.response.MemberProfileResponseDto;
 import com.couchcoding.oola.entity.Member;
 import com.couchcoding.oola.repository.MemberRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,17 +12,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.test.web.servlet.MockMvc;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
@@ -71,5 +63,13 @@ class MemberServiceTest {
 
         assertThat(member).isEqualTo(result);
 
+    }
+
+    @Test
+    @DisplayName("회원 프로필 조회")
+    void 프로필조회테스트() {
+        MemberProfileResponseDto memberProfileResponseDto = memberService.findByUid(uid);
+        System.out.println("memberProfile: " + memberProfileResponseDto.getMember().toString());
+        assertThat(memberProfileResponseDto.getMember().getTechStack()).isEqualTo(teckSteck.toString());
     }
 }

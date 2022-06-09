@@ -1,6 +1,7 @@
 package com.couchcoding.oola.controller;
 
 import com.couchcoding.oola.dto.member.request.MemberSaveRequestDto;
+import com.couchcoding.oola.dto.member.response.MemberProfileResponseDto;
 import com.couchcoding.oola.dto.member.response.MemberResponseDto;
 import com.couchcoding.oola.entity.Language;
 import com.couchcoding.oola.entity.Member;
@@ -78,6 +79,14 @@ public class MemberController {
     public ResponseEntity<MemberResponseDto> login(Authentication authentication) {
         Member member = ((Member) authentication.getPrincipal());
         return ResponseEntity.ok(new MemberResponseDto(member));
+    }
+
+    // 마이프로필 조회
+    @GetMapping("/myprofile")
+    public ResponseEntity<MemberProfileResponseDto> memberProfile(Authentication authentication) {
+        Member member = ((Member) authentication.getPrincipal());
+        MemberProfileResponseDto memberProfileResponseDto = memberService.findByUid(member.getUid());
+        return ResponseEntity.ok(memberProfileResponseDto);
     }
 
     // 마이프로필 수정
