@@ -54,7 +54,7 @@ class MemberControllerTest {
     private static final String photoUrl = "https://www.flaticon.com/free-icon/girl_146005";
     private static final String nickName = "testNickName5";
     private static final String introduce = "안녕하세요 자기소개";
-    private static List<String> teckSteck = Arrays.asList("NodeJS", "Typescript");
+    private static List<String> techStack = Arrays.asList("NodeJS", "Typescript");
 
 
     @Autowired
@@ -133,7 +133,7 @@ class MemberControllerTest {
                 .photoUrl(photoUrl)
                 .nickName(nickName)
                 .introduce(introduce)
-                .techStack(teckSteck)
+                .techStack(techStack)
                 .build();
 
 
@@ -201,7 +201,7 @@ class MemberControllerTest {
                 .photoUrl(photoUrl)
                 .nickName(nickName)
                 .introduce(introduce)
-                .techStack(teckSteck)
+                .techStack(techStack)
                 .build();
 
 
