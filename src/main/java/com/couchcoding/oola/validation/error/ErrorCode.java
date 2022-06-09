@@ -22,6 +22,9 @@ public enum ErrorCode {
     // 이미 가입된 회원인 경우 :404 Not Found
     MemberExist(HttpStatus.NOT_FOUND, "C004", "이미 가입된 회원입니다."),
 
+    // 로그인 성공, but 우리 사이트에 회원가입이 되지 않은 경우
+    MemberNotRegistered(HttpStatus.CREATED, "C004_1", "로그인은 성공하였으나 저희 사이트에 회원가입이 필요합니다."),
+
     // 인증 인가 예외
     // 요청에 권한이 없는 경우 :인증은 되었지만 호출하는 API에 권한이 없는 경우 :403(Forbidden)
     MemberUnAuthorized(HttpStatus.FORBIDDEN, "C005", "인증되지 않은 회원입니다."),

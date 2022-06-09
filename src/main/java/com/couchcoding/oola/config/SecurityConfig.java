@@ -38,12 +38,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     // spring security 인증시 제외할 항목 정의
+    //여기있는 url 뺴고 모든 것에 걸린다
+    // 로그인 여부에 관계없이 인증절차를 거치지 않는다
+    // 필터만 거치지 않을 뿐이다
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring()
-                .antMatchers(HttpMethod.POST, "/member")
+                .antMatchers(HttpMethod.POST, "/members")
                 .antMatchers(HttpMethod.GET, "/exception/**")
                 .antMatchers(HttpMethod.POST, "/members/local")// 로컬 회원가입 테스트
+                .antMatchers(HttpMethod.GET, "/studies/**")
                 .antMatchers("/")
                 .antMatchers("/css/**")
                 .antMatchers("/static/**")
