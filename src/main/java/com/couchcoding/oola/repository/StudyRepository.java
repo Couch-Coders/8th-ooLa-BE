@@ -13,8 +13,4 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
 
     @Override
     Optional<Study> findById(Long id);
-
-
-    List<StudyMember> findAllByStudyMember(Study study);
-
 }
