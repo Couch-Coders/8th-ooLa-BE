@@ -35,7 +35,6 @@ public class StudyRepositoryImpl extends QuerydslRepositorySupport implements St
                 .where(eqStudyType(studyType), eqStudyDays(studyDays), eqTimeZone(timeZone), eqStatus(status), containsName(studyName));
 
         List<Study> studies = this.getQuerydsl().applyPagination(pageable,query).fetch();
-        log.info("stuides: {}" +  studies.toString());
         return new PageImpl<Study>(studies, pageable, query.fetchCount());
     }
 

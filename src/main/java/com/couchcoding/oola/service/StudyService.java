@@ -6,7 +6,6 @@ import com.couchcoding.oola.dto.study.response.StudyResponseDto;
 
 import com.couchcoding.oola.entity.Study;
 
-import com.couchcoding.oola.repository.StudyMemberRepository;
 import com.couchcoding.oola.repository.StudyRepository;
 import com.couchcoding.oola.repository.impl.StudyRepositoryImpl;
 import com.couchcoding.oola.validation.MemberForbiddenException;
@@ -19,8 +18,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDate;
 
 @Slf4j
 @RequiredArgsConstructor

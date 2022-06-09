@@ -6,7 +6,6 @@ import com.couchcoding.oola.dto.study.response.StudyResponseDto;
 import com.couchcoding.oola.entity.Member;
 import com.couchcoding.oola.entity.Study;;
 import com.couchcoding.oola.entity.StudyMember;
-import com.couchcoding.oola.service.StudyMemberService;
 import com.couchcoding.oola.service.StudyService;
 
 import com.couchcoding.oola.validation.MemberNotFoundException;
@@ -28,7 +27,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.text.ParseException;
-import java.util.List;
 
 
 @Slf4j
