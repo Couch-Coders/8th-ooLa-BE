@@ -89,6 +89,7 @@ public class MemberController {
     @GetMapping("/myprofile")
     public ResponseEntity<MemberProfileResponseDto> memberProfile(Authentication authentication) {
         Member member = ((Member) authentication.getPrincipal());
+
         MemberProfileResponseDto memberProfileResponseDto = memberService.findByUid(member.getUid());
         return ResponseEntity.ok(memberProfileResponseDto);
     }
