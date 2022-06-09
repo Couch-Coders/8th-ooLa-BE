@@ -36,7 +36,7 @@ import java.text.ParseException;
 public class StudyController {
 
     private final StudyService studyService;
-    private final StudyMemberService studyMemberService;
+
 
     @PostMapping("")
     public ResponseEntity<StudyResponseDto> createStudy(Authentication authentication,
@@ -61,7 +61,6 @@ public class StudyController {
                 .role("leader")
                 .build();
         StudyResponseDto responseDto = studyService.createStudy(studyCreate);
-        studyMemberService.create(studyMember);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
