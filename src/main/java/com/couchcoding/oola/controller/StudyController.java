@@ -3,7 +3,6 @@ package com.couchcoding.oola.controller;
 import com.couchcoding.oola.dto.study.request.StudyRequestDto;
 import com.couchcoding.oola.dto.study.response.StudyResponseDetailDto;
 import com.couchcoding.oola.dto.study.response.StudyResponseDto;
-import com.couchcoding.oola.dto.studymember.response.StudyMemberResponseDto;
 import com.couchcoding.oola.entity.Member;
 import com.couchcoding.oola.entity.Study;;
 import com.couchcoding.oola.entity.StudyMember;
