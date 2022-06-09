@@ -14,16 +14,10 @@ import java.util.List;
 public class StudyMemberService {
 
     private final StudyMemberRepository studyMemberRepository;
-    private final StudyMemberRepositoryImpl studyMemberRepositoryImpl;
-
-
 
     public StudyMember create(StudyMember studyMember) {
         StudyMember result = studyMemberRepository.saveAndFlush(studyMember);
         return result;
     }
 
-    public List<StudyMember> studyMembersDetail(Long studyId) {
-        return studyMemberRepositoryImpl.findByStudyId(studyId);
-    }
 }
