@@ -3,16 +3,14 @@ package com.couchcoding.oola.controller;
 import com.couchcoding.oola.dto.study.request.StudyRequestDto;
 import com.couchcoding.oola.dto.study.response.StudyResponseDetailDto;
 import com.couchcoding.oola.dto.study.response.StudyResponseDto;
+import com.couchcoding.oola.dto.studymember.response.StudyMemberResponseDto;
 import com.couchcoding.oola.entity.Member;
 import com.couchcoding.oola.entity.Study;;
 import com.couchcoding.oola.entity.StudyMember;
 import com.couchcoding.oola.service.StudyMemberService;
 import com.couchcoding.oola.service.StudyService;
 
-import com.couchcoding.oola.validation.MemberNotFoundException;
-import com.couchcoding.oola.validation.MemberUnAuthorizedException;
-import com.couchcoding.oola.validation.ParameterBadRequestException;
-import com.couchcoding.oola.validation.StudySearchNotFoundException;
+import com.couchcoding.oola.validation.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -22,6 +20,7 @@ import org.springframework.security.core.Authentication;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.parameters.P;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -63,6 +62,7 @@ public class StudyController {
                 .role("leader")
                 .build();
         StudyResponseDto responseDto = studyService.createStudy(studyCreate);
+        studyMemberService.studyLeaders(studyMember);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -85,6 +85,13 @@ public class StudyController {
     public Page<Study> studySearch(Pageable pageable, @RequestParam(value = "studyType", required = false ) String studyType,
                                    @RequestParam( value = "studyDays", required = false)  String studyDays, @RequestParam(value = "timeZone", required = false) String timeZone
             , @RequestParam(value = "status",required = false)  String status, @RequestParam(value = "studyName", required = false) String studyName) {
+
+        log.info("status: {}" + status);
+        log.info("studyType: {}" + studyType);
+        log.info("studyDays: {}" + studyDays);
+        log.info("timeZone: {}" + timeZone);
+        log.info("studyName: {}" + studyName);
+
 
         Page<Study> searchResult = null;
         searchResult = studyService.findByAllCategory(pageable, studyType, studyDays, timeZone, status , studyName);
@@ -133,5 +140,16 @@ public class StudyController {
     @GetMapping("/{studyId}/members")
     public List<StudyMember> stduyMembers(@PathVariable Long studyId) {
         return  studyMemberService.studyMembers(studyId);
+    }
+
+    // 스터디 참여 신청
+    @PostMapping("/{studyId}/members")
+    public ResponseEntity<StudyMemberResponseDto> studyMemberEnroll(Authentication authentication, @PathVariable Long studyId) {
+        Member member = (Member) authentication.getPrincipal();
+        if (member.equals(null)) {
+            throw new MemberForbiddenException();
+        }
+        StudyMemberResponseDto studyMemberResponseDto = studyMemberService.studyMemberEnroll(member , studyId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(studyMemberResponseDto);
     }
 }

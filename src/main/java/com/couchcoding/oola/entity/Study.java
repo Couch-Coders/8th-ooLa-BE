@@ -150,4 +150,27 @@ public class Study extends BaseTimeEntity implements Serializable {
                 .build();
         return study;
     }
+
+    public Study updateCurrentParticipants(Study study , int updateParticipants) {
+         Study entity = Study.builder()
+                 .joinStatus(study.getJoinStatus())
+                 .studyId(study.getStudyId())
+                 .likeStatus(study.getLikeStatus())
+                 .createUid(study.getCreateUid())
+                 .status(study.getStatus())
+                 .studyName(study.getStudyName())
+                 .joinStatus(study.getJoinStatus())
+                 .currentParticipants(updateParticipants)
+                 .studyIntroduce(study.getStudyIntroduce())
+                 .studyGoal(study.getStudyGoal())
+                 .studyDays(study.getStudyDays())
+                 .openChatUrl(study.getOpenChatUrl())
+                 .endDate(study.getEndDate())
+                 .startDate(study.getStartDate())
+                 .participants(study.getParticipants())
+                 .timeZone(study.getTimeZone())
+                 .studyType(study.getStudyType())
+                 .build();
+        return entity;
+    }
 }

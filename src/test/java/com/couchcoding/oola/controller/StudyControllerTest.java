@@ -41,17 +41,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class StudyControllerTest {
 
     //private static final String uid = "DpKLjE6P5bRd4aAqWzl1gnbaKHr1";
-    private static  final String uid = "abcd";
-    private static final String studyType = "알고리즘/자료구조";
-    private static final String studyName = "DO IT 자바스크립트 알고리즘3";
+    //private static  final String uid = "9aPftjfIvFOtrFRNEgYUpyS04N83";
+    //private static final String uid = "Ssx0Wx2oyfPPa3SnKA34qTzjEqF2";
+    private static final String uid = "abcd";
+    private static final String studyType = "프론트엔드";
+    private static  String studyName = "DO IT 자바스크립트 알고리즘3";
     private static String studyDays = "평일";
-    private static final String timeZone = "오전 9 ~ 12시";
+    private static final String timeZone = "오전 (9시 ~ 12시)";
     private static final int participants = 5;
     private static  LocalDateTime startDate =  null;
     private static  LocalDateTime endDate = null;
     private static final String openChatUrl = "https://open.kakao.com/o/gihbQV0d";
-    private static final String studyIntroduce = "안녕하세요 오전타임 자바스크립트 알고리즘 스터디를 진행하고자 합니다 수정수정 테스트";
-    private static final String studyGoal = "알고리즘 마스터";
+    private static final String studyIntroduce = "안녕하세요 오전타임 React 스터디를 진행하고자 합니다";
+    private static final String studyGoal = "React 마스터";
     private static final String status = "모집중";
     private static final Integer currentParticipants = 1;
 
@@ -78,11 +80,11 @@ class StudyControllerTest {
     @DisplayName("로컬 study create 테스트")
     void createStudy() throws Exception {
 
-        String sdate = "2022-06-06 00:00:00";
+        String sdate = "2022-06-10 00:00:00";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime startDateTime = LocalDateTime.parse(sdate, formatter);
 
-        String edate = "2022-10-06 00:00:00";
+        String edate = "2022-08-06 00:00:00";
         DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime endDateTime = LocalDateTime.parse(edate, formatter2);
 
@@ -253,7 +255,7 @@ class StudyControllerTest {
     @Test
     @DisplayName("스터디 수정 테스트")
     void updateStudy() throws Exception {
-        int studyId = 35;
+        int studyId = 37;
 
         String sdate = "2022-06-06 00:00:00";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -263,11 +265,10 @@ class StudyControllerTest {
         DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime endDateTime = LocalDateTime.parse(edate, formatter2);
 
-        studyDays = "주말";
+        studyName = "React";
         String status = "진행중";
 
         StudyRequestDto studyRequestDto = StudyRequestDto.builder()
-                //.memberUid(null)
                 .studyType(studyType)
                 .studyName(studyName)
                 .studyDays(studyDays)
@@ -599,10 +600,8 @@ class StudyControllerTest {
     @Test
     @DisplayName("스터디 참여 신청 테스트")
     void 스터디참여신청테스트() throws Exception {
-        // 참여하려는 studyId : 35
-        // uid abc의 id:2
-        // uid abcd의 id:3
-        Long studyId = 35L;
+
+        Long studyId = 37L;
 
         ResultActions resultActions = mockMvc.perform(
                 post("/studies/" + studyId + "/members")
@@ -611,14 +610,14 @@ class StudyControllerTest {
                         .characterEncoding(StandardCharsets.UTF_8)
                         .accept(MediaType.APPLICATION_JSON)
         ).andDo(print());
-        resultActions.andExpect(status().isOk());
+        resultActions.andExpect(status().isCreated());
     }
 
     @Test
     @DisplayName("스터디 참여자 조회 테스트")
     void 스터디참여자조회테스트() throws Exception {
-        // 조회하려는 스터디 id: 35
-        Long studyId = 35L;
+
+        Long studyId = 37L;
 
         ResultActions resultActions = mockMvc.perform(
                 get("/studies/" + studyId + "/members")

@@ -46,13 +46,13 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 class MemberControllerTest {
 
     //private static final String uid = "DpKLjE6P5bRd4aAqWzl1gnbaKHr1";
-    private static final String uid = "aagee";
-    private static final String displayName = "길홍동";
-    private static final String email = "test5@gmail.com";
-    private static final String blogUrl = "https://junior-developer-myc.tistory.com/";
-    private static final String githubUrl = "https://github.com/meeyoungchoi";
-    private static final String photoUrl = "https://www.flaticon.com/free-icon/girl_146005";
-    private static final String nickName = "testNickName5";
+    private static final String uid = "9aPftjfIvFOtrFRNEgYUpyS04N83";
+    private static final String displayName = "황유진";
+    private static final String email = "cmk664488@gmail.com";
+    private static final String blogUrl = "ttps://shiningjean.tistory.com/35";
+    private static final String githubUrl = "https://shiningjean.tistory.com/35";
+    private static final String photoUrl = "https://lh3.googleusercontent.com/a/AATXAJy-nxiYfNUyNVazka8hszGGVnqO7sSKBX5TPs40=s96-c";
+    private static final String nickName = "트릴로니";
     private static final String introduce = "안녕하세요 자기소개";
     private static List<String> techStack = Arrays.asList("NodeJS", "Typescript");
 
