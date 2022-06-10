@@ -6,6 +6,7 @@ import com.couchcoding.oola.dto.study.response.StudyResponseDto;
 import com.couchcoding.oola.entity.Member;
 import com.couchcoding.oola.entity.Study;;
 import com.couchcoding.oola.entity.StudyMember;
+import com.couchcoding.oola.service.StudyMemberService;
 import com.couchcoding.oola.service.StudyService;
 
 import com.couchcoding.oola.validation.MemberNotFoundException;
@@ -37,6 +38,7 @@ import java.util.List;
 public class StudyController {
 
     private final StudyService studyService;
+    private final StudyMemberService studyMemberService;
 
     @PostMapping("")
     public ResponseEntity<StudyResponseDto> createStudy(Authentication authentication,
@@ -125,5 +127,11 @@ public class StudyController {
 
         StudyResponseDetailDto studyResponseDetailDto = studyService.toDto(updated);
         return ResponseEntity.status(HttpStatus.OK).body(studyResponseDetailDto);
+    }
+
+    // 스터디 참여자 정보 조회
+    @GetMapping("/{studyId}/members")
+    public List<StudyMember> stduyMembers(@PathVariable Long studyId) {
+        return  studyMemberService.studyMembers(studyId);
     }
 }
