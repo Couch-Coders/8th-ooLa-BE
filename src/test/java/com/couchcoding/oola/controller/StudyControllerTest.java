@@ -1,7 +1,7 @@
 package com.couchcoding.oola.controller;
 
 import com.couchcoding.oola.dto.study.request.StudyRequestDto;
-import com.couchcoding.oola.dto.studymember.request.StudyMemberRequestDto;
+
 import com.couchcoding.oola.validation.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
@@ -618,7 +618,7 @@ class StudyControllerTest {
     @DisplayName("스터디 참여자 조회 테스트")
     void 스터디참여자조회테스트() throws Exception {
         // 조회하려는 스터디 id: 35
-        int studyId = 35;
+        Long studyId = 35L;
 
         ResultActions resultActions = mockMvc.perform(
                 get("/studies/" + studyId + "/members")
@@ -627,6 +627,7 @@ class StudyControllerTest {
                         .characterEncoding(StandardCharsets.UTF_8)
                         .accept(MediaType.APPLICATION_JSON)
         ).andDo(print());
-        resultActions.andExpect(status().isOk());
+
     }
+
 }
