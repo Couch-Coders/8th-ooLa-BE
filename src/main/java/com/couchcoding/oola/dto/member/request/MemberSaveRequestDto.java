@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.validation.constraints.Email;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -48,7 +49,7 @@ public class MemberSaveRequestDto {
                 .photoUrl(dto.getPhotoUrl())
                 .nickName(dto.getNickName())
                 .introduce(dto.getIntroduce())
-                .techStack(list.toString())
+                .techStack(list)
                 .build();
         return member;
     }

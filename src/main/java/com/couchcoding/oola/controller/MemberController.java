@@ -52,7 +52,7 @@ public class MemberController {
                 .photoUrl(decodedToken.getPicture())
                 .nickName(memberSaveRequestDto.getNickName())
                 .introduce(memberSaveRequestDto.getIntroduce())
-                .techStack(memberSaveRequestDto.getTechStack().toString())
+                .techStack(memberSaveRequestDto.getTechStack())
                 .build();
 
 

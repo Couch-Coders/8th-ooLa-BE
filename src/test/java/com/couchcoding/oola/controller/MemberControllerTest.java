@@ -46,7 +46,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 class MemberControllerTest {
 
     //private static final String uid = "DpKLjE6P5bRd4aAqWzl1gnbaKHr1";
-    private static final String uid = "aagee";
+    private static final String uid = "abcabcabcddddeee";
     private static final String displayName = "길홍동";
     private static final String email = "test5@gmail.com";
     private static final String blogUrl = "https://junior-developer-myc.tistory.com/";
@@ -188,7 +188,42 @@ class MemberControllerTest {
                 .andExpect(jsonPath("githubUrl").value(githubUrl))
                 .andExpect(jsonPath("photoUrl").value(photoUrl));
     }
-    
+
+    @Test
+    @DisplayName("로컬환경에서 회원 마이프로필 조회 테스트")
+    void 마이프로필_조회_테스트() throws Exception {
+        MemberSaveRequestDto memberSaveRequestDto = MemberSaveRequestDto.builder()
+                .uid(uid)
+                .email(email)
+                .githubUrl(githubUrl)
+                .blogUrl(blogUrl)
+                .displayName(displayName)
+                .photoUrl(photoUrl)
+                .nickName(nickName)
+                .introduce(introduce)
+                .techStack(techStack)
+                .build();
+
+
+        String memberDtoJson = objectMapper.writeValueAsString(memberSaveRequestDto);
+
+        ResultActions resultActions = mockMvc.perform(
+                get("/members/myprofile")
+                        .header("Authorization", "Bearer " + uid)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding(StandardCharsets.UTF_8)
+                        .content(memberDtoJson)
+                        .accept(MediaType.APPLICATION_JSON)
+        )
+                .andDo(print());
+
+        resultActions
+                .andExpect(status().isOk());
+    }
+
+
+
+
     @Test
     @DisplayName("로컬환경에서 회원 마이프로필 수정 테스트")
     void 마이프로필_수정_테스트() throws Exception {

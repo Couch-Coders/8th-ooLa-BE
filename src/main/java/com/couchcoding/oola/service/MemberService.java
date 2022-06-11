@@ -5,6 +5,7 @@ import com.couchcoding.oola.dto.member.response.MemberProfileResponseDto;
 import com.couchcoding.oola.dto.member.response.MemberResponseDto;
 import com.couchcoding.oola.entity.Member;
 import com.couchcoding.oola.repository.MemberRepository;
+import com.couchcoding.oola.repository.impl.MemberRepositoryImpl;
 import com.couchcoding.oola.util.RequestUtil;
 import com.couchcoding.oola.validation.MemberForbiddenException;
 import com.couchcoding.oola.validation.error.CustomException;
@@ -30,16 +31,14 @@ import java.util.Optional;
 public class MemberService implements UserDetailsService {
 
     private final MemberRepository memberRepository;
+    private final MemberRepositoryImpl memberRepositoryImpl;
     private final FirebaseAuth firebaseAuth;
 
     // 유저의 정보를 불러와서 UserDetails로 반환해준다
     // spring security에서 사용자의 정보를 담는 인터페이스
     @Override
     public UserDetails loadUserByUsername(String uid) throws UsernameNotFoundException {
-        return (UserDetails) memberRepository.findByUid(uid)
-                .orElseThrow(() -> {
-                    throw new UsernameNotFoundException("해당 회원이 존재하지 않습니다.");
-                });
+        return memberRepositoryImpl.findByUid(uid);
     }
 
     // 회원등록
@@ -71,9 +70,7 @@ public class MemberService implements UserDetailsService {
     // 회원 단건 조회
     public MemberProfileResponseDto findByUid(String uid) {
         Member member = null;
-        member =  memberRepository.findByUid(uid).orElseThrow(() -> {
-            throw new UsernameNotFoundException("해당 회원이 존재하지 않습니다.");
-        });
+        member =  memberRepositoryImpl.findByUid(uid);
         return new MemberProfileResponseDto(member);
     }
 
