@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.ToString;
 
 import java.util.Optional;
+import javax.persistence.ElementCollection;
 
 @Getter
 @ToString
@@ -16,7 +17,9 @@ public class MemberResponseDto {
     private String blogUrl;
     private String githubUrl;
     private String photoUrl;
-    private String techStack;
+
+    @ElementCollection
+    private List<String> techStack;
 
     public MemberResponseDto(Member member) {
         this.uid = member.getUid();
