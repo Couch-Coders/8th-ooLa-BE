@@ -54,8 +54,7 @@ class MemberControllerTest {
     private static final String photoUrl = "https://lh3.googleusercontent.com/a/AATXAJy-nxiYfNUyNVazka8hszGGVnqO7sSKBX5TPs40=s96-c";
     private static final String nickName = "트릴로니";
     private static final String introduce = "안녕하세요 자기소개";
-    private static List<String> techStack = Arrays.asList("NodeJS", "Typescript");
-
+    private static List<String> techStack = Arrays.asList("NodeJS", "Typescript" , "HTML5", "CSS3");
 
     @Autowired
     private WebApplicationContext wac;
@@ -119,7 +118,6 @@ class MemberControllerTest {
                 .andExpect(jsonPath("githubUrl").value(githubUrl))
                 .andExpect(jsonPath("photoUrl").value(photoUrl));
     }
-
 
     @Test
     @DisplayName("로컬 회원 가입 테스트")
@@ -188,6 +186,24 @@ class MemberControllerTest {
                 .andExpect(jsonPath("githubUrl").value(githubUrl))
                 .andExpect(jsonPath("photoUrl").value(photoUrl));
     }
+    
+    
+    @Test
+    @DisplayName("회원 조회 테스트")
+    void 마이프로필_조회_테스트() throws Exception {
+        ResultActions resultActions = mockMvc.perform(
+                get("/members/myprofile")
+                        .header("Authorization", "Bearer " + uid)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding(StandardCharsets.UTF_8)
+                        .accept(MediaType.APPLICATION_JSON)
+        )
+                .andDo(print());
+
+        resultActions
+                .andExpect(status().isOk());
+    }
+    
     
     @Test
     @DisplayName("로컬환경에서 회원 마이프로필 수정 테스트")

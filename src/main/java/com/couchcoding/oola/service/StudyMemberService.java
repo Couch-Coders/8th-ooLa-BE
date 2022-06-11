@@ -52,7 +52,7 @@ public class StudyMemberService {
         StudyMember entityResult = studyMemberRepository.saveAndFlush(studyMember);
 
         int updateParticipants = study.getCurrentParticipants() + 1;
-        Study entity = study.updateCurrentParticipants(study, updateParticipants);
+        Study entity = study.updateCurrentParticipants( updateParticipants);
         Study updated = studyRepository.saveAndFlush(entity);
         StudyMemberResponseDto studyMemberResponseDto = StudyMemberResponseDto.builder()
                 .study(updated)

@@ -75,21 +75,26 @@ public class MemberService implements UserDetailsService {
         member =  memberRepository.findByUid(uid).orElseThrow(() -> {
             throw new UsernameNotFoundException("해당 회원이 존재하지 않습니다.");
         });
-        return new MemberProfileResponseDto(member);
+
+        return new MemberProfileResponseDto(member.getUid(), member.getTechStack().toString(),
+                member.getIntroduce(), member.getNickName(), member.getPhotoUrl(),
+                member.getGithubUrl(), member.getBlogUrl(), member.getEmail(),
+                member.getDisplayName());
     }
 
     // 마이프로필 수정
     @Transactional
-    public Member memberProfileUpdate(String uid, MemberSaveRequestDto memberSaveRequestDto) {
-        Member updated = null;
+    public Member memberProfileUpdate(Member member, MemberSaveRequestDto memberSaveRequestDto) {
+        Member memberEntity = null;
 
-        if (!uid.equals(memberSaveRequestDto.getUid())) {
+        if (!member.getUid().equals(memberSaveRequestDto.getUid())) {
             throw new MemberForbiddenException();
         }
 
-        MemberProfileResponseDto result = findByUid(uid);
-        updated = result.profileUpdate(uid, memberSaveRequestDto);
-        updated = memberRepository.save(updated);
-        return updated;
+        MemberProfileResponseDto result = findByUid(member.getUid());
+        result = result.profileUpdate(memberSaveRequestDto);
+        memberEntity = result.toEntity(result);
+        memberEntity = memberRepository.save(memberEntity);
+        return memberEntity;
     }
 }

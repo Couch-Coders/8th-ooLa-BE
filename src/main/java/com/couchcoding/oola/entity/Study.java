@@ -3,10 +3,8 @@ package com.couchcoding.oola.entity;
 import com.couchcoding.oola.dto.study.request.StudyRequestDto;
 import com.couchcoding.oola.entity.base.BaseTimeEntity;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;;
-import lombok.ToString;
+import lombok.*;
+;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -19,6 +17,7 @@ import java.time.LocalDateTime;
 
 import static lombok.AccessLevel.PROTECTED;
 
+@Setter
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = PROTECTED)
 @Getter
@@ -89,6 +88,9 @@ public class Study extends BaseTimeEntity implements Serializable {
 
     @Column(name = "like_status")
     private Boolean likeStatus; // 한명이라도 스터디 관심을 눌렀다면 true
+    
+    @Column(name = "participant_status")
+    private Boolean participantStatus; // 스터디 상태가 완료인 경우 참여신청 불가 , 스터디 상태가 진행중인 경우 참여신청 불가
 
     @Builder
     public Study(Long studyId, @NotBlank(message = "studyType은 필수 값입니다") String studyType, @NotBlank(message = "studyName은 필수 값입니다") String studyName, @NotBlank(message = "studydays는 필수 값입니다") String studyDays, @NotBlank(message = "timeZone은 필수 값입니다") String timeZone, @NotNull(message = "participants은 필수 값입니다") int participants, int currentParticipants, @NotNull(message = "startDate은 필수 값입니다") LocalDateTime startDate, @NotBlank(message = "openChatUrl은 필수 값입니다") String openChatUrl, @NotBlank(message = "studyIntroduce은 필수 값입니다") String studyIntroduce, @NotBlank(message = "studyGoal은 필수 값입니다") String studyGoal, String status, String joinStatus, @NotNull(message = "openChatUrl은 필수 값입니다") LocalDateTime endDate, Long likeCount, String createUid, Boolean likeStatus) {
@@ -111,66 +113,36 @@ public class Study extends BaseTimeEntity implements Serializable {
         this.likeStatus = likeStatus;
     }
 
+    // 스터디 수정
     public Study update(Long studyId, StudyRequestDto studyRequestDto, String uid) {
-         Study study = Study.builder()
-                 .studyId(studyId)
-                 .studyType(studyRequestDto.getStudyType())
-                 .studyName(studyRequestDto.getStudyName())
-                 .studyDays(studyRequestDto.getStudyDays())
-                 .timeZone(studyRequestDto.getTimeZone())
-                 .participants(studyRequestDto.getParticipants())
-                 .startDate(studyRequestDto.getStartDate())
-                 .endDate(studyRequestDto.getEndDate())
-                 .openChatUrl(studyRequestDto.getOpenChatUrl())
-                 .studyGoal(studyRequestDto.getStudyGoal())
-                 .status(studyRequestDto.getStatus())
-                 .joinStatus(studyRequestDto.getJoinStatus())
-                 .studyIntroduce(studyRequestDto.getStudyIntroduce())
-                 .createUid(uid)
-                 .likeStatus(false)
-                 .build();
-        return study;
+        this.studyType = studyRequestDto.getStudyType();
+        this.studyName = studyRequestDto.getStudyName();
+        this.studyDays = studyRequestDto.getStudyDays();
+        this.timeZone = studyRequestDto.getTimeZone();
+        this.participants = studyRequestDto.getParticipants();
+        this.startDate = studyRequestDto.getStartDate();
+        this.endDate = studyRequestDto.getEndDate();
+        this.openChatUrl = studyRequestDto.getOpenChatUrl();
+        this.studyIntroduce = studyRequestDto.getStudyIntroduce();
+        this.studyGoal = studyRequestDto.getStudyGoal();
+        this.status = studyRequestDto.getStatus();
+        this.joinStatus = studyRequestDto.getJoinStatus();
+        this.likeStatus = studyRequestDto.getLikeStatus();
+        this.currentParticipants = studyRequestDto.getCurrentParticipants();
+        this.studyId = studyId;
+        this.createUid = uid;
+        return this;
     }
 
-    public Study updateCompleteStatus(Long studyId, String completeStatus, StudyRequestDto studyRequestDto) {
-        Study study = Study.builder()
-                .studyId(studyId)
-                .studyType(studyRequestDto.getStudyType())
-                .studyName(studyRequestDto.getStudyName())
-                .studyDays(studyRequestDto.getStudyDays())
-                .timeZone(studyRequestDto.getTimeZone())
-                .participants(studyRequestDto.getParticipants())
-                .startDate(studyRequestDto.getStartDate())
-                .endDate(studyRequestDto.getEndDate())
-                .openChatUrl(studyRequestDto.getOpenChatUrl())
-                .studyGoal(studyRequestDto.getStudyGoal())
-                .status(completeStatus)
-                .joinStatus(studyRequestDto.getJoinStatus())
-                .studyIntroduce(studyRequestDto.getStudyIntroduce())
-                .build();
-        return study;
+    // 스터디 완료시 상태 수정
+    public Study updateCompleteStatus(String completeStatus) {
+        this.status = completeStatus;
+        return this;
     }
 
-    public Study updateCurrentParticipants(Study study , int updateParticipants) {
-         Study entity = Study.builder()
-                 .joinStatus(study.getJoinStatus())
-                 .studyId(study.getStudyId())
-                 .likeStatus(study.getLikeStatus())
-                 .createUid(study.getCreateUid())
-                 .status(study.getStatus())
-                 .studyName(study.getStudyName())
-                 .joinStatus(study.getJoinStatus())
-                 .currentParticipants(updateParticipants)
-                 .studyIntroduce(study.getStudyIntroduce())
-                 .studyGoal(study.getStudyGoal())
-                 .studyDays(study.getStudyDays())
-                 .openChatUrl(study.getOpenChatUrl())
-                 .endDate(study.getEndDate())
-                 .startDate(study.getStartDate())
-                 .participants(study.getParticipants())
-                 .timeZone(study.getTimeZone())
-                 .studyType(study.getStudyType())
-                 .build();
-        return entity;
+    // 스터디 신청시 현재 참여인원 수정
+    public Study updateCurrentParticipants(int updateParticipants) {
+        this.currentParticipants = updateParticipants;
+        return this;
     }
 }

@@ -8,6 +8,7 @@ import lombok.ToString;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 import static lombok.AccessLevel.PROTECTED;
@@ -18,7 +19,7 @@ import static lombok.AccessLevel.PROTECTED;
 @ToString
 @Entity
 @Table(name = "study_members")
-public class StudyMember extends BaseTimeEntity {
+public class StudyMember extends BaseTimeEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,14 +28,18 @@ public class StudyMember extends BaseTimeEntity {
     @JoinColumn(name = "uid")
     private Member member;
 
-    @ManyToOne
+    @Column(name = "studyId",insertable = false, updatable = false)
+    private Long studyId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "studyId")
     private Study study;
     private String role;
 
     @Builder
-    public StudyMember(Member member, Study study, String role) {
+    public StudyMember(Member member, Long studyId, Study study, String role) {
         this.member = member;
+        this.studyId = studyId;
         this.study = study;
         this.role = role;
     }

@@ -108,7 +108,7 @@ public class MemberController {
             throw new MemberForbiddenException();
         }
 
-        MemberResponseDto responseDto = new MemberResponseDto(memberService.memberProfileUpdate(uid, memberSaveRequestDto));
+        MemberResponseDto responseDto = new MemberResponseDto(memberService.memberProfileUpdate(member, memberSaveRequestDto));
         return ResponseEntity.ok(responseDto);
     }
 }

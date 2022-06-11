@@ -3,31 +3,52 @@ package com.couchcoding.oola.dto.member.response;
 import com.couchcoding.oola.dto.member.request.MemberSaveRequestDto;
 import com.couchcoding.oola.entity.Member;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import java.util.List;
 
 @Getter
-@AllArgsConstructor
+@Setter
 @NoArgsConstructor
-@Builder
 public class MemberProfileResponseDto {
-    private Member member;
+    private String uid;
+    private String techStack;
+    private String introduce;
+    private String nickName;
+    private String photoUrl;
+    private String githubUrl;
+    private String blogUrl;
+    private String email;
+    private String displayName;
 
-    public Member profileUpdate(String uid, MemberSaveRequestDto memberSaveRequestDto) {
-        Member member = Member.builder()
-                .uid(uid)
-                .techStack(memberSaveRequestDto.getTechStack().toString())
-                .introduce(memberSaveRequestDto.getIntroduce())
-                .nickName(memberSaveRequestDto.getNickName())
-                .photoUrl(memberSaveRequestDto.getPhotoUrl())
-                .githubUrl(memberSaveRequestDto.getGithubUrl())
-                .blogUrl(memberSaveRequestDto.getBlogUrl())
-                .email(memberSaveRequestDto.getEmail())
-                .displayName(memberSaveRequestDto.getDisplayName())
-                .build();
+    public MemberProfileResponseDto(String uid, String techStack, String introduce, String nickName, String photoUrl, String githubUrl, String blogUrl, String email, String displayName) {
+        this.uid = uid;
+        this.techStack = techStack;
+        this.introduce = introduce;
+        this.nickName = nickName;
+        this.photoUrl = photoUrl;
+        this.githubUrl = githubUrl;
+        this.blogUrl = blogUrl;
+        this.email = email;
+        this.displayName = displayName;
+    }
 
-        return member;
+    public MemberProfileResponseDto profileUpdate(MemberSaveRequestDto memberSaveRequestDto) {
+            this.uid = memberSaveRequestDto.getUid();
+            this.techStack = memberSaveRequestDto.getTechStack().toString();
+            this.introduce = memberSaveRequestDto.getIntroduce();
+            this.nickName = memberSaveRequestDto.getNickName();
+            this.photoUrl = memberSaveRequestDto.getPhotoUrl();
+            this.githubUrl = memberSaveRequestDto.getGithubUrl();
+            this.blogUrl = memberSaveRequestDto.getBlogUrl();
+            this.email = memberSaveRequestDto.getEmail();
+            this.displayName = memberSaveRequestDto.getDisplayName();
+        return this;
+    }
+
+
+    public Member toEntity(MemberProfileResponseDto result) {
+        return new Member(result.getUid(), result.getTechStack(),result.getIntroduce(),
+                result.getNickName(), result.getPhotoUrl(), result.getGithubUrl() , result.getBlogUrl(), result.getEmail(), result.getDisplayName());
     }
 }

@@ -69,18 +69,18 @@ public class StudyService {
 
     // 스터디 완료시 스터디 상태 수정
     @Transactional
-    public Study studyComplete(Long studyId, String uid , StudyRequestDto requestDto) {
-        Study updated = null;
+    public Study studyComplete(Long studyId, String uid , StudyRequestDto studyRequestDto) {
+
         // 스터디 생성자와 로그인 유저가 같은지 비교
         Study result = studyDetail(studyId);
         if (result.getCreateUid().equals(uid)) {
-            updated = result.updateCompleteStatus(studyId, "완료" , requestDto);
-            studyRepository.save(updated);
+            result = result.updateCompleteStatus(studyRequestDto.getStatus());
+            studyRepository.save(result);
         } else {
             throw new MemberForbiddenException();
         }
 
-        return updated;
+        return result;
     }
 
     // 클라이언트에게 반환해주기 위해 엔티티를 dto 객체로 변환

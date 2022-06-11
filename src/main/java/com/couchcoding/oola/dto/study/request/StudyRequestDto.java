@@ -4,10 +4,7 @@ import com.couchcoding.oola.entity.Member;
 import com.couchcoding.oola.entity.Study;
 import com.couchcoding.oola.entity.StudyMember;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.validation.constraints.NotBlank;
@@ -17,6 +14,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
+@Setter
 @Getter
 @NoArgsConstructor
 @Slf4j
@@ -62,6 +60,8 @@ public class StudyRequestDto {
     private Integer currentParticipants;
 
     private Boolean likeStatus;
+
+    private Boolean participantStatus;
 
     @Builder
     public StudyRequestDto(@NotBlank(message = "studyType은 필수 값입니다") String studyType, @NotBlank(message = "studyName은 필수 값입니다") String studyName, @NotBlank(message = "studydays는 필수 값입니다") String studyDays, @NotBlank(message = "timeZone은 필수 값입니다") String timeZone, @NotNull(message = "participants은 필수 값입니다") int participants, @NotNull(message = "startDate은 필수 값입니다") LocalDateTime startDate, @NotNull(message = "endDate는 필수 값입니다") LocalDateTime endDate, @NotBlank(message = "openChatUrl은 필수 값입니다") String openChatUrl, @NotBlank(message = "studyIntroduce은 필수 값입니다") String studyIntroduce, @NotBlank(message = "studyGoal은 필수 값입니다") String studyGoal, String status, String joinStatus, Integer currentParticipants, Boolean likeStatus) {
