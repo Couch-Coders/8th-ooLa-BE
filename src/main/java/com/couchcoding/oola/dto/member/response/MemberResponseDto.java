@@ -5,6 +5,7 @@ import com.couchcoding.oola.entity.Member;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.util.List;
 import java.util.Optional;
 import javax.persistence.ElementCollection;
 
