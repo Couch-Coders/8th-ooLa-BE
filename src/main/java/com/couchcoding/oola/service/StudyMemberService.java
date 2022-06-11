@@ -23,21 +23,18 @@ public class StudyMemberService {
     private final StudyMemberRepository studyMemberRepository;
     private final StudyRepository studyRepository;
 
+    // 스터디 참여자 정보조회
     @Transactional
     public List<StudyMember> studyMembers(Long studyId) {
-//        Study study = (Study) studyRepository.findById(studyId).orElseThrow( () ->  {
-//                    throw new StudyNotFoundException();
-//                }
-//        );
-
-//        log.info("study: {}" , study.toString());
-        return (List<StudyMember>) studyMemberRepositoryImpl.findByStudyId(studyId);
+        return studyMemberRepositoryImpl.findByStudyId(studyId);
     }
 
+    // 스터디 개설시 리더정보 추가
     public StudyMember studyLeaders(StudyMember studyMember) {
         return studyMemberRepository.saveAndFlush(studyMember);
     }
 
+    // 스터디 참여 신청 (멤버)
     public StudyMemberResponseDto studyMemberEnroll(Member member, Long studyId) {
         Study study = studyRepository.findById(studyId).orElseThrow(() -> {
             throw new StudyNotFoundException();
