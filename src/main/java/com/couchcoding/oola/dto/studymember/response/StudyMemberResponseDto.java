@@ -5,10 +5,10 @@ import com.couchcoding.oola.entity.Study;
 import com.couchcoding.oola.entity.StudyMember;
 import lombok.*;
 
+@Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @ToString
 public class StudyMemberResponseDto {
 

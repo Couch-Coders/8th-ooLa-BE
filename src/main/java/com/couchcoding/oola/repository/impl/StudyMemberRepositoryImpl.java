@@ -30,7 +30,6 @@ public class StudyMemberRepositoryImpl extends QuerydslRepositorySupport impleme
     public List<StudyMember> findByStudyId(Long studyId) {
         List<StudyMember> studyMembers = queryFactory.selectFrom(studyMember)
         .where(eqStudyId(studyId)).fetch();
-        log.info("studyMember: {}" + studyMembers.toString());
         return studyMembers;
     }
 
