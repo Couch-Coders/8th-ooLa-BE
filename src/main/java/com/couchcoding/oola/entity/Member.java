@@ -12,6 +12,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.List;
+import java.util.ArrayList;
+import javax.persistence.ElementCollection;
 
 @Entity
 @Getter
@@ -55,10 +57,11 @@ public class Member implements UserDetails {
 
     @Column(name = "tech_stack")
     @NotNull(message = "기술스택은 필수 값 입니다")
-    private String techStack;
+    @ElementCollection
+    private List<String> techStack = new ArrayList<>();
 
     @Builder
-    public Member( String uid, @NotBlank(message = "displayName은 필수 값입니다") String displayName, @NotBlank(message = "email은 필수 값입니다") String email, String blogUrl, String githubUrl, @NotBlank(message = "photoUrl은 필수 값입니다") String photoUrl, @NotBlank(message = "nickName은 필수 값입니다") String nickName, @NotBlank(message = "introduce는 필수 값입니다") String introduce, @NotNull(message = "기술스택은 필수 값 입니다") String techStack) {
+    public Member( String uid, @NotBlank(message = "displayName은 필수 값입니다") String displayName, @NotBlank(message = "email은 필수 값입니다") String email, String blogUrl, String githubUrl, @NotBlank(message = "photoUrl은 필수 값입니다") String photoUrl, @NotBlank(message = "nickName은 필수 값입니다") String nickName, @NotBlank(message = "introduce는 필수 값입니다") String introduce, @NotNull(message = "기술스택은 필수 값 입니다") List<String> techStack) {
         this.uid = uid;
         this.displayName = displayName;
         this.email = email;
