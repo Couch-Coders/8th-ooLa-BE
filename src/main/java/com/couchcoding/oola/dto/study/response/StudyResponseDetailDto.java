@@ -3,10 +3,7 @@ package com.couchcoding.oola.dto.study.response;
 import com.couchcoding.oola.entity.Study;
 import com.couchcoding.oola.entity.StudyMember;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -15,6 +12,8 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
+@Setter
 @ToString
 public class StudyResponseDetailDto {
 
@@ -48,43 +47,24 @@ public class StudyResponseDetailDto {
 
     private boolean likeStatus;
 
-    @Builder
-    public StudyResponseDetailDto(Long studyId, String studyType, String studyName, String studyDays, String timeZone, int participants, int currentParticipants, LocalDateTime startDate, String openChatUrl, String studyIntroduce, String studyGoal, String status, String joinStatus, LocalDateTime endDate, boolean likeStatus) {
-        this.studyId = studyId;
-        this.studyType = studyType;
-        this.studyName = studyName;
-        this.studyDays = studyDays;
-        this.timeZone = timeZone;
-        this.participants = participants;
-        this.currentParticipants = currentParticipants;
-        this.startDate = startDate;
-        this.openChatUrl = openChatUrl;
-        this.studyIntroduce = studyIntroduce;
-        this.studyGoal = studyGoal;
-        this.status = status;
-        this.joinStatus = joinStatus;
-        this.endDate = endDate;
-        this.likeStatus = likeStatus;
-    }
-
     public StudyResponseDetailDto toDto(Study study) {
-        StudyResponseDetailDto studyResponseDetailDto = StudyResponseDetailDto.builder()
-                .studyId(study.getStudyId())
-                .studyType(study.getStudyType())
-                .studyDays(study.getStudyDays())
-                .timeZone(study.getTimeZone())
-                .participants(study.getParticipants())
-                .currentParticipants(study.getCurrentParticipants())
-                .startDate(study.getStartDate())
-                .openChatUrl(study.getOpenChatUrl())
-                .studyIntroduce(study.getStudyIntroduce())
-                .studyGoal(study.getStudyGoal())
-                .status(study.getStatus())
-                .joinStatus(study.getJoinStatus())
-                .likeStatus(true)
-                .studyName(study.getStudyName())
-                .endDate(study.getEndDate())
-                .build();
+        StudyResponseDetailDto studyResponseDetailDto = new StudyResponseDetailDto();
+        studyResponseDetailDto.setStudyId(study.getStudyId());
+        studyResponseDetailDto.setStudyType(study.getStudyType());
+        studyResponseDetailDto.setStudyDays(study.getStudyDays());
+        studyResponseDetailDto.setTimeZone(study.getTimeZone());
+        studyResponseDetailDto.setParticipants(study.getParticipants());
+        studyResponseDetailDto.setCurrentParticipants(study.getCurrentParticipants());
+       studyResponseDetailDto.setStartDate(study.getStartDate());
+       studyResponseDetailDto.setOpenChatUrl(study.getOpenChatUrl());
+       studyResponseDetailDto.setStudyIntroduce(study.getStudyIntroduce());
+       studyResponseDetailDto.setStudyGoal(study.getStudyGoal());
+        studyResponseDetailDto.setStatus(study.getStatus());
+        studyResponseDetailDto.setJoinStatus(study.getJoinStatus());
+        studyResponseDetailDto.setLikeStatus(study.getLikeStatus());
+        studyResponseDetailDto.setStudyName(study.getStudyName());
+        studyResponseDetailDto.setEndDate(study.getEndDate());
+
         return studyResponseDetailDto;
     }
 }

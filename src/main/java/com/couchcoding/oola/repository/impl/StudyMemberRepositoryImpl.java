@@ -1,5 +1,7 @@
 package com.couchcoding.oola.repository.impl;
 
+import com.couchcoding.oola.entity.Member;
+import com.couchcoding.oola.entity.QStudyMember;
 import com.couchcoding.oola.entity.StudyMember;
 import com.couchcoding.oola.repository.StudyMemberRepositoryCustom;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -37,5 +39,10 @@ public class StudyMemberRepositoryImpl extends QuerydslRepositorySupport impleme
             return null;
         }
         return studyMember.studyId.eq(studyId);
+    }
+
+    public List<StudyMember> findAllByUidAndRole(Long uid, String role) {
+
+        return null;
     }
 }

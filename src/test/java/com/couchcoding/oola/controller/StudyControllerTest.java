@@ -23,6 +23,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
+
 import javax.servlet.Filter;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
@@ -47,17 +48,17 @@ class StudyControllerTest {
     private static final String uid = "DpKLjE6P5bRd4aAqWzl1gnbaKHr1";
     //private static final String uid = "eyJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJodHRwczovL2lkZW50aXR5dG9vbGtpdC5nb29nbGVhcGlzLmNvbS9nb29nbGUuaWRlbnRpdHkuaWRlbnRpdHl0b29sa2l0LnYxLklkZW50aXR5VG9vbGtpdCIsImV4cCI6MTY1NDUwNzM1NSwiaWF0IjoxNjU0NTAzNzU1LCJpc3MiOiJmaXJlYmFzZS1hZG1pbnNkay1qM3YzOUBvb2xhLW9hdXRoLmlhbS5nc2VydmljZWFjY291bnQuY29tIiwic3ViIjoiZmlyZWJhc2UtYWRtaW5zZGstajN2MzlAb29sYS1vYXV0aC5pYW0uZ3NlcnZpY2VhY2NvdW50LmNvbSIsInVpZCI6ImFiY2RlZmcxMjMifQ.iiJcZf4vekGaVAkQI7Kq54cl3csv9dH0g4GsuZkfMXoRKsQnBGP1qT3fJAj-6lOupBd3zVmKL2hZ6cIKQmNKOuAaVnin9DbfqjBBghC7hMDvlXWIElR4l2uN5qbrsSGJsKN4sMBvaNq50lwKYNyHMThZ20wFzsQZH1SK5kxRHxdBdaYSoVD-Ow57P3kt3dUzd5y7vz9THlQR5t8Uso6zWOiCBHyvR_4Fn_hDpuo-wjftjkgPiXmcfqpI5AlyhBBNcx7tFfiqbJ4o_pK879A4DUsph2NXZSGC0P0wwXvDOUWM1vGmXeGLT6Xs69fze2b-7rsuvJxqV1-fZ4qazZjLZA";
     private static final String studyType = "프론트엔드";
-    private static  String studyName = "DO IT 자바스크립트 알고리즘3";
+    private static String studyName = "DO IT 자바스크립트 알고리즘3";
     private static String studyDays = "평일";
     private static final String timeZone = "오전 (9시 ~ 12시)";
     private static final int participants = 7;
-    private static  LocalDateTime startDate =  null;
-    private static  LocalDateTime endDate = null;
+    private static LocalDateTime startDate = null;
+    private static LocalDateTime endDate = null;
     private static final String openChatUrl = "https://open.kakao.com/o/gihbQV0d";
     private static final String studyIntroduce = "안녕하세요 오전타임 React 스터디를 진행하고자 합니다";
     private static final String studyGoal = "React 마스터";
     private static final String status = "모집중";
-    private static  Integer currentParticipants = 1;
+    private static Integer currentParticipants = 1;
 
     @Autowired
     private WebApplicationContext wac;
@@ -90,21 +91,22 @@ class StudyControllerTest {
         DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime endDateTime = LocalDateTime.parse(edate, formatter2);
 
-        StudyRequestDto studyRequestDto = StudyRequestDto.builder()
-                .studyType(studyType)
-                .studyName(studyName)
-                .studyDays(studyDays)
-                .timeZone(timeZone)
-                .participants(participants)
-                .startDate(startDateTime)
-                .endDate(endDateTime)
-                .openChatUrl(openChatUrl)
-                .studyIntroduce(studyIntroduce)
-                .studyGoal(studyGoal)
-                .status(status)
-                .joinStatus("leader")
-                .currentParticipants(currentParticipants)
-                .build();
+        StudyRequestDto studyRequestDto = new StudyRequestDto();
+        studyRequestDto.setCreateUid(uid);
+        studyRequestDto.setStudyType(studyType);
+        studyRequestDto.setStudyName(studyName);
+        studyRequestDto.setStudyDays(studyDays);
+        studyRequestDto.setTimeZone(timeZone);
+        studyRequestDto.setParticipants(participants);
+        studyRequestDto.setStartDate(startDateTime);
+        studyRequestDto.setEndDate(endDateTime);
+        studyRequestDto.setOpenChatUrl(openChatUrl);
+        studyRequestDto.setStudyIntroduce(studyIntroduce);
+        studyRequestDto.setStudyGoal(studyGoal);
+        studyRequestDto.setStatus(status);
+        studyRequestDto.setJoinStatus("leader");
+        studyRequestDto.setCurrentParticipants(currentParticipants);
+
 
         String studyDtoJson = objectMapper.writeValueAsString(studyRequestDto);
 
@@ -117,8 +119,10 @@ class StudyControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
         )
                 .andDo(print());
+        resultActions
+                .andExpect(status().isCreated());
     }
-    
+
     @Test
     @DisplayName("스터디 단건 조회 테스트")
     void selectStudy() throws Exception {
@@ -271,21 +275,22 @@ class StudyControllerTest {
         String status = "진행중";
         currentParticipants = 5;
 
-        StudyRequestDto studyRequestDto = StudyRequestDto.builder()
-                .studyType(studyType)
-                .studyName(studyName)
-                .studyDays(studyDays)
-                .timeZone(timeZone)
-                .participants(participants)
-                .startDate(startDateTime)
-                .endDate(endDateTime)
-                .openChatUrl(openChatUrl)
-                .studyIntroduce(studyIntroduce)
-                .studyGoal(studyGoal)
-                .status(status)
-                .joinStatus("leader")
-                .currentParticipants(currentParticipants)
-                .build();
+        StudyRequestDto studyRequestDto = new StudyRequestDto();
+        studyRequestDto.setCreateUid(uid);
+        studyRequestDto.setStudyType(studyType);
+        studyRequestDto.setStudyName(studyName);
+        studyRequestDto.setStudyDays(studyDays);
+        studyRequestDto.setTimeZone(timeZone);
+        studyRequestDto.setParticipants(participants);
+        studyRequestDto.setStartDate(startDateTime);
+        studyRequestDto.setEndDate(endDateTime);
+        studyRequestDto.setOpenChatUrl(openChatUrl);
+        studyRequestDto.setStudyIntroduce(studyIntroduce);
+        studyRequestDto.setStudyGoal(studyGoal);
+        studyRequestDto.setStatus(status);
+        studyRequestDto.setJoinStatus("leader");
+        studyRequestDto.setCurrentParticipants(currentParticipants);
+
 
         String studyDtoJson = objectMapper.writeValueAsString(studyRequestDto);
 
@@ -320,21 +325,22 @@ class StudyControllerTest {
 
         String status = "완료로수정3";
 
-        StudyRequestDto studyRequestDto = StudyRequestDto.builder()
-                .studyType(studyType)
-                .studyName(studyName)
-                .studyDays(studyDays)
-                .timeZone(timeZone)
-                .participants(participants)
-                .startDate(startDateTime)
-                .endDate(endDateTime)
-                .openChatUrl(openChatUrl)
-                .studyIntroduce(studyIntroduce)
-                .studyGoal(studyGoal)
-                .status(status)
-                .joinStatus("leader")
-                .currentParticipants(currentParticipants)
-                .build();
+        StudyRequestDto studyRequestDto = new StudyRequestDto();
+        studyRequestDto.setCreateUid(uid);
+        studyRequestDto.setStudyType(studyType);
+        studyRequestDto.setStudyName(studyName);
+        studyRequestDto.setStudyDays(studyDays);
+        studyRequestDto.setTimeZone(timeZone);
+        studyRequestDto.setParticipants(participants);
+        studyRequestDto.setStartDate(startDateTime);
+        studyRequestDto.setEndDate(endDateTime);
+        studyRequestDto.setOpenChatUrl(openChatUrl);
+        studyRequestDto.setStudyIntroduce(studyIntroduce);
+        studyRequestDto.setStudyGoal(studyGoal);
+        studyRequestDto.setStatus(status);
+        studyRequestDto.setJoinStatus("leader");
+        studyRequestDto.setCurrentParticipants(currentParticipants);
+
 
         String studyDtoJson = objectMapper.writeValueAsString(studyRequestDto);
 
@@ -367,21 +373,22 @@ class StudyControllerTest {
         studyDays = "주말";
         String status = "진행중";
 
-        StudyRequestDto studyRequestDto = StudyRequestDto.builder()
-                .studyType(studyType)
-                .studyName(studyName)
-                .studyDays(studyDays)
-                .timeZone(timeZone)
-                .participants(participants)
-                .startDate(startDateTime)
-                .endDate(endDateTime)
-                .openChatUrl(openChatUrl)
-                .studyIntroduce(studyIntroduce)
-                .studyGoal(studyGoal)
-                .status(status)
-                .joinStatus("leader")
-                .currentParticipants(currentParticipants)
-                .build();
+        StudyRequestDto studyRequestDto = new StudyRequestDto();
+        studyRequestDto.setCreateUid(uid);
+        studyRequestDto.setStudyType(studyType);
+        studyRequestDto.setStudyName(studyName);
+        studyRequestDto.setStudyDays(studyDays);
+        studyRequestDto.setTimeZone(timeZone);
+        studyRequestDto.setParticipants(participants);
+        studyRequestDto.setStartDate(startDateTime);
+        studyRequestDto.setEndDate(endDateTime);
+        studyRequestDto.setOpenChatUrl(openChatUrl);
+        studyRequestDto.setStudyIntroduce(studyIntroduce);
+        studyRequestDto.setStudyGoal(studyGoal);
+        studyRequestDto.setStatus(status);
+        studyRequestDto.setJoinStatus("leader");
+        studyRequestDto.setCurrentParticipants(currentParticipants);
+
 
         String studyDtoJson = objectMapper.writeValueAsString(studyRequestDto);
 
@@ -412,21 +419,22 @@ class StudyControllerTest {
         DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime endDateTime = LocalDateTime.parse(edate, formatter2);
 
-        StudyRequestDto studyRequestDto = StudyRequestDto.builder()
-                .studyType(null)
-                .studyName(null)
-                .studyDays(studyDays)
-                .timeZone(timeZone)
-                .participants(participants)
-                .startDate(startDateTime)
-                .endDate(endDateTime)
-                .openChatUrl(null)
-                .studyIntroduce(studyIntroduce)
-                .studyGoal(studyGoal)
-                .status(status)
-                .joinStatus("leader")
-                .currentParticipants(currentParticipants)
-                .build();
+        StudyRequestDto studyRequestDto = new StudyRequestDto();
+        studyRequestDto.setCreateUid(uid);
+        studyRequestDto.setStudyType(studyType);
+        studyRequestDto.setStudyName(studyName);
+        studyRequestDto.setStudyDays(studyDays);
+        studyRequestDto.setTimeZone(timeZone);
+        studyRequestDto.setParticipants(participants);
+        studyRequestDto.setStartDate(startDateTime);
+        studyRequestDto.setEndDate(endDateTime);
+        studyRequestDto.setOpenChatUrl(openChatUrl);
+        studyRequestDto.setStudyIntroduce(studyIntroduce);
+        studyRequestDto.setStudyGoal(studyGoal);
+        studyRequestDto.setStatus(status);
+        studyRequestDto.setJoinStatus("leader");
+        studyRequestDto.setCurrentParticipants(currentParticipants);
+
 
         String studyDtoJson = objectMapper.writeValueAsString(studyRequestDto);
 
@@ -438,9 +446,9 @@ class StudyControllerTest {
                         .content(studyDtoJson)
                         .accept(MediaType.APPLICATION_JSON)
         )
-        .andExpect(
-                (result -> assertTrue(result.getResolvedException().getClass().isAssignableFrom(ParameterBadRequestException.class)))
-        ).andReturn();
+                .andExpect(
+                        (result -> assertTrue(result.getResolvedException().getClass().isAssignableFrom(ParameterBadRequestException.class)))
+                ).andReturn();
     }
 
 
@@ -458,21 +466,21 @@ class StudyControllerTest {
         DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime endDateTime = LocalDateTime.parse(edate, formatter2);
 
-        StudyRequestDto studyRequestDto = StudyRequestDto.builder()
-                .studyType(null)
-                .studyName(null)
-                .studyDays(studyDays)
-                .timeZone(timeZone)
-                .participants(participants)
-                .startDate(startDateTime)
-                .endDate(endDateTime)
-                .openChatUrl(null)
-                .studyIntroduce(studyIntroduce)
-                .studyGoal(studyGoal)
-                .status(status)
-                .joinStatus("leader")
-                .currentParticipants(currentParticipants)
-                .build();
+        StudyRequestDto studyRequestDto = new StudyRequestDto();
+        studyRequestDto.setCreateUid(uid);
+        studyRequestDto.setStudyType(studyType);
+        studyRequestDto.setStudyName(studyName);
+        studyRequestDto.setStudyDays(studyDays);
+        studyRequestDto.setTimeZone(timeZone);
+        studyRequestDto.setParticipants(participants);
+        studyRequestDto.setStartDate(startDateTime);
+        studyRequestDto.setEndDate(endDateTime);
+        studyRequestDto.setOpenChatUrl(openChatUrl);
+        studyRequestDto.setStudyIntroduce(studyIntroduce);
+        studyRequestDto.setStudyGoal(studyGoal);
+        studyRequestDto.setStatus(status);
+        studyRequestDto.setJoinStatus("leader");
+        studyRequestDto.setCurrentParticipants(currentParticipants);
 
         String studyDtoJson = objectMapper.writeValueAsString(studyRequestDto);
 
@@ -522,21 +530,22 @@ class StudyControllerTest {
 
         String status = "";
 
-        StudyRequestDto studyRequestDto = StudyRequestDto.builder()
-                .studyType(null)
-                .studyName(null)
-                .studyDays(null)
-                .timeZone(timeZone)
-                .participants(participants)
-                .startDate(startDateTime)
-                .endDate(endDateTime)
-                .openChatUrl(openChatUrl)
-                .studyIntroduce(studyIntroduce)
-                .studyGoal(studyGoal)
-                .status(status)
-                .joinStatus("leader")
-                .currentParticipants(currentParticipants)
-                .build();
+        StudyRequestDto studyRequestDto = new StudyRequestDto();
+        studyRequestDto.setCreateUid(uid);
+        studyRequestDto.setStudyType(studyType);
+        studyRequestDto.setStudyName(studyName);
+        studyRequestDto.setStudyDays(studyDays);
+        studyRequestDto.setTimeZone(timeZone);
+        studyRequestDto.setParticipants(participants);
+        studyRequestDto.setStartDate(startDateTime);
+        studyRequestDto.setEndDate(endDateTime);
+        studyRequestDto.setOpenChatUrl(openChatUrl);
+        studyRequestDto.setStudyIntroduce(studyIntroduce);
+        studyRequestDto.setStudyGoal(studyGoal);
+        studyRequestDto.setStatus(status);
+        studyRequestDto.setJoinStatus("leader");
+        studyRequestDto.setCurrentParticipants(currentParticipants);
+
 
         String studyDtoJson = objectMapper.writeValueAsString(studyRequestDto);
 
@@ -562,28 +571,29 @@ class StudyControllerTest {
         String sdate = "2022-06-06 00:00:00";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime startDateTime = LocalDateTime.parse(sdate, formatter);
-        
+
         String edate = "2022-10-06 00:00:00";
         DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime endDateTime = LocalDateTime.parse(edate, formatter2);
 
         String status = "완료";
 
-        StudyRequestDto studyRequestDto = StudyRequestDto.builder()
-                .studyType(studyType)
-                .studyName(studyName)
-                .studyDays(studyDays)
-                .timeZone(timeZone)
-                .participants(participants)
-                .startDate(startDateTime)
-                .endDate(endDateTime)
-                .openChatUrl(openChatUrl)
-                .studyIntroduce(studyIntroduce)
-                .studyGoal(studyGoal)
-                .status(status)
-                .joinStatus("leader")
-                .currentParticipants(currentParticipants)
-                .build();
+        StudyRequestDto studyRequestDto = new StudyRequestDto();
+        studyRequestDto.setCreateUid(uid);
+        studyRequestDto.setStudyType(studyType);
+        studyRequestDto.setStudyName(studyName);
+        studyRequestDto.setStudyDays(studyDays);
+        studyRequestDto.setTimeZone(timeZone);
+        studyRequestDto.setParticipants(participants);
+        studyRequestDto.setStartDate(startDateTime);
+        studyRequestDto.setEndDate(endDateTime);
+        studyRequestDto.setOpenChatUrl(openChatUrl);
+        studyRequestDto.setStudyIntroduce(studyIntroduce);
+        studyRequestDto.setStudyGoal(studyGoal);
+        studyRequestDto.setStatus(status);
+        studyRequestDto.setJoinStatus("leader");
+        studyRequestDto.setCurrentParticipants(currentParticipants);
+
 
         String studyDtoJson = objectMapper.writeValueAsString(studyRequestDto);
 
