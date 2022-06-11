@@ -613,4 +613,19 @@ class StudyControllerTest {
         ).andDo(print());
         resultActions.andExpect(status().isOk());
     }
+
+    @Test
+    @DisplayName("스터디 참여자 조회 테스트")
+    void 스터디참여자조회테스트() throws Exception {
+        // 조회하려는 스터디 id: 35
+        Long studyId = 35L;
+
+        ResultActions resultActions = mockMvc.perform(
+                get("/studies/" + studyId + "/members")
+                        //.header("Authorization", "Bearer " + uid)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding(StandardCharsets.UTF_8)
+                        .accept(MediaType.APPLICATION_JSON)
+        ).andDo(print());
+    }
 }
