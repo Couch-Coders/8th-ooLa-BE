@@ -71,7 +71,6 @@ public class MemberService implements UserDetailsService {
     // 회원 단건 조회
     public MemberProfileResponseDto findByUid(String uid) {
         Member member = null;
-
         member =  memberRepository.findByUid(uid).orElseThrow(() -> {
             throw new UsernameNotFoundException("해당 회원이 존재하지 않습니다.");
         });
