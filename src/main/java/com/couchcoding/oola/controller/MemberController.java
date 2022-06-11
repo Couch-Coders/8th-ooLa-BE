@@ -8,6 +8,7 @@ import com.couchcoding.oola.entity.Member;
 import com.couchcoding.oola.service.MemberService;
 
 import com.couchcoding.oola.validation.MemberForbiddenException;
+import com.couchcoding.oola.validation.MemberNotFoundException;
 import com.couchcoding.oola.validation.ParameterBadRequestException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseToken;
@@ -79,7 +80,7 @@ public class MemberController {
     public ResponseEntity<MemberResponseDto> login(Authentication authentication) {
         Member member = ((Member) authentication.getPrincipal());
         if (member.equals(null)) {
-            return (ResponseEntity<MemberResponseDto>) ResponseEntity.notFound();
+            throw new MemberNotFoundException();
         }
         log.info("member: {}", member.toString());
         return ResponseEntity.ok(new MemberResponseDto(member));
