@@ -68,15 +68,6 @@ public class Member implements UserDetails {
         this.techStack = techStack;
     }
 
-    public Member update() {
-
-
-        return null;
-    }
-
-
-
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
