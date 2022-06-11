@@ -57,7 +57,8 @@ public class Member implements UserDetails {
 
     @Column(name = "tech_stack")
     @NotNull(message = "기술스택은 필수 값 입니다")
-    private String techStack;
+    @ElementCollection
+    private List<String> techStack = new ArrayList<>();
 
 
     @Builder
@@ -70,7 +71,7 @@ public class Member implements UserDetails {
         this.photoUrl = photoUrl;
         this.nickName = nickName;
         this.introduce = introduce;
-        this.techStack = techStack.toString();
+        this.techStack = techStack;
     }
 
     @Override

@@ -5,6 +5,7 @@ import com.couchcoding.oola.entity.Member;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -19,7 +20,7 @@ public class MemberResponseDto {
     private String blogUrl;
     private String githubUrl;
     private String photoUrl;
-    private String techStack;
+    private List<String> techStack;
 
     public MemberResponseDto(Member member) {
         this.uid = member.getUid();
@@ -28,6 +29,6 @@ public class MemberResponseDto {
         this.blogUrl = member.getBlogUrl();
         this.githubUrl = member.getGithubUrl();
         this.photoUrl = member.getPhotoUrl();
-        this.techStack = member.getTechStack().toString();
+        this.techStack = member.getTechStack();
     }
 }
