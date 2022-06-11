@@ -32,7 +32,7 @@ import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/studies")
+@RequestMapping("/mystudies")
 @RestController
 public class StudyController {
 

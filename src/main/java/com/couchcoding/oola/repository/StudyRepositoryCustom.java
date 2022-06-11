@@ -5,5 +5,5 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface StudyRepositoryCustom {
-    Page<Study> findBySearchOption(Pageable pageable, String studyType , String studyDays, String timeZone , String status, String studyName);
+    Page<Study> findAllBySearchOption(Pageable pageable, String studyType , String studyDays, String timeZone , String status, String studyName);
 }

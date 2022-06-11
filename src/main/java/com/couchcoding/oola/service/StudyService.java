@@ -47,7 +47,7 @@ public class StudyService {
     // 스터디 조건 검색 및 페이징 처리
     public Page<Study> findByAllCategory(Pageable pageable, String studyType, String studyDays,
                                          String timeZone , String status, String studyName) {
-        return studyRepositoryImpl.findBySearchOption(pageable ,studyType, studyDays, timeZone,status , studyName);
+        return studyRepositoryImpl.findAllBySearchOption(pageable ,studyType, studyDays, timeZone,status , studyName);
     }
 
     // 스터디 수정
