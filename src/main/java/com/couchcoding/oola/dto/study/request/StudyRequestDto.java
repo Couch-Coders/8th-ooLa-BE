@@ -97,7 +97,7 @@ public class StudyRequestDto {
                 .joinStatus(studyRequestDto.getJoinStatus())
                 .endDate(studyRequestDto.getEndDate())
                 .likeCount(0L)
-                .currentParticipants(studyRequestDto.getCurrentParticipants())
+                .currentParticipants(1)
                 .createUid(uid)
                 .likeStatus(studyRequestDto.getLikeStatus())
                 .build();
