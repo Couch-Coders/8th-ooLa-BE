@@ -9,6 +9,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 
@@ -23,9 +24,9 @@ public class MemberRepositoryImpl extends QuerydslRepositorySupport implements M
 
     public MemberRepositoryImpl() {
         super(Member.class);
-
     }
 
+    @EntityGraph(attributePaths = {"techStack"})
     @Override
     public Member findByUid(String uid) {
      Member member = queryFactory.selectFrom(QMember.member)
