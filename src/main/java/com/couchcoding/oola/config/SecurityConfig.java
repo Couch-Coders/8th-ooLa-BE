@@ -44,9 +44,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring()
-                .antMatchers(HttpMethod.POST, "/members")
+//                .antMatchers(HttpMethod.POST, "/members/**")
                 .antMatchers(HttpMethod.GET, "/exception/**")
-                .antMatchers(HttpMethod.POST, "/members/local")// 로컬 회원가입 테스트
+//                .antMatchers(HttpMethod.POST, "/members/local")// 로컬 회원가입 테스트
                 .antMatchers(HttpMethod.GET, "/mystudies/**")
                 .antMatchers("/")
                 .antMatchers("/css/**")
