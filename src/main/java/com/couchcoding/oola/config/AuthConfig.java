@@ -19,7 +19,7 @@ public class AuthConfig {
     private final FirebaseAuth firebaseAuth;
 
     @Bean
-    @Profile({"local","default"}) // spring 실행시 환경을 @Profile 어노테이션을 통해 구분한다
+    @Profile("local") // spring 실행시 환경을 @Profile 어노테이션을 통해 구분한다
     public AuthFilterContainer mockAuthFilter() {
         AuthFilterContainer authFilterContainer = new AuthFilterContainer();
         authFilterContainer.setAuthFilter(new MockJwtFilter(userService));
@@ -27,7 +27,7 @@ public class AuthConfig {
     }
 
     @Bean
-    @Profile("prod")
+    @Profile({"prod","default"})
     public AuthFilterContainer firebaseAuthFilter() {
         AuthFilterContainer authFilterContainer = new AuthFilterContainer();
         authFilterContainer.setAuthFilter(new JwtFilter(userService, firebaseAuth));
