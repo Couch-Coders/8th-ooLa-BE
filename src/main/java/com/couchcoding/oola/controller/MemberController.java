@@ -84,7 +84,6 @@ public class MemberController {
         if (member.equals(null)) {
             throw new MemberNotFoundException();
         }
-        log.info("member: {}", member.toString());
         return ResponseEntity.ok(new MemberResponseDto(member));
     }
 
