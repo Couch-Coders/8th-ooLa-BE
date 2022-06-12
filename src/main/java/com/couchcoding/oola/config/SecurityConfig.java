@@ -47,7 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/members")
                 .antMatchers(HttpMethod.GET, "/exception/**")
                 .antMatchers(HttpMethod.POST, "/members/local")// 로컬 회원가입 테스트
-                .antMatchers(HttpMethod.GET, "/studies/**")
+                .antMatchers(HttpMethod.GET, "/mystudies/**")
                 .antMatchers("/")
                 .antMatchers("/css/**")
                 .antMatchers("/static/**")
