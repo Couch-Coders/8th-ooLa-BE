@@ -80,19 +80,13 @@ public class MemberController {
         if (member.equals(null)) {
             throw new MemberNotFoundException();
         }
-        return ResponseEntity.ok(new MemberLoginResponseDto(member.getUid() , member.getDisplayName(),
-                member.getEmail(), member.getBlogUrl(),
-                member.getGithubUrl(), member.getPhotoUrl()));
+        return ResponseEntity.ok(new MemberLoginResponseDto(member));
     }
 
     // 마이프로필 조회
     @GetMapping("/myprofile")
     public ResponseEntity<MemberProfileResponseDto> memberProfile(Authentication authentication) {
         Member member = ((Member) authentication.getPrincipal());
-        member = memberService.findByUid(member.getUid());
-        if (member.equals(null)) {
-            throw new MemberNotFoundException();
-        }
         MemberProfileResponseDto memberProfileResponseDto = new MemberProfileResponseDto(member.getUid(), member.getTechStack(), member.getIntroduce(), member.getNickName(), member.getPhotoUrl() , member.getGithubUrl() , member.getBlogUrl(), member.getEmail());
         return ResponseEntity.status(HttpStatus.OK).body(memberProfileResponseDto);
     }

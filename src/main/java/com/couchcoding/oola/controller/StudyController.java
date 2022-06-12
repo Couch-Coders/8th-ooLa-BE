@@ -20,7 +20,6 @@ import org.springframework.security.core.Authentication;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.parameters.P;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,14 +45,9 @@ public class StudyController {
             throw  new ParameterBadRequestException(result);
         }
 
-        Member member = ((Member) authentication.getPrincipal());
-        String uid = member.getUid();
-        if (uid.equals(null)) {
-            throw new MemberNotFoundException();
-        }
-
         // 스터디 생성
-        Study studyCreate = studyRequestDto.toEntity(studyRequestDto, uid, member);
+        Member member = ((Member) authentication.getPrincipal());
+        Study studyCreate = studyRequestDto.toEntity(studyRequestDto, member);
 
         // 스터디에 참여하는 멤버 생성
         StudyMember studyMember = StudyMember.builder()
@@ -62,8 +56,7 @@ public class StudyController {
                 .role("leader")
                 .build();
         StudyResponseDto responseDto = studyService.createStudy(studyCreate);
-        studyMemberService.studyLeaders(studyMember);
-
+        studyMemberService.setStudyLeader(studyMember);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(responseDto);
@@ -71,9 +64,7 @@ public class StudyController {
 
     // 스터디 단일 조회
     @GetMapping("/{studyId}")
-    public ResponseEntity<StudyResponseDetailDto> studyDetail(Authentication authentication, @PathVariable @Valid Long studyId, HttpServletRequest request) throws ParseException {
-        Member member = ((Member) authentication.getPrincipal());
-
+    public ResponseEntity<StudyResponseDetailDto> studyDetail( @PathVariable @Valid Long studyId, HttpServletRequest request) throws ParseException {
         Study study = studyService.studyDetail(studyId);
         StudyResponseDetailDto studyResponseDetailDto = new StudyResponseDetailDto();
         studyResponseDetailDto = studyResponseDetailDto.toDto(study);
@@ -85,16 +76,7 @@ public class StudyController {
     public Page<Study> studySearch(Pageable pageable, @RequestParam(value = "studyType", required = false ) String studyType,
                                    @RequestParam( value = "studyDays", required = false)  String studyDays, @RequestParam(value = "timeZone", required = false) String timeZone
             , @RequestParam(value = "status",required = false)  String status, @RequestParam(value = "studyName", required = false) String studyName) {
-
-        log.info("status: {}" + status);
-        log.info("studyType: {}" + studyType);
-        log.info("studyDays: {}" + studyDays);
-        log.info("timeZone: {}" + timeZone);
-        log.info("studyName: {}" + studyName);
-
-
-        Page<Study> searchResult = null;
-        searchResult = studyService.findByAllCategory(pageable, studyType, studyDays, timeZone, status , studyName);
+        Page<Study> searchResult = studyService.findByAllCategory(pageable, studyType, studyDays, timeZone, status , studyName);
         if (searchResult.equals(null)) {
             throw new StudySearchNotFoundException();
         }
@@ -109,10 +91,7 @@ public class StudyController {
         }
 
         Member member = ((Member) authentication.getPrincipal());
-        String uid = member.getUid();
-
-        Study updated = studyService.studyUpdate(studyId, studyRequestDto, uid);
-
+        Study updated = studyService.studyUpdate(studyId, studyRequestDto, member);
         StudyResponseDetailDto studyResponseDetailDto = studyService.toDto(updated);
         return ResponseEntity.status(HttpStatus.OK).body(studyResponseDetailDto);
     }
@@ -125,13 +104,7 @@ public class StudyController {
         }
 
         Member member = ((Member) authentication.getPrincipal());
-        String uid = member.getUid();
-        if (uid.equals(null)) {
-            throw new MemberUnAuthorizedException();
-        }
-
-        Study updated = studyService.studyComplete(studyId, uid , studyRequestDto);
-
+        Study updated = studyService.studyComplete(studyId, member , studyRequestDto);
         StudyResponseDetailDto studyResponseDetailDto = studyService.toDto(updated);
         return ResponseEntity.status(HttpStatus.OK).body(studyResponseDetailDto);
     }
@@ -146,9 +119,6 @@ public class StudyController {
     @PostMapping("/{studyId}/members")
     public ResponseEntity<StudyMemberResponseDto> studyMemberEnroll(Authentication authentication, @PathVariable Long studyId) {
         Member member = (Member) authentication.getPrincipal();
-        if (member.equals(null)) {
-            throw new MemberForbiddenException();
-        }
         StudyMemberResponseDto studyMemberResponseDto = studyMemberService.studyMemberEnroll(member , studyId);
         return ResponseEntity.status(HttpStatus.CREATED).body(studyMemberResponseDto);
     }

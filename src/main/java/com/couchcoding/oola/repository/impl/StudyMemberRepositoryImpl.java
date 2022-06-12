@@ -4,6 +4,7 @@ import com.couchcoding.oola.entity.Member;
 import com.couchcoding.oola.entity.QStudyMember;
 import com.couchcoding.oola.entity.StudyMember;
 import com.couchcoding.oola.repository.StudyMemberRepositoryCustom;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -33,6 +34,40 @@ public class StudyMemberRepositoryImpl extends QuerydslRepositorySupport impleme
         return studyMembers;
     }
 
+    @Override
+    public List<StudyMember> findAllByUidAndRole(Long uid, String role) {
+        List<StudyMember> studyMembers = queryFactory.selectFrom(studyMember)
+                .where(eqUid(uid), eqRole(role)).fetch();
+
+        log.info("studyMember: {} ", studyMembers.toString());
+        log.info("studyMember.get(0) : {}", studyMembers.get(0).getStudy().toString());
+        return studyMembers;
+    }
+
+    @Override
+    public List<StudyMember> findAllByUidAndRoleAndStatus(Long uid, String role, String status) {
+        List<StudyMember> studyMembers = queryFactory.selectFrom(studyMember)
+                .where(eqUid(uid), eqRole(role), eqStatus(status))
+                .fetch();
+
+        log.info("studyMember: {} ", studyMembers.toString());
+        return studyMembers;
+    }
+
+    private BooleanExpression eqStatus(String status) {
+        if (status.equals(null) || status == null) {
+            return null;
+        }
+        return studyMember.study.status.eq(status);
+    }
+
+    private BooleanExpression eqRole(String role) {
+        if (role.equals(null) || role == null) {
+            return null;
+        }
+        return studyMember.role.eq(role);
+    }
+
     private BooleanExpression eqStudyId(Long studyId) {
         if (studyId == null) {
             return null;
@@ -40,8 +75,10 @@ public class StudyMemberRepositoryImpl extends QuerydslRepositorySupport impleme
         return studyMember.studyId.eq(studyId);
     }
 
-    public List<StudyMember> findAllByUidAndRole(Long uid, String role) {
-
-        return null;
+    private BooleanExpression eqUid(Long uid) {
+       if (uid == null) {
+           return null;
+       }
+       return studyMember.uid.eq(uid);
     }
 }

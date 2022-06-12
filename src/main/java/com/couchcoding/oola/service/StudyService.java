@@ -4,6 +4,7 @@ import com.couchcoding.oola.dto.study.request.StudyRequestDto;
 import com.couchcoding.oola.dto.study.response.StudyResponseDetailDto;
 import com.couchcoding.oola.dto.study.response.StudyResponseDto;
 
+import com.couchcoding.oola.entity.Member;
 import com.couchcoding.oola.entity.Study;
 
 import com.couchcoding.oola.repository.StudyRepository;
@@ -50,12 +51,12 @@ public class StudyService {
 
     // 스터디 수정
     @Transactional
-    public Study studyUpdate(Long studyId, StudyRequestDto requestDto , String uid) {
+    public Study studyUpdate(Long studyId, StudyRequestDto requestDto , Member member) {
         Study study = null;
         // 스터디 생성자와 로그인 유저가 같은지 비교
         Study result = studyDetail(studyId);
-        if (result.getCreateUid().equals(uid)) {
-            Study updated = result.update(studyId, requestDto, uid);
+        if (result.getCreateUid().equals(member.getUid())) {
+            Study updated = result.update(studyId, requestDto, member.getUid());
             study = studyRepository.save(updated);
         } else {
             throw new MemberForbiddenException();
@@ -65,11 +66,11 @@ public class StudyService {
 
     // 스터디 완료시 스터디 상태 수정
     @Transactional
-    public Study studyComplete(Long studyId, String uid , StudyRequestDto studyRequestDto) {
+    public Study studyComplete(Long studyId, Member member, StudyRequestDto studyRequestDto) {
         Study study = null;
         // 스터디 생성자와 로그인 유저가 같은지 비교
         Study result = studyDetail(studyId);
-        if (result.getCreateUid().equals(uid)) {
+        if (result.getCreateUid().equals(member.getUid())) {
             result = result.updateCompleteStatus(studyRequestDto.getStatus());
             study = studyRepository.save(result);
         } else {

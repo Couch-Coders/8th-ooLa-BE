@@ -24,9 +24,15 @@ public class StudyMember extends BaseTimeEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "uid", insertable = false, updatable = false)
+    private Long uid;
+
     @ManyToOne
     @JoinColumn(name = "uid")
     private Member member;
+
+    @Column(name = "status", insertable = false, updatable = false)
+    private String status;
 
     @Column(name = "studyId",insertable = false, updatable = false)
     private Long studyId;

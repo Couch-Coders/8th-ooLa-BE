@@ -18,53 +18,42 @@ import java.util.List;
 public class StudyResponseDetailDto {
 
     private Long studyId;
-
     private String studyType;
-
     private String studyName;
-
     private String studyDays;
-
     private String timeZone;
-
     private int participants;
-
     private int currentParticipants;
-
     private LocalDateTime startDate;
-
     private String openChatUrl;
-
     private String studyIntroduce;
-
     private String studyGoal;
-
     private String status;
-
     private String joinStatus;
-
     private LocalDateTime endDate;
-
     private boolean likeStatus;
 
-    public StudyResponseDetailDto toDto(Study study) {
-        StudyResponseDetailDto studyResponseDetailDto = new StudyResponseDetailDto();
-        studyResponseDetailDto.setStudyId(study.getStudyId());
-        studyResponseDetailDto.setStudyType(study.getStudyType());
-        studyResponseDetailDto.setStudyDays(study.getStudyDays());
-        studyResponseDetailDto.setTimeZone(study.getTimeZone());
-        studyResponseDetailDto.setParticipants(study.getParticipants());
-        studyResponseDetailDto.setCurrentParticipants(study.getCurrentParticipants());
-        studyResponseDetailDto.setStartDate(study.getStartDate());
-        studyResponseDetailDto.setOpenChatUrl(study.getOpenChatUrl());
-        studyResponseDetailDto.setStudyIntroduce(study.getStudyIntroduce());
-        studyResponseDetailDto.setStudyGoal(study.getStudyGoal());
-        studyResponseDetailDto.setStatus(study.getStatus());
-        studyResponseDetailDto.setJoinStatus(study.getJoinStatus());
-        studyResponseDetailDto.setLikeStatus(study.getLikeStatus());
-        studyResponseDetailDto.setStudyName(study.getStudyName());
-        studyResponseDetailDto.setEndDate(study.getEndDate());
+    private Study study;
 
-        return studyResponseDetailDto;
+    public StudyResponseDetailDto toDto(Study study) {
+        return  new StudyResponseDetailDto(study);
+    }
+
+    public StudyResponseDetailDto(Study study) {
+        this.studyId = study.getStudyId();
+        this.studyType = study.getStudyType();
+        this.studyDays = study.getStudyDays();
+        this.timeZone = study.getTimeZone();
+        this.participants = study.getParticipants();
+        this.currentParticipants = study.getCurrentParticipants();
+        this.startDate = study.getStartDate();
+        this.openChatUrl = study.getOpenChatUrl();
+        this.studyIntroduce = study.getStudyIntroduce();
+        this.studyGoal = study.getStudyGoal();
+        this.status = study.getStatus();
+        this.joinStatus = study.getJoinStatus();
+//        this.likeStatus = study.getLikeStatus();
+        this.studyName = study.getStudyName();
+        this.endDate = study.getEndDate();
     }
 }

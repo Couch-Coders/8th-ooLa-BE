@@ -30,11 +30,12 @@ public class StudyMemberService {
     }
 
     // 스터디 개설시 리더정보 추가
-    public StudyMember studyLeaders(StudyMember studyMember) {
+    public StudyMember setStudyLeader(StudyMember studyMember) {
         return studyMemberRepository.saveAndFlush(studyMember);
     }
 
     // 스터디 참여 신청 (멤버)
+    @Transactional
     public StudyMemberResponseDto studyMemberEnroll(Member member, Long studyId) {
         Study study = studyRepository.findById(studyId).orElseThrow(() -> {
             throw new StudyNotFoundException();
@@ -46,14 +47,33 @@ public class StudyMemberService {
                 .member(member)
                 .build();
 
+        log.info("member techStack: {}" + member.getTechStack().toString());
+
         StudyMember entityResult = studyMemberRepository.saveAndFlush(studyMember);
 
         int updateParticipants = study.getCurrentParticipants() + 1;
         Study entity = study.updateCurrentParticipants( updateParticipants);
-        Study updated = studyRepository.saveAndFlush(entity);
+        //Study updated = studyRepository.saveAndFlush(entity);
         StudyMemberResponseDto studyMemberResponseDto = new StudyMemberResponseDto();
         studyMemberResponseDto.setMember(entityResult.getMember());
-        studyMemberResponseDto.setStudy(updated);
+        studyMemberResponseDto.setStudy(entity);
         return studyMemberResponseDto;
+    }
+
+    // 마이스터디 - 내가 개설한 스터디 조회
+    public List<StudyMember> mystudies(Member member) {
+        String role = "leader";
+        // role과 member의 uid 사용하여 검색
+        Long uid = member.getId();
+        return studyMemberRepositoryImpl.findAllByUidAndRole(uid, role);
+    }
+
+    // 마이스터디 - 내가 참여한 스터디 조회
+    public List<StudyMember> myJoinStudies(Member member) {
+        //uid, role
+        String role = "member";
+        Long uid = member.getId();
+        String status = "진행";
+        return studyMemberRepositoryImpl.findAllByUidAndRoleAndStatus(uid, role, status);
     }
 }

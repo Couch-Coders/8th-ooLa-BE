@@ -20,6 +20,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
@@ -82,7 +83,6 @@ class StudyControllerTest {
     @Test
     @DisplayName("로컬 study create 테스트")
     void createStudy() throws Exception {
-
         String sdate = "2022-06-10 00:00:00";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime startDateTime = LocalDateTime.parse(sdate, formatter);
@@ -94,7 +94,7 @@ class StudyControllerTest {
         StudyRequestDto studyRequestDto = new StudyRequestDto();
         studyRequestDto.setCreateUid(uid);
         studyRequestDto.setStudyType(studyType);
-        studyRequestDto.setStudyName("기술면접 테싀트");
+        studyRequestDto.setStudyName("기술면접 테스트3");
         studyRequestDto.setStudyDays(studyDays);
         studyRequestDto.setTimeZone(timeZone);
         studyRequestDto.setParticipants(participants);
@@ -261,7 +261,7 @@ class StudyControllerTest {
     @Test
     @DisplayName("스터디 수정 테스트")
     void updateStudy() throws Exception {
-        int studyId = 35;
+        int studyId = 42;
 
         String sdate = "2022-06-06 00:00:00";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -271,9 +271,8 @@ class StudyControllerTest {
         DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime endDateTime = LocalDateTime.parse(edate, formatter2);
 
-        studyName = "스터디 이름 수정6";
-        String status = "진행중";
-        currentParticipants = 5;
+
+        String goal = "React 격파";
 
         StudyRequestDto studyRequestDto = new StudyRequestDto();
         studyRequestDto.setCreateUid(uid);
@@ -286,10 +285,10 @@ class StudyControllerTest {
         studyRequestDto.setEndDate(endDateTime);
         studyRequestDto.setOpenChatUrl(openChatUrl);
         studyRequestDto.setStudyIntroduce(studyIntroduce);
-        studyRequestDto.setStudyGoal(studyGoal);
+        studyRequestDto.setStudyGoal(goal);
         studyRequestDto.setStatus(status);
         studyRequestDto.setJoinStatus("leader");
-        studyRequestDto.setCurrentParticipants(currentParticipants);
+        studyRequestDto.setCurrentParticipants(3);
 
 
         String studyDtoJson = objectMapper.writeValueAsString(studyRequestDto);
@@ -313,17 +312,17 @@ class StudyControllerTest {
     @Test
     @DisplayName("스터디 종료시 수정 테스트")
     void updateCompleteStudy() throws Exception {
-        int studyId = 35;
+        int studyId = 42;
 
         String sdate = "2022-06-06 00:00:00";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime startDateTime = LocalDateTime.parse(sdate, formatter);
 
-        String edate = "2022-10-06 00:00:00";
+        String edate = "2022-06-12 00:00:00";
         DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime endDateTime = LocalDateTime.parse(edate, formatter2);
 
-        String status = "완료로수정3";
+        String status = "완료";
 
         StudyRequestDto studyRequestDto = new StudyRequestDto();
         studyRequestDto.setCreateUid(uid);
@@ -612,13 +611,9 @@ class StudyControllerTest {
 
     @Test
     @DisplayName("스터디 참여 신청 테스트")
+    @Transactional
     void 스터디참여신청테스트() throws Exception {
-
-        // member_id 가 12인 사람 참여
-        // uid : abcabcabcddddeefg
-        // member_id가 5인 사람 참여
-        // uid eyJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJodHRwczovL2lkZW50aXR5dG9vbGtpdC5nb29nbGVhcGlzLmNvbS9nb29nbGUuaWRlbnRpdHkuaWRlbnRpdHl0b29sa2l0LnYxLklkZW50aXR5VG9vbGtpdCIsImV4cCI6MTY1NDUwNzM1NSwiaWF0IjoxNjU0NTAzNzU1LCJpc3MiOiJmaXJlYmFzZS1hZG1pbnNkay1qM3YzOUBvb2xhLW9hdXRoLmlhbS5nc2VydmljZWFjY291bnQuY29tIiwic3ViIjoiZmlyZWJhc2UtYWRtaW5zZGstajN2MzlAb29sYS1vYXV0aC5pYW0uZ3NlcnZpY2VhY2NvdW50LmNvbSIsInVpZCI6ImFiY2RlZmcxMjMifQ.iiJcZf4vekGaVAkQI7Kq54cl3csv9dH0g4GsuZkfMXoRKsQnBGP1qT3fJAj-6lOupBd3zVmKL2hZ6cIKQmNKOuAaVnin9DbfqjBBghC7hMDvlXWIElR4l2uN5qbrsSGJsKN4sMBvaNq50lwKYNyHMThZ20wFzsQZH1SK5kxRHxdBdaYSoVD-Ow57P3kt3dUzd5y7vz9THlQR5t8Uso6zWOiCBHyvR_4Fn_hDpuo-wjftjkgPiXmcfqpI5AlyhBBNcx7tFfiqbJ4o_pK879A4DUsph2NXZSGC0P0wwXvDOUWM1vGmXeGLT6Xs69fze2b-7rsuvJxqV1-fZ4qazZjLZA
-        Long studyId = 35L;
+        Long studyId = 42L;
 
         ResultActions resultActions = mockMvc.perform(
                 post("/studies/" + studyId + "/members")

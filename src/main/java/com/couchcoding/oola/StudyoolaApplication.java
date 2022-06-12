@@ -11,5 +11,4 @@ public class StudyoolaApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(StudyoolaApplication.class, args);
 	}
-
 }
