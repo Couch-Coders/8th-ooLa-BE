@@ -14,6 +14,10 @@ import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
+import java.util.Arrays;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(MockitoExtension.class)
@@ -27,7 +31,7 @@ class MemberServiceTest {
     private static final String photoUrl = "https://www.flaticon.com/free-icon/girl_146005";
     private static final String nickName = "testNickName5";
     private static final String introduce = "안녕하세요 자기소개 수정수정4";
-    private static String teckSteck = "NodeJS, React, Javascript, Python";
+    private static List<String> teckSteck = Arrays.asList("NodeJS", "React", "Javascript", "Python");
 
     @InjectMocks
     private MemberService memberService;
@@ -49,27 +53,17 @@ class MemberServiceTest {
                 .techStack(teckSteck)
                 .build();
 
-
-//
-//        MemberProfileResponseDto dto = MemberProfileResponseDto.builder()
-//                .member(member)
-//                .build();
-
-        Member result = null;
-
-        result =  memberRepository.findByUid(uid).orElseThrow(() -> {
+        Member result =  memberRepository.findByUid(uid).orElseThrow(() -> {
             throw new UsernameNotFoundException("해당 회원이 존재하지 않습니다.");
         });
 
         assertThat(member).isEqualTo(result);
-
     }
 
     @Test
     @DisplayName("회원 프로필 조회")
     void 프로필조회테스트() {
-        MemberProfileResponseDto memberProfileResponseDto = memberService.findByUid(uid);
-        System.out.println("memberProfile: " + memberProfileResponseDto.toString());
-        assertThat(memberProfileResponseDto.getTechStack()).isEqualTo(teckSteck);
+        Member member = memberService.findByUid(uid);
+        assertThat(member.getUid()).isEqualTo(uid);
     }
 }

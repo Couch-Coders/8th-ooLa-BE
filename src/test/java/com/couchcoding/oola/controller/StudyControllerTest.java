@@ -94,7 +94,7 @@ class StudyControllerTest {
         StudyRequestDto studyRequestDto = new StudyRequestDto();
         studyRequestDto.setCreateUid(uid);
         studyRequestDto.setStudyType(studyType);
-        studyRequestDto.setStudyName(studyName);
+        studyRequestDto.setStudyName("기술면접 테싀트");
         studyRequestDto.setStudyDays(studyDays);
         studyRequestDto.setTimeZone(timeZone);
         studyRequestDto.setParticipants(participants);
@@ -634,7 +634,7 @@ class StudyControllerTest {
     @DisplayName("스터디 참여자 조회 테스트")
     void 스터디참여자조회테스트() throws Exception {
 
-        Long studyId = 37L;
+        Long studyId = 35L;
 
         ResultActions resultActions = mockMvc.perform(
                 get("/studies/" + studyId + "/members")

@@ -55,10 +55,10 @@ public class StudyResponseDetailDto {
         studyResponseDetailDto.setTimeZone(study.getTimeZone());
         studyResponseDetailDto.setParticipants(study.getParticipants());
         studyResponseDetailDto.setCurrentParticipants(study.getCurrentParticipants());
-       studyResponseDetailDto.setStartDate(study.getStartDate());
-       studyResponseDetailDto.setOpenChatUrl(study.getOpenChatUrl());
-       studyResponseDetailDto.setStudyIntroduce(study.getStudyIntroduce());
-       studyResponseDetailDto.setStudyGoal(study.getStudyGoal());
+        studyResponseDetailDto.setStartDate(study.getStartDate());
+        studyResponseDetailDto.setOpenChatUrl(study.getOpenChatUrl());
+        studyResponseDetailDto.setStudyIntroduce(study.getStudyIntroduce());
+        studyResponseDetailDto.setStudyGoal(study.getStudyGoal());
         studyResponseDetailDto.setStatus(study.getStatus());
         studyResponseDetailDto.setJoinStatus(study.getJoinStatus());
         studyResponseDetailDto.setLikeStatus(study.getLikeStatus());

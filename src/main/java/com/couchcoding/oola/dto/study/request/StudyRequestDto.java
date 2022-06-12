@@ -68,7 +68,7 @@ public class StudyRequestDto {
 
     @Builder
     public Study toEntity(StudyRequestDto studyRequestDto , String uid, Member member) {
-        Study study = Study.builder()
+        return Study.builder()
                 .studyType(studyRequestDto.getStudyType())
                 .studyName(studyRequestDto.getStudyName())
                 .studyDays(studyRequestDto.getStudyDays())
@@ -83,12 +83,10 @@ public class StudyRequestDto {
                 .joinStatus(studyRequestDto.getJoinStatus())
                 .endDate(studyRequestDto.getEndDate())
                 .likeCount(0L)
-                .currentParticipants(studyRequestDto.getCurrentParticipants())
+                .currentParticipants(1)
                 .createUid(uid)
                 .likeStatus(studyRequestDto.getLikeStatus())
                 .createUid(studyRequestDto.getCreateUid())
                 .build();
-
-        return study;
     }
 }

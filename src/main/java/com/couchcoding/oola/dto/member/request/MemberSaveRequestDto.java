@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.validation.constraints.Email;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -23,7 +24,7 @@ public class MemberSaveRequestDto {
     private String photoUrl;
     private String nickName;
     private String introduce;
-    private List<String> techStack;
+    private List<String> techStack = new ArrayList<>();
 
     @Builder
     public MemberSaveRequestDto(String uid, String displayName, @Email String email, String blogUrl, String githubUrl, String photoUrl, String nickName, String introduce, List<String> techStack) {
@@ -39,7 +40,7 @@ public class MemberSaveRequestDto {
     }
 
     public Member toEntity(MemberSaveRequestDto dto , List<String> list) {
-        Member member = Member.builder()
+        return  Member.builder()
                 .uid(dto.getUid())
                 .displayName(dto.getDisplayName())
                 .email(dto.getEmail())
@@ -48,8 +49,7 @@ public class MemberSaveRequestDto {
                 .photoUrl(dto.getPhotoUrl())
                 .nickName(dto.getNickName())
                 .introduce(dto.getIntroduce())
-                .techStack(list.toString())
+                .techStack(list)
                 .build();
-        return member;
     }
 }

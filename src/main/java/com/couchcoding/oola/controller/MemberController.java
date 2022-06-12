@@ -1,6 +1,7 @@
 package com.couchcoding.oola.controller;
 
 import com.couchcoding.oola.dto.member.request.MemberSaveRequestDto;
+import com.couchcoding.oola.dto.member.response.MemberLoginResponseDto;
 import com.couchcoding.oola.dto.member.response.MemberProfileResponseDto;
 import com.couchcoding.oola.dto.member.response.MemberResponseDto;
 import com.couchcoding.oola.entity.Member;
@@ -8,6 +9,7 @@ import com.couchcoding.oola.entity.Member;
 import com.couchcoding.oola.service.MemberService;
 
 import com.couchcoding.oola.validation.MemberForbiddenException;
+import com.couchcoding.oola.validation.MemberNotFoundException;
 import com.couchcoding.oola.validation.ParameterBadRequestException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseToken;
@@ -31,13 +33,12 @@ import java.util.List;
 public class MemberController {
 
     private final FirebaseAuth firebaseAuth;
-
     private final MemberService memberService;
 
     @PostMapping("")
     public ResponseEntity<MemberResponseDto> registerMember(
-             @RequestHeader("Authorization") String header,
-             @RequestBody @Valid MemberSaveRequestDto memberSaveRequestDto) {
+            @RequestHeader("Authorization") String header,
+            @RequestBody @Valid MemberSaveRequestDto memberSaveRequestDto) {
         // TOKEN을 가져온다.
         FirebaseToken decodedToken = memberService.decodeToken(header);
 
@@ -51,13 +52,11 @@ public class MemberController {
                 .photoUrl(decodedToken.getPicture())
                 .nickName(memberSaveRequestDto.getNickName())
                 .introduce(memberSaveRequestDto.getIntroduce())
-                .techStack(memberSaveRequestDto.getTechStack().toString())
+                .techStack(memberSaveRequestDto.getTechStack())
                 .build();
-
 
         MemberResponseDto responseDto = memberService.register(
                 memberRegister);
-
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(responseDto);
@@ -66,32 +65,36 @@ public class MemberController {
     // 로컬 회원 가입 테스트용
     @PostMapping("/local")
     public ResponseEntity<MemberResponseDto> registerLocalMember(@RequestBody MemberSaveRequestDto memberSaveRequestDto) {
-       List<String> list = memberSaveRequestDto.getTechStack();
-       Member member = memberSaveRequestDto.toEntity(memberSaveRequestDto , list);
+        List<String> list = memberSaveRequestDto.getTechStack();
+        Member member = memberSaveRequestDto.toEntity(memberSaveRequestDto , list);
 
         MemberResponseDto responseDto = memberService.register(member);
-       return ResponseEntity.status(HttpStatus.CREATED)
-               .body(responseDto);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(responseDto);
     }
 
     // 로그인
     @GetMapping("/me")
-    public ResponseEntity<MemberResponseDto> login(Authentication authentication) {
+    public ResponseEntity<MemberLoginResponseDto> login(Authentication authentication) {
         Member member = ((Member) authentication.getPrincipal());
         if (member.equals(null)) {
-            return (ResponseEntity<MemberResponseDto>) ResponseEntity.notFound();
+            throw new MemberNotFoundException();
         }
-        log.info("member: {}", member.toString());
-        return ResponseEntity.ok(new MemberResponseDto(member));
+        return ResponseEntity.ok(new MemberLoginResponseDto(member.getUid() , member.getDisplayName(),
+                member.getEmail(), member.getBlogUrl(),
+                member.getGithubUrl(), member.getPhotoUrl()));
     }
 
     // 마이프로필 조회
     @GetMapping("/myprofile")
     public ResponseEntity<MemberProfileResponseDto> memberProfile(Authentication authentication) {
         Member member = ((Member) authentication.getPrincipal());
-
-        MemberProfileResponseDto memberProfileResponseDto = memberService.findByUid(member.getUid());
-        return ResponseEntity.ok(memberProfileResponseDto);
+        member = memberService.findByUid(member.getUid());
+        if (member.equals(null)) {
+            throw new MemberNotFoundException();
+        }
+        MemberProfileResponseDto memberProfileResponseDto = new MemberProfileResponseDto(member.getUid(), member.getTechStack(), member.getIntroduce(), member.getNickName(), member.getPhotoUrl() , member.getGithubUrl() , member.getBlogUrl(), member.getEmail());
+        return ResponseEntity.status(HttpStatus.OK).body(memberProfileResponseDto);
     }
 
     // 마이프로필 수정
@@ -103,12 +106,11 @@ public class MemberController {
 
         Member member = (Member) authentication.getPrincipal();
         String uid = member.getUid();
-
         if (!uid.equals(memberSaveRequestDto.getUid())) {
             throw new MemberForbiddenException();
         }
 
-        MemberResponseDto responseDto = new MemberResponseDto(memberService.memberProfileUpdate(member, memberSaveRequestDto));
+        MemberResponseDto responseDto = new MemberResponseDto(memberService.memberProfileUpdate(uid, memberSaveRequestDto));
         return ResponseEntity.ok(responseDto);
     }
 }
