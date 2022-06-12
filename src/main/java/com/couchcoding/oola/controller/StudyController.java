@@ -71,9 +71,7 @@ public class StudyController {
 
     // 스터디 단일 조회
     @GetMapping("/{studyId}")
-    public ResponseEntity<StudyResponseDetailDto> studyDetail(Authentication authentication, @PathVariable @Valid Long studyId, HttpServletRequest request) throws ParseException {
-        Member member = ((Member) authentication.getPrincipal());
-
+    public ResponseEntity<StudyResponseDetailDto> studyDetail( @PathVariable @Valid Long studyId, HttpServletRequest request) throws ParseException {
         Study study = studyService.studyDetail(studyId);
         StudyResponseDetailDto studyResponseDetailDto = new StudyResponseDetailDto();
         studyResponseDetailDto = studyResponseDetailDto.toDto(study);

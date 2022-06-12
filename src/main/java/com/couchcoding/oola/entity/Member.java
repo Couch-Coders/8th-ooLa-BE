@@ -56,7 +56,7 @@ public class Member implements UserDetails {
 
     @Column(name = "tech_stack")
     @NotNull(message = "기술스택은 필수 값 입니다")
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<String> techStack = new ArrayList<>();
 
     @Builder
