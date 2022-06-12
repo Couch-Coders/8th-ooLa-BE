@@ -24,7 +24,7 @@ public class MemberSaveRequestDto {
     private String photoUrl;
     private String nickName;
     private String introduce;
-    private List<String> techStack;
+    private List<String> techStack = new ArrayList<>();
 
     @Builder
     public MemberSaveRequestDto(String uid, String displayName, @Email String email, String blogUrl, String githubUrl, String photoUrl, String nickName, String introduce, List<String> techStack) {

@@ -37,8 +37,8 @@ public class MemberController {
 
     @PostMapping("")
     public ResponseEntity<MemberResponseDto> registerMember(
-             @RequestHeader("Authorization") String header,
-             @RequestBody @Valid MemberSaveRequestDto memberSaveRequestDto) {
+            @RequestHeader("Authorization") String header,
+            @RequestBody @Valid MemberSaveRequestDto memberSaveRequestDto) {
         // TOKEN을 가져온다.
         FirebaseToken decodedToken = memberService.decodeToken(header);
 
@@ -67,12 +67,12 @@ public class MemberController {
     // 로컬 회원 가입 테스트용
     @PostMapping("/local")
     public ResponseEntity<MemberResponseDto> registerLocalMember(@RequestBody MemberSaveRequestDto memberSaveRequestDto) {
-       List<String> list = memberSaveRequestDto.getTechStack();
-       Member member = memberSaveRequestDto.toEntity(memberSaveRequestDto , list);
+        List<String> list = memberSaveRequestDto.getTechStack();
+        Member member = memberSaveRequestDto.toEntity(memberSaveRequestDto , list);
 
         MemberResponseDto responseDto = memberService.register(member);
-       return ResponseEntity.status(HttpStatus.CREATED)
-               .body(responseDto);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(responseDto);
     }
 
     // 로그인

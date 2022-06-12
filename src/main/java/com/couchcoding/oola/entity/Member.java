@@ -60,9 +60,9 @@ public class Member implements UserDetails {
     @ElementCollection
     private List<String> techStack = new ArrayList<>();
 
-
     @Builder
-    public Member( String uid, @NotBlank(message = "displayName은 필수 값입니다") String displayName, @NotBlank(message = "email은 필수 값입니다") String email, String blogUrl, String githubUrl, @NotBlank(message = "photoUrl은 필수 값입니다") String photoUrl, @NotBlank(message = "nickName은 필수 값입니다") String nickName, @NotBlank(message = "introduce는 필수 값입니다") String introduce, @NotNull(message = "기술스택은 필수 값 입니다") List<String> techStack) {
+    public Member(Long id, String uid, @NotBlank(message = "displayName은 필수 값입니다") String displayName, @NotBlank(message = "email은 필수 값입니다") String email, String blogUrl, String githubUrl, @NotBlank(message = "photoUrl은 필수 값입니다") String photoUrl, @NotBlank(message = "nickName은 필수 값입니다") String nickName, @NotBlank(message = "introduce는 필수 값입니다") String introduce, @NotNull(message = "기술스택은 필수 값 입니다") List<String> techStack) {
+        this.id = id;
         this.uid = uid;
         this.displayName = displayName;
         this.email = email;

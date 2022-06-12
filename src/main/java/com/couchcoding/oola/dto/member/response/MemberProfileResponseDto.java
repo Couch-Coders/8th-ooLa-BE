@@ -15,8 +15,9 @@ import lombok.NoArgsConstructor;
 public class MemberProfileResponseDto {
     private Member member;
 
-    public Member profileUpdate(String uid, MemberSaveRequestDto memberSaveRequestDto) {
+    public Member profileUpdate(String uid, MemberSaveRequestDto memberSaveRequestDto, Long id) {
         Member member = Member.builder()
+                .id(id)
                 .uid(uid)
                 .techStack(memberSaveRequestDto.getTechStack())
                 .introduce(memberSaveRequestDto.getIntroduce())

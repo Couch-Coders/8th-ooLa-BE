@@ -54,7 +54,7 @@ class MemberControllerTest {
     private static final String photoUrl = "https://www.flaticon.com/free-icon/girl_146005";
     private static final String nickName = "testNickName5";
     private static final String introduce = "안녕하세요 자기소개";
-    private static List<String> techStack = Arrays.asList("NodeJS", "Typescript");
+    private static List<String> techStack = Arrays.asList("NodeJS", "Typescript", "HTML5", "CSS3");
 
 
     @Autowired
@@ -119,7 +119,6 @@ class MemberControllerTest {
                 .andExpect(jsonPath("githubUrl").value(githubUrl))
                 .andExpect(jsonPath("photoUrl").value(photoUrl));
     }
-
 
     @Test
     @DisplayName("로컬 회원 가입 테스트")
@@ -204,9 +203,7 @@ class MemberControllerTest {
                 .techStack(techStack)
                 .build();
 
-
         String memberDtoJson = objectMapper.writeValueAsString(memberSaveRequestDto);
-
         ResultActions resultActions = mockMvc.perform(
                 get("/members/myprofile")
                         .header("Authorization", "Bearer " + uid)
@@ -220,9 +217,6 @@ class MemberControllerTest {
         resultActions
                 .andExpect(status().isOk());
     }
-
-
-
 
     @Test
     @DisplayName("로컬환경에서 회원 마이프로필 수정 테스트")
