@@ -7,6 +7,7 @@ import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
 import lombok.RequiredArgsConstructor;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,6 +25,7 @@ import java.io.IOException;
 
 // 로그인 정보를 검증하는 JwtFilter
 // 헤더에 담긴 authorization 토큰을 검증하고 유저 정보를 확인한다
+@Slf4j
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter{
 
@@ -39,6 +41,7 @@ public class JwtFilter extends OncePerRequestFilter{
             String header = RequestUtil.getAuthorizationToken(request.getHeader("Authorization"));
             decodedToken = firebaseAuth.verifyIdToken(header);//디코딩한 firebase 토큰을 반환
         } catch (FirebaseAuthException | IllegalArgumentException | CustomException e) {
+            log.error("403 에러: {}" , e.getMessage());
             // ErrorMessage 응답 전송
             response.setStatus(HttpStatus.SC_UNAUTHORIZED);
             response.setContentType("application/json");
@@ -53,6 +56,7 @@ public class JwtFilter extends OncePerRequestFilter{
                     user, null, user.getAuthorities());//인증 객체 생성
             SecurityContextHolder.getContext().setAuthentication(authentication);//securityContextHolder 에 인증 객체 저장
         } catch(UsernameNotFoundException e){
+            log.error("404 에러: {}" , e.getMessage());
             // ErrorMessage 응답 전송
             response.setStatus(HttpStatus.SC_NOT_FOUND);
             response.setContentType("application/json");
