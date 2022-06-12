@@ -81,6 +81,7 @@ public class MemberController {
     @Transactional
     public ResponseEntity<MemberResponseDto> login(Authentication authentication) {
         Member member = ((Member) authentication.getPrincipal());
+        log.error(member.getAuthorities().toString());
         if (member.equals(null)) {
             throw new MemberNotFoundException();
         }

@@ -40,6 +40,7 @@ public class JwtFilter extends OncePerRequestFilter{
         try{
             String header = RequestUtil.getAuthorizationToken(request.getHeader("Authorization"));
             decodedToken = firebaseAuth.verifyIdToken(header);//디코딩한 firebase 토큰을 반환
+            log.error("토큰: {}" , decodedToken.toString());
         } catch (FirebaseAuthException | IllegalArgumentException | CustomException e) {
             log.error("403 에러: {}" , e.getMessage());
             // ErrorMessage 응답 전송
@@ -55,6 +56,8 @@ public class JwtFilter extends OncePerRequestFilter{
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                     user, null, user.getAuthorities());//인증 객체 생성
             SecurityContextHolder.getContext().setAuthentication(authentication);//securityContextHolder 에 인증 객체 저장
+            log.error(authentication.getPrincipal().toString());
+            log.error(user.getAuthorities().toString());
         } catch(UsernameNotFoundException e){
             log.error("404 에러: {}" , e.getMessage());
             // ErrorMessage 응답 전송
