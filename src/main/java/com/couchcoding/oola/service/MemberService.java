@@ -45,7 +45,7 @@ public class MemberService implements UserDetailsService  {
     public UserDetails loadUserByUsername(String uid) throws UsernameNotFoundException {
         UserDetails user = memberRepository.loadUserByUsername(uid);
         if (user == null) {
-            throw new LoginForbiddenException();
+            throw new MemberNotFoundException();
         }
         return user;
     }
