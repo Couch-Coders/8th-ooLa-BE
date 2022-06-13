@@ -43,11 +43,9 @@ public class MemberService implements UserDetailsService  {
 
     @Override
     public UserDetails loadUserByUsername(String uid) throws UsernameNotFoundException {
-        UserDetails user = memberRepository.loadUserByUsername(uid);
-        if (user == null) {
-            throw new MemberNotFoundException();
-        }
-        return user;
+        return memberRepository.findByUid(uid).orElseThrow(() -> {
+            throw new UsernameNotFoundException("해당 회원이 존재하지 않습니다");
+        });
     }
 
     // 회원등록

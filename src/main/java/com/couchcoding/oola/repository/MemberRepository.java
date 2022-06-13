@@ -14,5 +14,4 @@ public interface MemberRepository extends JpaRepository<Member, String> {
 
     Optional<Member> findByUid(String uid);
 
-    UserDetails loadUserByUsername(String uid) throws MemberNotFoundException;
 }
