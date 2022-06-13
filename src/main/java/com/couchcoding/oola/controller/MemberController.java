@@ -42,6 +42,7 @@ public class MemberController {
             @RequestBody @Valid MemberSaveRequestDto memberSaveRequestDto) {
         // TOKEN을 가져온다.
         FirebaseToken decodedToken = memberService.decodeToken(header);
+        log.debug("토큰: {}", decodedToken == null);
 
         // 사용자를 등록한다.
         Member memberRegister = Member.builder()
