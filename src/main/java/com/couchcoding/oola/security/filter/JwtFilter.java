@@ -40,9 +40,9 @@ public class JwtFilter extends OncePerRequestFilter{
         try{
             String header = RequestUtil.getAuthorizationToken(request.getHeader("Authorization"));
             decodedToken = firebaseAuth.verifyIdToken(header);//디코딩한 firebase 토큰을 반환
-            log.error("토큰: {}" , decodedToken.toString());
+            log.debug("토큰: {}" , decodedToken == null);
         } catch (FirebaseAuthException | IllegalArgumentException | CustomException e) {
-            log.error("403 에러: {}" , e.getMessage());
+            log.debug("403 에러: {}" , e.getMessage());
             // ErrorMessage 응답 전송
             response.setStatus(HttpStatus.SC_UNAUTHORIZED);
             response.setContentType("application/json");
@@ -53,15 +53,17 @@ public class JwtFilter extends OncePerRequestFilter{
         // User를 가져와 SecurityContext에 저장한다.
         try{
             UserDetails user = userDetailsService.loadUserByUsername(decodedToken.getUid());//uid 를 통해 회원 엔티티 조회
-            log.error(user.getAuthorities().toString());
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());//인증 객체 생성
-            log.error("authentication: {}", authentication.getPrincipal().toString());
-            log.error("context: {}", SecurityContextHolder.getContext().toString());
-            log.error("getAuthentication 인증되었는지 여부: {}", SecurityContextHolder.getContext().getAuthentication().isAuthenticated());
-            log.error("getAuthentication.toString: {}", SecurityContextHolder.getContext().getAuthentication().toString());
+            log.debug("null 여부: {}", user == null);
+            log.debug("authentication null 여부: {}", authentication == null);
+            log.debug("authentication: {}", authentication.getPrincipal());
+            log.debug("context: {}", SecurityContextHolder.getContext());
+            log.debug("getAuthentication 인증되었는지 여부: {}", SecurityContextHolder.getContext().getAuthentication().isAuthenticated());
+            log.debug("getAuthentication.toString: {}", SecurityContextHolder.getContext().getAuthentication());
+            log.debug("getContext null 여부: {}", SecurityContextHolder.getContext() == null);
             SecurityContextHolder.getContext().setAuthentication(authentication);//securityContextHolder 에 인증 객체 저장
         } catch(UsernameNotFoundException e){
-            log.error("404 에러: {}" , e.getMessage());
+            log.debug("404 에러: {}" , e.getMessage());
             // ErrorMessage 응답 전송
             response.setStatus(HttpStatus.SC_NOT_FOUND);
             response.setContentType("application/json");
