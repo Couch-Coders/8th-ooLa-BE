@@ -55,6 +55,8 @@ public class StudyController {
                 .study(studyCreate)
                 .role("leader")
                 .build();
+
+        log.info("studyMember: {}", studyMember);
         StudyResponseDto responseDto = studyService.createStudy(studyCreate);
         studyMemberService.setStudyLeader(studyMember);
         return ResponseEntity

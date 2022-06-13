@@ -41,6 +41,10 @@ public class StudyMemberService {
             throw new StudyNotFoundException();
         });
 
+        int updateParticipants = study.getCurrentParticipants() + 1;
+        Study entity = study.updateCurrentParticipants( updateParticipants);
+        studyRepository.saveAndFlush(entity);
+
         StudyMember studyMember = StudyMember.builder()
                 .study(study)
                 .role("member")
@@ -49,11 +53,9 @@ public class StudyMemberService {
 
         log.info("member techStack: {}" + member.getTechStack().toString());
 
-        StudyMember entityResult = studyMemberRepository.saveAndFlush(studyMember);
-        log.info("entityResult: {}" + entityResult);
+        StudyMember entityResult = setStudyLeader(studyMember);
 
-        int updateParticipants = study.getCurrentParticipants() + 1;
-        Study entity = study.updateCurrentParticipants( updateParticipants);
+
         StudyMemberResponseDto studyMemberResponseDto = new StudyMemberResponseDto();
         studyMemberResponseDto.setMember(entityResult.getMember());
         studyMemberResponseDto.setStudy(entity);
