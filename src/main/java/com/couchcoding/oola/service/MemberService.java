@@ -8,6 +8,7 @@ import com.couchcoding.oola.repository.MemberRepository;
 import com.couchcoding.oola.repository.impl.MemberRepositoryImpl;
 import com.couchcoding.oola.util.RequestUtil;
 import com.couchcoding.oola.validation.MemberForbiddenException;
+import com.couchcoding.oola.validation.MemberNotFoundException;
 import com.couchcoding.oola.validation.error.CustomException;
 import com.couchcoding.oola.validation.error.ErrorCode;
 import com.google.firebase.auth.FirebaseAuth;
@@ -40,7 +41,11 @@ public class MemberService implements UserDetailsService {
     // spring security에서 사용자의 정보를 담는 인터페이스
     @Override
     public UserDetails loadUserByUsername(String uid) throws UsernameNotFoundException {
-        return memberRepositoryImpl.findByUid(uid);
+        UserDetails user = memberRepositoryImpl.findByUid(uid);
+        if (user == null) {
+            throw new MemberNotFoundException();
+        }
+        return user;
     }
 
     // 회원등록
