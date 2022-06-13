@@ -14,12 +14,12 @@ import static com.couchcoding.oola.entity.QMember.*;
 
 
 @Repository
-public class MemberRepositoryImpl extends QuerydslRepositorySupport implements MemberRepositoryCustom {
+public class JpaQueryMemberRepository extends QuerydslRepositorySupport implements MemberRepositoryCustom {
 
     @Autowired
     private JPAQueryFactory queryFactory;
 
-    public MemberRepositoryImpl() {
+    public JpaQueryMemberRepository() {
         super(Member.class);
     }
 

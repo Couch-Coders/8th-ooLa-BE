@@ -5,7 +5,7 @@ import com.couchcoding.oola.dto.member.response.MemberProfileResponseDto;
 import com.couchcoding.oola.dto.member.response.MemberResponseDto;
 import com.couchcoding.oola.entity.Member;
 import com.couchcoding.oola.repository.MemberRepository;
-import com.couchcoding.oola.repository.impl.MemberRepositoryImpl;
+import com.couchcoding.oola.repository.impl.JpaQueryMemberRepository;
 import com.couchcoding.oola.util.RequestUtil;
 import com.couchcoding.oola.validation.LoginForbiddenException;
 import com.couchcoding.oola.validation.MemberForbiddenException;
@@ -35,7 +35,7 @@ import java.util.Optional;
 public class MemberService implements UserDetailsService  {
 
     private final MemberRepository memberRepository;
-    //private final MemberRepositoryImpl memberRepositoryImpl;
+    private final JpaQueryMemberRepository memberRepositoryImpl;
     private final FirebaseAuth firebaseAuth;
 
     // 유저의 정보를 불러와서 UserDetails로 반환해준다
