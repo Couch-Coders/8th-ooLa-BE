@@ -2,9 +2,7 @@ package com.couchcoding.oola.repository.impl;
 
 import com.couchcoding.oola.entity.Member;
 import com.couchcoding.oola.entity.QMember;
-import com.couchcoding.oola.entity.Study;
 import com.couchcoding.oola.repository.MemberRepositoryCustom;
-import com.couchcoding.oola.repository.StudyRepositoryCustom;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -16,12 +14,12 @@ import static com.couchcoding.oola.entity.QMember.*;
 
 
 @Repository
-public class MemberRepositoryImpl extends QuerydslRepositorySupport implements MemberRepositoryCustom {
+public class JpaQueryMemberRepository extends QuerydslRepositorySupport implements MemberRepositoryCustom {
 
     @Autowired
     private JPAQueryFactory queryFactory;
 
-    public MemberRepositoryImpl() {
+    public JpaQueryMemberRepository() {
         super(Member.class);
     }
 
@@ -30,7 +28,6 @@ public class MemberRepositoryImpl extends QuerydslRepositorySupport implements M
         return  queryFactory.selectFrom(QMember.member)
                 .where(eqUid(uid)).fetchOne();
     }
-
 
     private BooleanExpression eqUid(String uid) {
         if (uid == null || uid.isEmpty()) {

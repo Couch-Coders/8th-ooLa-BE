@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,6 +40,8 @@ public class MemberController {
     public ResponseEntity<MemberResponseDto> registerMember(
             @RequestHeader("Authorization") String header,
             @RequestBody @Valid MemberSaveRequestDto memberSaveRequestDto) {
+
+        log.debug("헤더: {}", header);
         // TOKEN을 가져온다.
         FirebaseToken decodedToken = memberService.decodeToken(header);
 
@@ -75,12 +78,10 @@ public class MemberController {
 
     // 로그인
     @GetMapping("/me")
-    public ResponseEntity<MemberLoginResponseDto> login(Authentication authentication) {
+    public ResponseEntity<MemberResponseDto> login(Authentication authentication) {
         Member member = ((Member) authentication.getPrincipal());
-        if (member.equals(null)) {
-            throw new MemberNotFoundException();
-        }
-        return ResponseEntity.ok(new MemberLoginResponseDto(member));
+        log.info("member: {}", member);
+        return ResponseEntity.ok(new MemberResponseDto(member));
     }
 
     // 마이프로필 조회
