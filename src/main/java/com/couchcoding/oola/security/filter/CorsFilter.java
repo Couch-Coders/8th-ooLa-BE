@@ -45,9 +45,9 @@ public class CorsFilter implements Filter {
         res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
 
         if("OPTIONS".equalsIgnoreCase(req.getMethod())) {
-            log.info("host : " + req.getRemoteHost());
-            log.info("addr : " + req.getRemoteAddr());
-            log.info("port : " + req.getRemotePort());
+            log.debug("host : " + req.getRemoteHost());
+            log.debug("addr : " + req.getRemoteAddr());
+            log.debug("port : " + req.getRemotePort());
             res.setStatus(HttpServletResponse.SC_OK);
         }else {
             chain.doFilter(req, res);
