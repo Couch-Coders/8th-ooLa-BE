@@ -31,17 +31,18 @@ import java.util.Optional;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class MemberService implements UserDetailsService {
+public class MemberService implements UserDetailsService  {
 
     private final MemberRepository memberRepository;
-    private final MemberRepositoryImpl memberRepositoryImpl;
+    //private final MemberRepositoryImpl memberRepositoryImpl;
     private final FirebaseAuth firebaseAuth;
 
     // 유저의 정보를 불러와서 UserDetails로 반환해준다
     // spring security에서 사용자의 정보를 담는 인터페이스
+
     @Override
     public UserDetails loadUserByUsername(String uid) throws UsernameNotFoundException {
-        UserDetails user = memberRepositoryImpl.findByUid(uid);
+        UserDetails user = memberRepository.loadUserByUsername(uid);
         if (user == null) {
             throw new MemberNotFoundException();
         }
@@ -79,7 +80,9 @@ public class MemberService implements UserDetailsService {
     // 회원 단건 조회
     public MemberProfileResponseDto findByUid(String uid) {
         Member member = null;
-        member =  memberRepositoryImpl.findByUid(uid);
+        member =  memberRepository.findByUid(uid).orElseThrow((() -> {
+            throw new MemberNotFoundException();
+        }));
         return new MemberProfileResponseDto(member);
     }
 
@@ -96,4 +99,6 @@ public class MemberService implements UserDetailsService {
         updated = memberRepository.save(updated);
         return updated;
     }
+
+
 }

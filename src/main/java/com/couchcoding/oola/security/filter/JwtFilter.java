@@ -1,6 +1,7 @@
 package com.couchcoding.oola.security.filter;
 
 import com.couchcoding.oola.util.RequestUtil;
+import com.couchcoding.oola.validation.MemberNotFoundException;
 import com.couchcoding.oola.validation.error.CustomException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
@@ -54,6 +55,9 @@ public class JwtFilter extends OncePerRequestFilter{
         try{
             log.info("uid: {}", decodedToken.getUid());
             UserDetails user = userDetailsService.loadUserByUsername(decodedToken.getUid());//uid 를 통해 회원 엔티티 조회
+            if (user == null) {
+                throw new MemberNotFoundException();
+            }
             log.info("user: {}", user);
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());//인증 객체 생성
             log.debug("user.getAuthorities: {}", user.getAuthorities());
