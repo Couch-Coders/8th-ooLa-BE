@@ -14,6 +14,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -26,6 +27,7 @@ import java.util.Optional;
 
 // UserDetailsService 인터페이스를 구현한다
 // spring security에서 유저의 정보를 가져오기 위해 사용
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class MemberService implements UserDetailsService {
@@ -62,6 +64,7 @@ public class MemberService implements UserDetailsService {
             String token = RequestUtil.getAuthorizationToken(header);
             return firebaseAuth.verifyIdToken(token);
         } catch (IllegalArgumentException | FirebaseAuthException e) {
+            log.debug("저희 사이트 로그인시 헤더에서 토큰을 꺼낼때 예외발생: {}", e.getMessage());
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
                     "{\"code\":\"INVALID_TOKEN\", \"message\":\"" + e.getMessage() + "\"}");
         }
