@@ -83,7 +83,7 @@ public class MemberController {
     @Transactional
     public ResponseEntity<MemberResponseDto> login(Authentication authentication) {
         Member member = ((Member) authentication.getPrincipal());
-        log.debug("member: {}", member);
+        log.info("member: {}", member);
         return ResponseEntity.ok(new MemberResponseDto(member));
     }
 
