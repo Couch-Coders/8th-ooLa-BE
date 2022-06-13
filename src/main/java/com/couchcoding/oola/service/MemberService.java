@@ -7,6 +7,7 @@ import com.couchcoding.oola.entity.Member;
 import com.couchcoding.oola.repository.MemberRepository;
 import com.couchcoding.oola.repository.impl.MemberRepositoryImpl;
 import com.couchcoding.oola.util.RequestUtil;
+import com.couchcoding.oola.validation.LoginForbiddenException;
 import com.couchcoding.oola.validation.MemberForbiddenException;
 import com.couchcoding.oola.validation.MemberNotFoundException;
 import com.couchcoding.oola.validation.error.CustomException;
@@ -44,7 +45,7 @@ public class MemberService implements UserDetailsService  {
     public UserDetails loadUserByUsername(String uid) throws UsernameNotFoundException {
         UserDetails user = memberRepository.loadUserByUsername(uid);
         if (user == null) {
-            throw new MemberNotFoundException();
+            throw new LoginForbiddenException();
         }
         return user;
     }
