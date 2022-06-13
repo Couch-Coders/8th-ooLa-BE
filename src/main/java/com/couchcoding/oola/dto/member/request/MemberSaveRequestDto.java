@@ -40,7 +40,7 @@ public class MemberSaveRequestDto {
     }
 
     public Member toEntity(MemberSaveRequestDto dto , List<String> list) {
-        Member member = Member.builder()
+        return  Member.builder()
                 .uid(dto.getUid())
                 .displayName(dto.getDisplayName())
                 .email(dto.getEmail())
@@ -51,6 +51,5 @@ public class MemberSaveRequestDto {
                 .introduce(dto.getIntroduce())
                 .techStack(list)
                 .build();
-        return member;
     }
 }

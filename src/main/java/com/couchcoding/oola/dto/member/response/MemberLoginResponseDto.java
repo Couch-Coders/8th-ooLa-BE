@@ -1,31 +1,28 @@
 package com.couchcoding.oola.dto.member.response;
 
 import com.couchcoding.oola.entity.Member;
-
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
-
-import java.util.*;
-import javax.persistence.ElementCollection;
 
 @Getter
 @ToString
-public class MemberResponseDto {
+@NoArgsConstructor
+public class MemberLoginResponseDto {
     private String uid;
-    private String displayName;
     private String email;
     private String blogUrl;
     private String githubUrl;
     private String photoUrl;
-    private List<String> techStack;
+    private String nickName;
 
-    public MemberResponseDto(Member member) {
+    public MemberLoginResponseDto(Member member) {
         this.uid = member.getUid();
-        this.displayName = member.getDisplayName();
         this.email = member.getEmail();
         this.blogUrl = member.getBlogUrl();
         this.githubUrl = member.getGithubUrl();
         this.photoUrl = member.getPhotoUrl();
-        this.techStack = member.getTechStack();
+        this.nickName = member.getNickName();
     }
 }

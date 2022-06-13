@@ -3,16 +3,14 @@ package com.couchcoding.oola.controller;
 import com.couchcoding.oola.dto.study.request.StudyRequestDto;
 import com.couchcoding.oola.dto.study.response.StudyResponseDetailDto;
 import com.couchcoding.oola.dto.study.response.StudyResponseDto;
+import com.couchcoding.oola.dto.studymember.response.StudyMemberResponseDto;
 import com.couchcoding.oola.entity.Member;
 import com.couchcoding.oola.entity.Study;;
 import com.couchcoding.oola.entity.StudyMember;
 import com.couchcoding.oola.service.StudyMemberService;
 import com.couchcoding.oola.service.StudyService;
 
-import com.couchcoding.oola.validation.MemberNotFoundException;
-import com.couchcoding.oola.validation.MemberUnAuthorizedException;
-import com.couchcoding.oola.validation.ParameterBadRequestException;
-import com.couchcoding.oola.validation.StudySearchNotFoundException;
+import com.couchcoding.oola.validation.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -47,14 +45,9 @@ public class StudyController {
             throw  new ParameterBadRequestException(result);
         }
 
-        Member member = ((Member) authentication.getPrincipal());
-        String uid = member.getUid();
-        if (uid.equals(null)) {
-            throw new MemberNotFoundException();
-        }
-
         // 스터디 생성
-        Study studyCreate = studyRequestDto.toEntity(studyRequestDto, uid, member);
+        Member member = ((Member) authentication.getPrincipal());
+        Study studyCreate = studyRequestDto.toEntity(studyRequestDto, member);
 
         // 스터디에 참여하는 멤버 생성
         StudyMember studyMember = StudyMember.builder()
@@ -63,7 +56,7 @@ public class StudyController {
                 .role("leader")
                 .build();
         StudyResponseDto responseDto = studyService.createStudy(studyCreate);
-
+        studyMemberService.setStudyLeader(studyMember);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(responseDto);
@@ -83,9 +76,7 @@ public class StudyController {
     public Page<Study> studySearch(Pageable pageable, @RequestParam(value = "studyType", required = false ) String studyType,
                                    @RequestParam( value = "studyDays", required = false)  String studyDays, @RequestParam(value = "timeZone", required = false) String timeZone
             , @RequestParam(value = "status",required = false)  String status, @RequestParam(value = "studyName", required = false) String studyName) {
-
-        Page<Study> searchResult = null;
-        searchResult = studyService.findByAllCategory(pageable, studyType, studyDays, timeZone, status , studyName);
+        Page<Study> searchResult = studyService.findByAllCategory(pageable, studyType, studyDays, timeZone, status , studyName);
         if (searchResult.equals(null)) {
             throw new StudySearchNotFoundException();
         }
@@ -100,10 +91,7 @@ public class StudyController {
         }
 
         Member member = ((Member) authentication.getPrincipal());
-        String uid = member.getUid();
-
-        Study updated = studyService.studyUpdate(studyId, studyRequestDto, uid);
-
+        Study updated = studyService.studyUpdate(studyId, studyRequestDto, member);
         StudyResponseDetailDto studyResponseDetailDto = studyService.toDto(updated);
         return ResponseEntity.status(HttpStatus.OK).body(studyResponseDetailDto);
     }
@@ -116,13 +104,7 @@ public class StudyController {
         }
 
         Member member = ((Member) authentication.getPrincipal());
-        String uid = member.getUid();
-        if (uid.equals(null)) {
-            throw new MemberUnAuthorizedException();
-        }
-
-        Study updated = studyService.studyComplete(studyId, uid , studyRequestDto);
-
+        Study updated = studyService.studyComplete(studyId, member , studyRequestDto);
         StudyResponseDetailDto studyResponseDetailDto = studyService.toDto(updated);
         return ResponseEntity.status(HttpStatus.OK).body(studyResponseDetailDto);
     }
@@ -131,5 +113,14 @@ public class StudyController {
     @GetMapping("/{studyId}/members")
     public List<StudyMember> stduyMembers(@PathVariable Long studyId) {
         return  studyMemberService.studyMembers(studyId);
+    }
+
+    // 스터디 참여 신청
+    @PostMapping("/{studyId}/members")
+    public ResponseEntity<StudyMemberResponseDto> studyMemberEnroll(Authentication authentication, @PathVariable Long studyId) {
+        Member member = (Member) authentication.getPrincipal();
+        log.info("id: {}" , member.getId());
+        StudyMemberResponseDto studyMemberResponseDto = studyMemberService.studyMemberEnroll(member , studyId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(studyMemberResponseDto);
     }
 }

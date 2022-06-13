@@ -1,6 +1,7 @@
 package com.couchcoding.oola.controller;
 
 import com.couchcoding.oola.dto.member.request.MemberSaveRequestDto;
+import com.couchcoding.oola.dto.member.response.MemberLoginResponseDto;
 import com.couchcoding.oola.dto.member.response.MemberProfileResponseDto;
 import com.couchcoding.oola.dto.member.response.MemberResponseDto;
 import com.couchcoding.oola.entity.Member;
@@ -33,7 +34,6 @@ import java.util.List;
 public class MemberController {
 
     private final FirebaseAuth firebaseAuth;
-
     private final MemberService memberService;
 
     @PostMapping("")
@@ -58,10 +58,8 @@ public class MemberController {
                 .techStack(memberSaveRequestDto.getTechStack())
                 .build();
 
-
         MemberResponseDto responseDto = memberService.register(
                 memberRegister);
-
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(responseDto);
@@ -80,7 +78,6 @@ public class MemberController {
 
     // 로그인
     @GetMapping("/me")
-    @Transactional
     public ResponseEntity<MemberResponseDto> login(Authentication authentication) {
         Member member = ((Member) authentication.getPrincipal());
         log.info("member: {}", member);
@@ -91,8 +88,8 @@ public class MemberController {
     @GetMapping("/myprofile")
     public ResponseEntity<MemberProfileResponseDto> memberProfile(Authentication authentication) {
         Member member = ((Member) authentication.getPrincipal());
-        MemberProfileResponseDto memberProfileResponseDto = memberService.findByUid(member.getUid());
-        return ResponseEntity.ok(memberProfileResponseDto);
+        MemberProfileResponseDto memberProfileResponseDto = new MemberProfileResponseDto(member);
+        return ResponseEntity.status(HttpStatus.OK).body(memberProfileResponseDto);
     }
 
     // 마이프로필 수정
@@ -104,7 +101,6 @@ public class MemberController {
 
         Member member = (Member) authentication.getPrincipal();
         String uid = member.getUid();
-
         if (!uid.equals(memberSaveRequestDto.getUid())) {
             throw new MemberForbiddenException();
         }

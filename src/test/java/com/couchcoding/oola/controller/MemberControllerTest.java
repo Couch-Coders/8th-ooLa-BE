@@ -24,6 +24,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.Filter;
@@ -46,16 +47,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 class MemberControllerTest {
 
     //private static final String uid = "DpKLjE6P5bRd4aAqWzl1gnbaKHr1";
-    private static final String uid = "qwert";
-    private static final String displayName = "동홍길";
-    private static final String email = "test5@gmail.com";
-    private static final String blogUrl = "https://junior-developer-myc.tistory.com/";
-    private static final String githubUrl = "https://github.com/meeyoungchoi";
-    private static final String photoUrl = "https://www.flaticon.com/free-icon/girl_146005";
-    private static final String nickName = "testNickName5";
+    private static final String uid = "aaaaaaaaaa";
+    private static final String displayName = "asdfdf";
+    private static final String email = "goodlife1359@gmail.com";
+    private static final String blogUrl = "ttps://shiningjean.tistory.com/35";
+    private static final String githubUrl = "https://shiningjean.tistory.com/35";
+    private static final String photoUrl = "https://lh3.googleusercontent.com/a/AATXAJy-nxiYfNUyNVazka8hszGGVnqO7sSKBX5TPs40=s96-c";
+    private static final String nickName = "트릴로니";
     private static final String introduce = "안녕하세요 자기소개";
-    private static List<String> techStack = Arrays.asList("NodeJS", "Typescript", "HTML5", "CSS3");
-
+    private static List<String> techStack = Arrays.asList("NodeJS", "Typescript" , "HTML5", "CSS3", "Python");
 
     @Autowired
     private WebApplicationContext wac;
@@ -180,36 +180,19 @@ class MemberControllerTest {
                 .andDo(print());
         resultActions
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("uid").value(uid))
-                .andExpect(jsonPath("email").value(email))
-                .andExpect(jsonPath("displayName").value(displayName))
-                .andExpect(jsonPath("blogUrl").value(blogUrl))
-                .andExpect(jsonPath("githubUrl").value(githubUrl))
-                .andExpect(jsonPath("photoUrl").value(photoUrl));
+                .andExpect(jsonPath("uid").value(uid));
     }
-
+    
+    
     @Test
-    @DisplayName("로컬환경에서 회원 마이프로필 조회 테스트")
+    @DisplayName("회원 조회 테스트")
+    @Transactional
     void 마이프로필_조회_테스트() throws Exception {
-        MemberSaveRequestDto memberSaveRequestDto = MemberSaveRequestDto.builder()
-                .uid(uid)
-                .email(email)
-                .githubUrl(githubUrl)
-                .blogUrl(blogUrl)
-                .displayName(displayName)
-                .photoUrl(photoUrl)
-                .nickName(nickName)
-                .introduce(introduce)
-                .techStack(techStack)
-                .build();
-
-        String memberDtoJson = objectMapper.writeValueAsString(memberSaveRequestDto);
         ResultActions resultActions = mockMvc.perform(
                 get("/members/myprofile")
                         .header("Authorization", "Bearer " + uid)
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding(StandardCharsets.UTF_8)
-                        .content(memberDtoJson)
                         .accept(MediaType.APPLICATION_JSON)
         )
                 .andDo(print());

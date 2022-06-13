@@ -35,12 +35,11 @@ import java.util.Optional;
 public class MemberService implements UserDetailsService  {
 
     private final MemberRepository memberRepository;
-    private final JpaQueryMemberRepository memberRepositoryImpl;
+    private final JpaQueryMemberRepository jpaQueryMemberRepository;
     private final FirebaseAuth firebaseAuth;
 
     // 유저의 정보를 불러와서 UserDetails로 반환해준다
     // spring security에서 사용자의 정보를 담는 인터페이스
-
     @Override
     public UserDetails loadUserByUsername(String uid) throws UsernameNotFoundException {
         return memberRepository.findByUid(uid).orElseThrow(() -> {
@@ -77,27 +76,20 @@ public class MemberService implements UserDetailsService  {
     }
 
     // 회원 단건 조회
-    public MemberProfileResponseDto findByUid(String uid) {
-        Member member = null;
-        member =  memberRepository.findByUid(uid).orElseThrow((() -> {
-            throw new MemberNotFoundException();
-        }));
-        return new MemberProfileResponseDto(member);
+    public Member findByUid(String uid) {
+        return jpaQueryMemberRepository.findByUid(uid);
     }
 
     // 마이프로필 수정
     @Transactional
     public Member memberProfileUpdate(String uid, MemberSaveRequestDto memberSaveRequestDto) {
-        Member updated = null;
         if (!uid.equals(memberSaveRequestDto.getUid())) {
             throw new MemberForbiddenException();
         }
 
-        MemberProfileResponseDto result = findByUid(uid);
-        updated = result.profileUpdate(uid, memberSaveRequestDto ,result.getMember().getId());
-        updated = memberRepository.save(updated);
-        return updated;
+        Member entity = findByUid(uid);
+        Member memberUpdated = entity.profileUpdate(uid, entity.getId(), memberSaveRequestDto);
+        memberUpdated = memberRepository.save(memberUpdated);
+        return memberUpdated;
     }
-
-
 }

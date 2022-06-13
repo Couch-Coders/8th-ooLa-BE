@@ -4,10 +4,7 @@ import com.couchcoding.oola.entity.Member;
 import com.couchcoding.oola.entity.Study;
 import com.couchcoding.oola.entity.StudyMember;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.validation.constraints.NotBlank;
@@ -17,8 +14,10 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
+@Setter
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 @Slf4j
 @ToString
 public class StudyRequestDto {
@@ -59,30 +58,17 @@ public class StudyRequestDto {
 
     private String joinStatus;
 
+    private String createUid;
+
     private Integer currentParticipants;
 
     private Boolean likeStatus;
 
-    @Builder
-    public StudyRequestDto(@NotBlank(message = "studyType은 필수 값입니다") String studyType, @NotBlank(message = "studyName은 필수 값입니다") String studyName, @NotBlank(message = "studydays는 필수 값입니다") String studyDays, @NotBlank(message = "timeZone은 필수 값입니다") String timeZone, @NotNull(message = "participants은 필수 값입니다") int participants, @NotNull(message = "startDate은 필수 값입니다") LocalDateTime startDate, @NotNull(message = "endDate는 필수 값입니다") LocalDateTime endDate, @NotBlank(message = "openChatUrl은 필수 값입니다") String openChatUrl, @NotBlank(message = "studyIntroduce은 필수 값입니다") String studyIntroduce, @NotBlank(message = "studyGoal은 필수 값입니다") String studyGoal, String status, String joinStatus, Integer currentParticipants, Boolean likeStatus) {
-        this.studyType = studyType;
-        this.studyName = studyName;
-        this.studyDays = studyDays;
-        this.timeZone = timeZone;
-        this.participants = participants;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.openChatUrl = openChatUrl;
-        this.studyIntroduce = studyIntroduce;
-        this.studyGoal = studyGoal;
-        this.status = status;
-        this.joinStatus = joinStatus;
-        this.currentParticipants = currentParticipants;
-        this.likeStatus = likeStatus;
-    }
+    private Boolean participantStatus;
 
-    public Study toEntity(StudyRequestDto studyRequestDto , String uid, Member member) {
-        Study study = Study.builder()
+    @Builder
+    public Study toEntity(StudyRequestDto studyRequestDto , Member member) {
+        return Study.builder()
                 .studyType(studyRequestDto.getStudyType())
                 .studyName(studyRequestDto.getStudyName())
                 .studyDays(studyRequestDto.getStudyDays())
@@ -98,10 +84,9 @@ public class StudyRequestDto {
                 .endDate(studyRequestDto.getEndDate())
                 .likeCount(0L)
                 .currentParticipants(1)
-                .createUid(uid)
+                .createUid(member.getUid())
                 .likeStatus(studyRequestDto.getLikeStatus())
+                .createUid(studyRequestDto.getCreateUid())
                 .build();
-
-        return study;
     }
 }

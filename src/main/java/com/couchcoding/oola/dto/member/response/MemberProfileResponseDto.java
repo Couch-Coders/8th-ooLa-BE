@@ -1,34 +1,34 @@
 package com.couchcoding.oola.dto.member.response;
 
-import com.couchcoding.oola.dto.member.request.MemberSaveRequestDto;
 import com.couchcoding.oola.entity.Member;
-
 import lombok.AllArgsConstructor;
-import lombok.Builder;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class MemberProfileResponseDto {
-    private Member member;
+    private String uid;
+    private List<String> techStack;
+    private String introduce;
+    private String nickName;
+    private String photoUrl;
+    private String githubUrl;
+    private String blogUrl;
+    private String email;
 
-    public Member profileUpdate(String uid, MemberSaveRequestDto memberSaveRequestDto, Long id) {
-        Member member = Member.builder()
-                .id(id)
-                .uid(uid)
-                .techStack(memberSaveRequestDto.getTechStack())
-                .introduce(memberSaveRequestDto.getIntroduce())
-                .nickName(memberSaveRequestDto.getNickName())
-                .photoUrl(memberSaveRequestDto.getPhotoUrl())
-                .githubUrl(memberSaveRequestDto.getGithubUrl())
-                .blogUrl(memberSaveRequestDto.getBlogUrl())
-                .email(memberSaveRequestDto.getEmail())
-                .displayName(memberSaveRequestDto.getDisplayName())
-                .build();
-
-        return member;
+    public MemberProfileResponseDto(Member member) {
+        this.uid = member.getUid();
+        this.techStack = member.getTechStack();
+        this.introduce = member.getIntroduce();
+        this.nickName = member.getNickName();
+        this.photoUrl = member.getPhotoUrl();
+        this.githubUrl = member.getGithubUrl();
+        this.blogUrl = member.getBlogUrl();
+        this.email = member.getEmail();
     }
+
 }

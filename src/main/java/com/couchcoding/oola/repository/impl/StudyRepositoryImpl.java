@@ -30,7 +30,7 @@ public class StudyRepositoryImpl extends QuerydslRepositorySupport implements St
     }
 
     @Override
-    public Page<Study> findBySearchOption(Pageable pageable, String studyType, String studyDays,String timeZone, String status, String studyName) {
+    public Page<Study> findAllBySearchOption(Pageable pageable, String studyType, String studyDays,String timeZone, String status, String studyName) {
         JPQLQuery<Study> query = queryFactory.selectFrom(study)
                 .where(eqStudyType(studyType), eqStudyDays(studyDays), eqTimeZone(timeZone), eqStatus(status), containsName(studyName));
 

@@ -25,9 +25,8 @@ public class JpaQueryMemberRepository extends QuerydslRepositorySupport implemen
 
     @Override
     public Member findByUid(String uid) {
-     Member member = queryFactory.selectFrom(QMember.member)
+        return  queryFactory.selectFrom(QMember.member)
                 .where(eqUid(uid)).fetchOne();
-        return member;
     }
 
     private BooleanExpression eqUid(String uid) {

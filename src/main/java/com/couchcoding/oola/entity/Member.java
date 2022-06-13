@@ -1,5 +1,6 @@
 package com.couchcoding.oola.entity;
 
+import com.couchcoding.oola.dto.member.request.MemberSaveRequestDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -73,6 +74,9 @@ public class Member implements UserDetails {
         this.techStack = techStack;
     }
 
+
+
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
@@ -106,5 +110,18 @@ public class Member implements UserDetails {
     @Override
     public boolean isEnabled() {
         return false;
+    }
+
+    public Member profileUpdate(String uid, Long id, MemberSaveRequestDto memberSaveRequestDto) {
+        this.id = id;
+        this.techStack = memberSaveRequestDto.getTechStack();
+        this.displayName = memberSaveRequestDto.getDisplayName();
+        this.nickName = memberSaveRequestDto.getNickName();
+        this.blogUrl  = memberSaveRequestDto.getBlogUrl();
+        this.githubUrl = memberSaveRequestDto.getGithubUrl();
+        this.introduce = memberSaveRequestDto.getIntroduce();
+        this.email = memberSaveRequestDto.getEmail();
+        this.photoUrl = memberSaveRequestDto.getPhotoUrl();
+        return this;
     }
 }
