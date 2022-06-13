@@ -39,8 +39,8 @@ public class JwtFilter extends OncePerRequestFilter{
         FirebaseToken decodedToken;
         try{
             String header = RequestUtil.getAuthorizationToken(request.getHeader("Authorization"));
+            log.debug("헤더 로그: {}" , header );
             decodedToken = firebaseAuth.verifyIdToken(header);//디코딩한 firebase 토큰을 반환
-            log.debug("토큰: {}" , decodedToken == null);
         } catch (FirebaseAuthException | IllegalArgumentException | CustomException e) {
             log.debug("403 에러: {}" , e.getMessage());
             // ErrorMessage 응답 전송

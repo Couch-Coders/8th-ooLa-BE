@@ -61,6 +61,7 @@ public class MemberService implements UserDetailsService {
     // 헤더에서 토큰을 꺼낸다
     public FirebaseToken decodeToken(String header) {
         try {
+            log.debug("헤더: {}", header);
             String token = RequestUtil.getAuthorizationToken(header);
             return firebaseAuth.verifyIdToken(token);
         } catch (IllegalArgumentException | FirebaseAuthException e) {
@@ -81,7 +82,6 @@ public class MemberService implements UserDetailsService {
     @Transactional
     public Member memberProfileUpdate(String uid, MemberSaveRequestDto memberSaveRequestDto) {
         Member updated = null;
-
         if (!uid.equals(memberSaveRequestDto.getUid())) {
             throw new MemberForbiddenException();
         }

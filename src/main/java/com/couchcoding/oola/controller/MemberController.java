@@ -40,9 +40,10 @@ public class MemberController {
     public ResponseEntity<MemberResponseDto> registerMember(
             @RequestHeader("Authorization") String header,
             @RequestBody @Valid MemberSaveRequestDto memberSaveRequestDto) {
+
+        log.debug("헤더: {}", header);
         // TOKEN을 가져온다.
         FirebaseToken decodedToken = memberService.decodeToken(header);
-        log.debug("토큰: {}", decodedToken == null);
 
         // 사용자를 등록한다.
         Member memberRegister = Member.builder()
