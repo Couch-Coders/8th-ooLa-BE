@@ -47,8 +47,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 class MemberControllerTest {
 
     //private static final String uid = "DpKLjE6P5bRd4aAqWzl1gnbaKHr1";
-    private static final String uid = "MRslg6IdtqRe0AET5WA3ALMm4F12";
-    private static final String displayName = "최미영";
+    private static final String uid = "aaaaaaaaaa";
+    private static final String displayName = "asdfdf";
     private static final String email = "goodlife1359@gmail.com";
     private static final String blogUrl = "ttps://shiningjean.tistory.com/35";
     private static final String githubUrl = "https://shiningjean.tistory.com/35";
@@ -180,8 +180,7 @@ class MemberControllerTest {
                 .andDo(print());
         resultActions
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("uid").value(uid))
-                .andExpect(jsonPath("email").value(email));
+                .andExpect(jsonPath("uid").value(uid));
     }
     
     

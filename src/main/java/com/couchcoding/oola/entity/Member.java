@@ -1,5 +1,6 @@
 package com.couchcoding.oola.entity;
 
+import com.couchcoding.oola.dto.member.request.MemberSaveRequestDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

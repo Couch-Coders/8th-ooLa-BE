@@ -50,10 +50,10 @@ public class StudyMemberService {
         log.info("member techStack: {}" + member.getTechStack().toString());
 
         StudyMember entityResult = studyMemberRepository.saveAndFlush(studyMember);
+        log.info("entityResult: {}" + entityResult);
 
         int updateParticipants = study.getCurrentParticipants() + 1;
         Study entity = study.updateCurrentParticipants( updateParticipants);
-        //Study updated = studyRepository.saveAndFlush(entity);
         StudyMemberResponseDto studyMemberResponseDto = new StudyMemberResponseDto();
         studyMemberResponseDto.setMember(entityResult.getMember());
         studyMemberResponseDto.setStudy(entity);

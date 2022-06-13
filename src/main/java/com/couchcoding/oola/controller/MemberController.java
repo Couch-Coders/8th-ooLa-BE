@@ -88,7 +88,7 @@ public class MemberController {
     @GetMapping("/myprofile")
     public ResponseEntity<MemberProfileResponseDto> memberProfile(Authentication authentication) {
         Member member = ((Member) authentication.getPrincipal());
-        MemberProfileResponseDto memberProfileResponseDto = new MemberProfileResponseDto(member.getUid(), member.getTechStack(), member.getIntroduce(), member.getNickName(), member.getPhotoUrl() , member.getGithubUrl() , member.getBlogUrl(), member.getEmail());
+        MemberProfileResponseDto memberProfileResponseDto = new MemberProfileResponseDto(member);
         return ResponseEntity.status(HttpStatus.OK).body(memberProfileResponseDto);
     }
 

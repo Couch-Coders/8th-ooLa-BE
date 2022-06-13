@@ -42,12 +42,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 class StudyControllerTest {
 
-    //private static  final String uid = "9aPftjfIvFOtrFRNEgYUpyS04N83";
-    //private static final String uid = "Ssx0Wx2oyfPPa3SnKA34qTzjEqF2";
-    //private static final String uid = "abcd";
-    //private static final String uid = "abcabcabcddddeefg";
-    private static final String uid = "DpKLjE6P5bRd4aAqWzl1gnbaKHr1";
-    //private static final String uid = "eyJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJodHRwczovL2lkZW50aXR5dG9vbGtpdC5nb29nbGVhcGlzLmNvbS9nb29nbGUuaWRlbnRpdHkuaWRlbnRpdHl0b29sa2l0LnYxLklkZW50aXR5VG9vbGtpdCIsImV4cCI6MTY1NDUwNzM1NSwiaWF0IjoxNjU0NTAzNzU1LCJpc3MiOiJmaXJlYmFzZS1hZG1pbnNkay1qM3YzOUBvb2xhLW9hdXRoLmlhbS5nc2VydmljZWFjY291bnQuY29tIiwic3ViIjoiZmlyZWJhc2UtYWRtaW5zZGstajN2MzlAb29sYS1vYXV0aC5pYW0uZ3NlcnZpY2VhY2NvdW50LmNvbSIsInVpZCI6ImFiY2RlZmcxMjMifQ.iiJcZf4vekGaVAkQI7Kq54cl3csv9dH0g4GsuZkfMXoRKsQnBGP1qT3fJAj-6lOupBd3zVmKL2hZ6cIKQmNKOuAaVnin9DbfqjBBghC7hMDvlXWIElR4l2uN5qbrsSGJsKN4sMBvaNq50lwKYNyHMThZ20wFzsQZH1SK5kxRHxdBdaYSoVD-Ow57P3kt3dUzd5y7vz9THlQR5t8Uso6zWOiCBHyvR_4Fn_hDpuo-wjftjkgPiXmcfqpI5AlyhBBNcx7tFfiqbJ4o_pK879A4DUsph2NXZSGC0P0wwXvDOUWM1vGmXeGLT6Xs69fze2b-7rsuvJxqV1-fZ4qazZjLZA";
+    private static final String uid = "qwertzzzz";
     private static final String studyType = "프론트엔드";
     private static String studyName = "DO IT 자바스크립트 알고리즘3";
     private static String studyDays = "평일";
@@ -94,7 +89,7 @@ class StudyControllerTest {
         StudyRequestDto studyRequestDto = new StudyRequestDto();
         studyRequestDto.setCreateUid(uid);
         studyRequestDto.setStudyType(studyType);
-        studyRequestDto.setStudyName("기술면접 테스트3");
+        studyRequestDto.setStudyName("기술면접 테스트4");
         studyRequestDto.setStudyDays(studyDays);
         studyRequestDto.setTimeZone(timeZone);
         studyRequestDto.setParticipants(participants);
@@ -613,7 +608,7 @@ class StudyControllerTest {
     @DisplayName("스터디 참여 신청 테스트")
     @Transactional
     void 스터디참여신청테스트() throws Exception {
-        Long studyId = 42L;
+        Long studyId = 45L;
 
         ResultActions resultActions = mockMvc.perform(
                 post("/studies/" + studyId + "/members")
