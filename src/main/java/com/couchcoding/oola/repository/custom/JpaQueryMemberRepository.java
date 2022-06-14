@@ -1,8 +1,8 @@
-package com.couchcoding.oola.repository.impl;
+package com.couchcoding.oola.repository.custom;
 
 import com.couchcoding.oola.entity.Member;
 import com.couchcoding.oola.entity.QMember;
-import com.couchcoding.oola.repository.MemberRepositoryCustom;
+import com.couchcoding.oola.repository.custom.MemberRepositoryCustom;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;

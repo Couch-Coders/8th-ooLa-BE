@@ -1,10 +1,7 @@
-package com.couchcoding.oola.repository.impl;
+package com.couchcoding.oola.repository.custom;
 
-import com.couchcoding.oola.entity.Member;
-import com.couchcoding.oola.entity.QStudyMember;
 import com.couchcoding.oola.entity.StudyMember;
-import com.couchcoding.oola.repository.StudyMemberRepositoryCustom;
-import com.querydsl.core.types.Predicate;
+import com.couchcoding.oola.repository.custom.StudyMemberRepositoryCustom;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -18,19 +15,19 @@ import static com.couchcoding.oola.entity.QStudyMember.*;
 
 @Slf4j
 @Repository
-public class StudyMemberRepositoryImpl extends QuerydslRepositorySupport implements StudyMemberRepositoryCustom {
+public class JpaQueryDslStudyMemberRepository extends QuerydslRepositorySupport implements StudyMemberRepositoryCustom {
 
     @Autowired
     private JPAQueryFactory queryFactory;
 
-    public StudyMemberRepositoryImpl() {
+    public JpaQueryDslStudyMemberRepository() {
         super(StudyMember.class);
     }
 
     @Override
     public List<StudyMember> findByStudyId(Long studyId) {
         List<StudyMember> studyMembers = queryFactory.selectFrom(studyMember)
-        .where(eqStudyId(studyId)).fetch();
+                .where(eqStudyId(studyId)).fetch();
         return studyMembers;
     }
 
@@ -76,9 +73,9 @@ public class StudyMemberRepositoryImpl extends QuerydslRepositorySupport impleme
     }
 
     private BooleanExpression eqUid(Long uid) {
-       if (uid == null) {
-           return null;
-       }
-       return studyMember.uid.eq(uid);
+        if (uid == null) {
+            return null;
+        }
+        return studyMember.uid.eq(uid);
     }
 }
