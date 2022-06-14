@@ -43,7 +43,7 @@ class StudyControllerTest {
 
     private static final String uid = "qwertzzzz";
     private static final String studyType = "프론트엔드";
-    private static String studyName = "DO IT React11";
+    private static String studyName = "DO IT React12";
     private static String studyDays = "평일";
     private static final String timeZone = "오후 (12 ~ 18시)";
     private static final int participants = 7;
@@ -81,7 +81,7 @@ class StudyControllerTest {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime startDateTime = LocalDateTime.parse(sdate, formatter);
 
-        String edate = "2022-08-06 00:00:00";
+        String edate = "2022-08-15 00:00:00";
         DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime endDateTime = LocalDateTime.parse(edate, formatter2);
 
@@ -495,7 +495,7 @@ class StudyControllerTest {
     @DisplayName("존재하지 않는 스터디 조회")
     void errorTest3() throws Exception {
 
-        Integer studyId = 50;
+        Integer studyId = 60;
 
         mockMvc.perform(
                 get("/studies/" + studyId)

@@ -46,6 +46,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring()
                 .antMatchers(HttpMethod.POST, "/members")
                 .antMatchers(HttpMethod.GET, "/studies/**")
+                .antMatchers(HttpMethod.POST, "/members/local")
                 .antMatchers("/")
                 .antMatchers("/css/**")
                 .antMatchers("/static/**")
@@ -57,6 +58,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/pages/**")
                 .antMatchers("/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**");
     }
-
-
 }
