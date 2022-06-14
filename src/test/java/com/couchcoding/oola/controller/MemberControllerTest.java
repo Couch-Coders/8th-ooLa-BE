@@ -24,7 +24,6 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.Filter;
@@ -47,15 +46,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 class MemberControllerTest {
 
     //private static final String uid = "DpKLjE6P5bRd4aAqWzl1gnbaKHr1";
-    private static final String uid = "aaaaaaaaaa";
-    private static final String displayName = "asdfdf";
-    private static final String email = "goodlife1359@gmail.com";
+    private static final String uid = "9aPftjfIvFOtrFRNEgYUpyS04N83";
+    private static final String displayName = "황유진";
+    private static final String email = "cmk664488@gmail.com";
     private static final String blogUrl = "ttps://shiningjean.tistory.com/35";
     private static final String githubUrl = "https://shiningjean.tistory.com/35";
     private static final String photoUrl = "https://lh3.googleusercontent.com/a/AATXAJy-nxiYfNUyNVazka8hszGGVnqO7sSKBX5TPs40=s96-c";
     private static final String nickName = "트릴로니";
     private static final String introduce = "안녕하세요 자기소개";
-    private static List<String> techStack = Arrays.asList("NodeJS", "Typescript" , "HTML5", "CSS3", "Python");
+    private static List<String> techStack = Arrays.asList("NodeJS", "Typescript" , "HTML5", "CSS3");
 
     @Autowired
     private WebApplicationContext wac;
@@ -180,13 +179,17 @@ class MemberControllerTest {
                 .andDo(print());
         resultActions
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("uid").value(uid));
+                .andExpect(jsonPath("uid").value(uid))
+                .andExpect(jsonPath("email").value(email))
+                .andExpect(jsonPath("displayName").value(displayName))
+                .andExpect(jsonPath("blogUrl").value(blogUrl))
+                .andExpect(jsonPath("githubUrl").value(githubUrl))
+                .andExpect(jsonPath("photoUrl").value(photoUrl));
     }
-    
-    
+
+
     @Test
     @DisplayName("회원 조회 테스트")
-    @Transactional
     void 마이프로필_조회_테스트() throws Exception {
         ResultActions resultActions = mockMvc.perform(
                 get("/members/myprofile")
@@ -200,6 +203,7 @@ class MemberControllerTest {
         resultActions
                 .andExpect(status().isOk());
     }
+
 
     @Test
     @DisplayName("로컬환경에서 회원 마이프로필 수정 테스트")
