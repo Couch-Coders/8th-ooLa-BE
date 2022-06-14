@@ -119,7 +119,6 @@ public class StudyController {
     @PostMapping("/{studyId}/members")
     public ResponseEntity<StudyMemberResponseDto> studyMemberEnroll(Authentication authentication, @PathVariable Long studyId) {
         Member member = (Member) authentication.getPrincipal();
-        log.info("id: {}" , member.getId());
         StudyMemberResponseDto studyMemberResponseDto = studyMemberService.studyMemberEnroll(member , studyId);
         return ResponseEntity.status(HttpStatus.CREATED).body(studyMemberResponseDto);
     }
