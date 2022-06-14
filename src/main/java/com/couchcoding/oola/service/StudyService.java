@@ -8,7 +8,7 @@ import com.couchcoding.oola.entity.Member;
 import com.couchcoding.oola.entity.Study;
 
 import com.couchcoding.oola.repository.StudyRepository;
-import com.couchcoding.oola.repository.impl.StudyRepositoryImpl;
+import com.couchcoding.oola.repository.StudyRepositoryCustom;
 import com.couchcoding.oola.validation.MemberForbiddenException;
 
 import com.couchcoding.oola.validation.StudyNotFoundException;
@@ -27,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class StudyService {
 
     private final StudyRepository studyRepository;
-    private final StudyRepositoryImpl studyRepositoryImpl;
+    private final StudyRepositoryCustom studyRepositoryCustom;
 
     // 스터디 만들기
     @Transactional
@@ -46,7 +46,7 @@ public class StudyService {
     // 스터디 조건 검색 및 페이징 처리
     public Page<Study> findByAllCategory(Pageable pageable, String studyType, String studyDays,
                                          String timeZone , String status, String studyName) {
-        return studyRepositoryImpl.findAllBySearchOption(pageable ,studyType, studyDays, timeZone,status , studyName);
+        return studyRepositoryCustom.findAllBySearchOption(pageable ,studyType, studyDays, timeZone,status , studyName);
     }
 
     // 스터디 수정

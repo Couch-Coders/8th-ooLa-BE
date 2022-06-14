@@ -31,9 +31,6 @@ public class StudyMember extends BaseTimeEntity implements Serializable {
     @JoinColumn(name = "uid")
     private Member member;
 
-    @Column(name = "status", insertable = false, updatable = false)
-    private String status;
-
     @Column(name = "studyId",insertable = false, updatable = false)
     private Long studyId;
 

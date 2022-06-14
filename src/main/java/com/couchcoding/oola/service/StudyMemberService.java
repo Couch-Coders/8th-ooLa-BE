@@ -6,7 +6,7 @@ import com.couchcoding.oola.entity.Study;
 import com.couchcoding.oola.entity.StudyMember;
 import com.couchcoding.oola.repository.StudyMemberRepository;
 import com.couchcoding.oola.repository.StudyRepository;
-import com.couchcoding.oola.repository.impl.StudyMemberRepositoryImpl;
+import com.couchcoding.oola.repository.StudyMemberRepositoryCustom;
 import com.couchcoding.oola.validation.StudyNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,14 +19,14 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class StudyMemberService {
-    private final StudyMemberRepositoryImpl studyMemberRepositoryImpl;
+    private final StudyMemberRepositoryCustom studyMemberRepositoryCustom;
     private final StudyMemberRepository studyMemberRepository;
     private final StudyRepository studyRepository;
 
     // 스터디 참여자 정보조회
     @Transactional
     public List<StudyMember> studyMembers(Long studyId) {
-        return studyMemberRepositoryImpl.findByStudyId(studyId);
+        return studyMemberRepositoryCustom.findByStudyId(studyId);
     }
 
     // 스터디 개설시 리더정보 추가
@@ -65,7 +65,7 @@ public class StudyMemberService {
         String role = "leader";
         // role과 member의 uid 사용하여 검색
         Long uid = member.getId();
-        return studyMemberRepositoryImpl.findAllByUidAndRole(uid, role);
+        return studyMemberRepositoryCustom.findAllByUidAndRole(uid, role);
     }
 
     // 마이스터디 - 내가 참여한 스터디 조회
@@ -74,6 +74,6 @@ public class StudyMemberService {
         String role = "member";
         Long uid = member.getId();
         String status = "진행";
-        return studyMemberRepositoryImpl.findAllByUidAndRoleAndStatus(uid, role, status);
+        return studyMemberRepositoryCustom.findAllByUidAndRoleAndStatus(uid, role, status);
     }
 }

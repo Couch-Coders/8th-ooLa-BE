@@ -4,7 +4,6 @@ import com.couchcoding.oola.dto.study.request.StudyRequestDto;
 
 import com.couchcoding.oola.validation.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -44,16 +43,16 @@ class StudyControllerTest {
 
     private static final String uid = "qwertzzzz";
     private static final String studyType = "프론트엔드";
-    private static String studyName = "DO IT 자바스크립트 알고리즘3";
+    private static String studyName = "DO IT React12";
     private static String studyDays = "평일";
-    private static final String timeZone = "오전 (9시 ~ 12시)";
+    private static final String timeZone = "오후 (12 ~ 18시)";
     private static final int participants = 7;
     private static LocalDateTime startDate = null;
     private static LocalDateTime endDate = null;
     private static final String openChatUrl = "https://open.kakao.com/o/gihbQV0d";
     private static final String studyIntroduce = "안녕하세요 오전타임 React 스터디를 진행하고자 합니다";
     private static final String studyGoal = "React 마스터";
-    private static final String status = "모집중";
+    private static final String status = "진행";
     private static Integer currentParticipants = 1;
 
     @Autowired
@@ -82,7 +81,7 @@ class StudyControllerTest {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime startDateTime = LocalDateTime.parse(sdate, formatter);
 
-        String edate = "2022-08-06 00:00:00";
+        String edate = "2022-08-15 00:00:00";
         DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime endDateTime = LocalDateTime.parse(edate, formatter2);
 
@@ -496,7 +495,7 @@ class StudyControllerTest {
     @DisplayName("존재하지 않는 스터디 조회")
     void errorTest3() throws Exception {
 
-        Integer studyId = 50;
+        Integer studyId = 60;
 
         mockMvc.perform(
                 get("/studies/" + studyId)
@@ -624,7 +623,7 @@ class StudyControllerTest {
     @DisplayName("스터디 참여자 조회 테스트")
     void 스터디참여자조회테스트() throws Exception {
 
-        Long studyId = 35L;
+        Long studyId = 45L;
 
         ResultActions resultActions = mockMvc.perform(
                 get("/studies/" + studyId + "/members")

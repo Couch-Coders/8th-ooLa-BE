@@ -74,9 +74,6 @@ public class Member implements UserDetails {
         this.techStack = techStack;
     }
 
-
-
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;

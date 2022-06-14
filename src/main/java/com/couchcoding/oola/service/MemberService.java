@@ -1,15 +1,12 @@
 package com.couchcoding.oola.service;
 
 import com.couchcoding.oola.dto.member.request.MemberSaveRequestDto;
-import com.couchcoding.oola.dto.member.response.MemberProfileResponseDto;
 import com.couchcoding.oola.dto.member.response.MemberResponseDto;
 import com.couchcoding.oola.entity.Member;
 import com.couchcoding.oola.repository.MemberRepository;
-import com.couchcoding.oola.repository.impl.JpaQueryMemberRepository;
+import com.couchcoding.oola.repository.MemberRepositoryCustom;
 import com.couchcoding.oola.util.RequestUtil;
-import com.couchcoding.oola.validation.LoginForbiddenException;
 import com.couchcoding.oola.validation.MemberForbiddenException;
-import com.couchcoding.oola.validation.MemberNotFoundException;
 import com.couchcoding.oola.validation.error.CustomException;
 import com.couchcoding.oola.validation.error.ErrorCode;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,7 +32,7 @@ import java.util.Optional;
 public class MemberService implements UserDetailsService  {
 
     private final MemberRepository memberRepository;
-    private final JpaQueryMemberRepository jpaQueryMemberRepository;
+    private final MemberRepositoryCustom memberRepositoryCustom;
     private final FirebaseAuth firebaseAuth;
 
     // 유저의 정보를 불러와서 UserDetails로 반환해준다
@@ -65,11 +62,9 @@ public class MemberService implements UserDetailsService  {
     // 헤더에서 토큰을 꺼낸다
     public FirebaseToken decodeToken(String header) {
         try {
-            log.debug("헤더: {}", header);
             String token = RequestUtil.getAuthorizationToken(header);
             return firebaseAuth.verifyIdToken(token);
         } catch (IllegalArgumentException | FirebaseAuthException e) {
-            log.debug("저희 사이트 로그인시 헤더에서 토큰을 꺼낼때 예외발생: {}", e.getMessage());
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
                     "{\"code\":\"INVALID_TOKEN\", \"message\":\"" + e.getMessage() + "\"}");
         }
@@ -77,12 +72,13 @@ public class MemberService implements UserDetailsService  {
 
     // 회원 단건 조회
     public Member findByUid(String uid) {
-        return jpaQueryMemberRepository.findByUid(uid);
+        return memberRepositoryCustom.findByUid(uid);
     }
 
     // 마이프로필 수정
     @Transactional
     public Member memberProfileUpdate(String uid, MemberSaveRequestDto memberSaveRequestDto) {
+
         if (!uid.equals(memberSaveRequestDto.getUid())) {
             throw new MemberForbiddenException();
         }
