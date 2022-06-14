@@ -7,6 +7,7 @@ import com.couchcoding.oola.entity.StudyMember;
 import com.couchcoding.oola.repository.StudyMemberRepository;
 import com.couchcoding.oola.repository.StudyRepository;
 import com.couchcoding.oola.repository.custom.JpaQueryDslStudyMemberRepository;
+import com.couchcoding.oola.repository.custom.StudyMemberRepositoryCustom;
 import com.couchcoding.oola.validation.StudyNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +20,7 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class StudyMemberService {
-    private final JpaQueryDslStudyMemberRepository studyMemberRepositoryCustom;
+    private final StudyMemberRepositoryCustom studyMemberRepositoryCustom;
     private final StudyMemberRepository studyMemberRepository;
     private final StudyRepository studyRepository;
 

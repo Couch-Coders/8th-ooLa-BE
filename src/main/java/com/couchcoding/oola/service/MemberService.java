@@ -5,6 +5,7 @@ import com.couchcoding.oola.dto.member.response.MemberResponseDto;
 import com.couchcoding.oola.entity.Member;
 import com.couchcoding.oola.repository.MemberRepository;
 import com.couchcoding.oola.repository.custom.JpaQueryMemberRepository;
+import com.couchcoding.oola.repository.custom.MemberRepositoryCustom;
 import com.couchcoding.oola.util.RequestUtil;
 import com.couchcoding.oola.validation.MemberForbiddenException;
 import com.couchcoding.oola.validation.error.CustomException;
@@ -32,7 +33,7 @@ import java.util.Optional;
 public class MemberService implements UserDetailsService  {
 
     private final MemberRepository memberRepository;
-    private final JpaQueryMemberRepository jpaQueryMemberRepository;
+    private final MemberRepositoryCustom memberRepositoryCustom;
     private final FirebaseAuth firebaseAuth;
 
     // 유저의 정보를 불러와서 UserDetails로 반환해준다
@@ -72,7 +73,7 @@ public class MemberService implements UserDetailsService  {
 
     // 회원 단건 조회
     public Member findByUid(String uid) {
-        return jpaQueryMemberRepository.findByUid(uid);
+        return memberRepositoryCustom.findByUid(uid);
     }
 
     // 마이프로필 수정
