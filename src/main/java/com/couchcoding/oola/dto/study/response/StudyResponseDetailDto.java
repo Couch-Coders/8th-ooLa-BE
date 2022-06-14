@@ -33,10 +33,6 @@ public class StudyResponseDetailDto {
     private LocalDateTime endDate;
     private boolean likeStatus;
 
-    public StudyResponseDetailDto toDto(Study study) {
-        return  new StudyResponseDetailDto(study);
-    }
-
     private Study study;
 
     public StudyResponseDetailDto toDto(Study study) {
