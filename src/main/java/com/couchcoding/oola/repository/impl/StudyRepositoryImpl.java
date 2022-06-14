@@ -1,8 +1,8 @@
-package com.couchcoding.oola.repository.custom;
+package com.couchcoding.oola.repository.impl;
 
 
 import com.couchcoding.oola.entity.Study;
-import com.couchcoding.oola.repository.custom.StudyRepositoryCustom;
+import com.couchcoding.oola.repository.StudyRepositoryCustom;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -20,12 +20,12 @@ import static com.couchcoding.oola.entity.QStudy.*;
 
 @Slf4j
 @Repository
-public class JpaQueryDslStudyRepository extends QuerydslRepositorySupport implements StudyRepositoryCustom {
+public class StudyRepositoryImpl extends QuerydslRepositorySupport implements StudyRepositoryCustom {
 
     @Autowired
     private JPAQueryFactory queryFactory;
 
-    public JpaQueryDslStudyRepository() {
+    public StudyRepositoryImpl() {
         super(Study.class);
     }
 

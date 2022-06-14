@@ -1,4 +1,4 @@
-package com.couchcoding.oola.repository.custom;
+package com.couchcoding.oola.repository;
 
 import com.couchcoding.oola.entity.Study;
 import org.springframework.data.domain.Page;

@@ -8,8 +8,7 @@ import com.couchcoding.oola.entity.Member;
 import com.couchcoding.oola.entity.Study;
 
 import com.couchcoding.oola.repository.StudyRepository;
-import com.couchcoding.oola.repository.custom.JpaQueryDslStudyRepository;
-import com.couchcoding.oola.repository.custom.StudyRepositoryCustom;
+import com.couchcoding.oola.repository.StudyRepositoryCustom;
 import com.couchcoding.oola.validation.MemberForbiddenException;
 
 import com.couchcoding.oola.validation.StudyNotFoundException;
