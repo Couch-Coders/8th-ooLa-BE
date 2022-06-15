@@ -1,14 +1,9 @@
 package com.couchcoding.oola.dto.study.response;
 
 import com.couchcoding.oola.entity.Study;
-import com.couchcoding.oola.entity.StudyMember;
-
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -35,19 +30,11 @@ public class StudyResponseDetailDto {
 
     private Study study;
 
-    private List<StudyMember> studyMembers;
-
-    public StudyResponseDetailDto toDto(Study study ) {
-        StudyResponseDetailDto studyResponseDetailDto = new StudyResponseDetailDto();
-        studyResponseDetailDto.study = study;
-        return  studyResponseDetailDto;
+    public StudyResponseDetailDto toDto(Study study) {
+        return  new StudyResponseDetailDto(study);
     }
 
-    public StudyResponseDetailDto(List<StudyMember> studyMembers) {
-        this.studyMembers = studyMembers;
-    }
-
-    public StudyResponseDetailDto(Study study, List<StudyMember> studyMembers) {
+    public StudyResponseDetailDto(Study study) {
         this.studyId = study.getId();
         this.studyType = study.getStudyType();
         this.studyDays = study.getStudyDays();
@@ -59,11 +46,7 @@ public class StudyResponseDetailDto {
         this.studyIntroduce = study.getStudyIntroduce();
         this.studyGoal = study.getStudyGoal();
         this.status = study.getStatus();
-//        this.joinStatus = study.getJoinStatus();
-//        this.likeStatus = study.getLikeStatus();
         this.studyName = study.getStudyName();
         this.endDate = study.getEndDate();
-        this.studyMembers = studyMembers;
-
     }
 }

@@ -52,15 +52,6 @@ public class StudyMemberRepositoryImpl extends QuerydslRepositorySupport impleme
         return studyMembers;
     }
 
-    @Override
-    public List<StudyMember> findAllByUidOrStudyId(Long uid, Long studyId) {
-        List<StudyMember> studyMembers = queryFactory.selectFrom(studyMember)
-                .where(eqUid(uid), eqStudyId(studyId))
-                .fetch();
-
-
-        return studyMembers;
-    }
 
     private BooleanExpression eqStatus(String status) {
         if (status.equals(null) || status == null) {
