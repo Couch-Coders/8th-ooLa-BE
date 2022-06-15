@@ -56,7 +56,7 @@ public class StudyRequestDto {
 
     private String status;
 
-    private String joinStatus;
+//    private String joinStatus;
 
     private String createUid;
 
@@ -80,7 +80,7 @@ public class StudyRequestDto {
                 .studyIntroduce(studyRequestDto.getStudyIntroduce())
                 .studyGoal(studyRequestDto.getStudyGoal())
                 .status(studyRequestDto.getStatus())
-                .joinStatus(studyRequestDto.getJoinStatus())
+                //.joinStatus(studyRequestDto.getJoinStatus())
                 .endDate(studyRequestDto.getEndDate())
                 .likeCount(0L)
                 .currentParticipants(1)

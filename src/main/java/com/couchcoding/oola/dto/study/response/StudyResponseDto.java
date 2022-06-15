@@ -11,6 +11,6 @@ public class StudyResponseDto {
     private Long studyId;
 
     public StudyResponseDto(Study saved) {
-        this.studyId  = saved.getStudyId();
+        this.studyId  = saved.getId();
     }
 }

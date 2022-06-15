@@ -35,12 +35,20 @@ public class StudyResponseDetailDto {
 
     private Study study;
 
-    public StudyResponseDetailDto toDto(Study study) {
-        return  new StudyResponseDetailDto(study);
+    private List<StudyMember> studyMembers;
+
+    public StudyResponseDetailDto toDto(Study study ) {
+        StudyResponseDetailDto studyResponseDetailDto = new StudyResponseDetailDto();
+        studyResponseDetailDto.study = study;
+        return  studyResponseDetailDto;
     }
 
-    public StudyResponseDetailDto(Study study) {
-        this.studyId = study.getStudyId();
+    public StudyResponseDetailDto(List<StudyMember> studyMembers) {
+        this.studyMembers = studyMembers;
+    }
+
+    public StudyResponseDetailDto(Study study, List<StudyMember> studyMembers) {
+        this.studyId = study.getId();
         this.studyType = study.getStudyType();
         this.studyDays = study.getStudyDays();
         this.timeZone = study.getTimeZone();
@@ -51,9 +59,11 @@ public class StudyResponseDetailDto {
         this.studyIntroduce = study.getStudyIntroduce();
         this.studyGoal = study.getStudyGoal();
         this.status = study.getStatus();
-        this.joinStatus = study.getJoinStatus();
+//        this.joinStatus = study.getJoinStatus();
 //        this.likeStatus = study.getLikeStatus();
         this.studyName = study.getStudyName();
         this.endDate = study.getEndDate();
+        this.studyMembers = studyMembers;
+
     }
 }

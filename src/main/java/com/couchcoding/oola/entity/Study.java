@@ -4,7 +4,7 @@ import com.couchcoding.oola.dto.study.request.StudyRequestDto;
 import com.couchcoding.oola.entity.base.BaseTimeEntity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
-;
+
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -27,7 +27,7 @@ import static lombok.AccessLevel.PROTECTED;
 public class Study extends BaseTimeEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long studyId;
+    private Long id;
 
     @Column(name = "study_type")
     @NotBlank(message = "studyType은 필수 값입니다")
@@ -72,9 +72,6 @@ public class Study extends BaseTimeEntity implements Serializable {
     @Column(name = "status")
     private String status;
 
-    @Column(name = "joinStatus")
-    private String joinStatus;
-
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name = "end_date")
     @NotNull(message = "openChatUrl은 필수 값입니다")
@@ -92,9 +89,18 @@ public class Study extends BaseTimeEntity implements Serializable {
     @Column(name = "participant_status")
     private Boolean participantStatus; // 스터디 상태가 완료인 경우 참여신청 불가 , 스터디 상태가 진행중인 경우 참여신청 불가
 
+    @Column(name = "studyId", insertable = false, updatable = false)
+    private Long studyId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "studyId")
+    private StudyMember studyMember;
+
+
+
     @Builder
     public Study(Long studyId, @NotBlank(message = "studyType은 필수 값입니다") String studyType, @NotBlank(message = "studyName은 필수 값입니다") String studyName, @NotBlank(message = "studydays는 필수 값입니다") String studyDays, @NotBlank(message = "timeZone은 필수 값입니다") String timeZone, @NotNull(message = "participants은 필수 값입니다") int participants, int currentParticipants, @NotNull(message = "startDate은 필수 값입니다") LocalDateTime startDate, @NotBlank(message = "openChatUrl은 필수 값입니다") String openChatUrl, @NotBlank(message = "studyIntroduce은 필수 값입니다") String studyIntroduce, @NotBlank(message = "studyGoal은 필수 값입니다") String studyGoal, String status, String joinStatus, @NotNull(message = "openChatUrl은 필수 값입니다") LocalDateTime endDate, Long likeCount, String createUid, Boolean likeStatus) {
-        this.studyId = studyId;
+        this.id = studyId;
         this.studyType = studyType;
         this.studyName = studyName;
         this.studyDays = studyDays;
@@ -106,7 +112,7 @@ public class Study extends BaseTimeEntity implements Serializable {
         this.studyIntroduce = studyIntroduce;
         this.studyGoal = studyGoal;
         this.status = status;
-        this.joinStatus = joinStatus;
+       // this.joinStatus = joinStatus;
         this.endDate = endDate;
         this.likeCount = likeCount;
         this.createUid = createUid;
@@ -126,7 +132,7 @@ public class Study extends BaseTimeEntity implements Serializable {
         this.studyIntroduce = studyRequestDto.getStudyIntroduce();
         this.studyGoal = studyRequestDto.getStudyGoal();
         this.status = studyRequestDto.getStatus();
-        this.joinStatus = studyRequestDto.getJoinStatus();
+       // this.joinStatus = studyRequestDto.getJoinStatus();
         this.likeStatus = studyRequestDto.getLikeStatus();
         this.currentParticipants = studyRequestDto.getCurrentParticipants();
         this.studyId = studyId;

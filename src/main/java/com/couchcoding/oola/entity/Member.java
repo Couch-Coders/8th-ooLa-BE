@@ -19,6 +19,7 @@ import javax.persistence.ElementCollection;
 @Entity
 @Getter
 @NoArgsConstructor
+@ToString
 @Table(name = "member")
 public class Member implements UserDetails {
 

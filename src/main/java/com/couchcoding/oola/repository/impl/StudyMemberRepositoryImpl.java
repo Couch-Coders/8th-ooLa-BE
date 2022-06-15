@@ -1,5 +1,6 @@
 package com.couchcoding.oola.repository.impl;
 
+import com.couchcoding.oola.entity.QStudyMember;
 import com.couchcoding.oola.entity.StudyMember;
 import com.couchcoding.oola.repository.StudyMemberRepositoryCustom;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -48,6 +49,16 @@ public class StudyMemberRepositoryImpl extends QuerydslRepositorySupport impleme
                 .fetch();
 
         log.info("studyMember: {} ", studyMembers.toString());
+        return studyMembers;
+    }
+
+    @Override
+    public List<StudyMember> findAllByUidOrStudyId(Long uid, Long studyId) {
+        List<StudyMember> studyMembers = queryFactory.selectFrom(studyMember)
+                .where(eqUid(uid), eqStudyId(studyId))
+                .fetch();
+
+
         return studyMembers;
     }
 
