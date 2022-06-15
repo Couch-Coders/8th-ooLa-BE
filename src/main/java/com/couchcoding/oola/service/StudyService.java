@@ -4,6 +4,7 @@ import com.couchcoding.oola.dto.study.request.StudyRequestDto;
 import com.couchcoding.oola.dto.study.response.StudyResponseDetailDto;
 import com.couchcoding.oola.dto.study.response.StudyResponseDto;
 
+import com.couchcoding.oola.dto.study.response.StudyRoleResponseDto;
 import com.couchcoding.oola.entity.Member;
 import com.couchcoding.oola.entity.Study;
 
@@ -25,7 +26,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
 import java.util.List;
 
 
@@ -48,26 +48,35 @@ public class StudyService {
     }
 
     // 스터디 단건 조회 (비로그인)
-    public Study studyDetail(Long studyId) {
-        return studyRepository.findById(studyId).orElseThrow(() -> {
-            throw new StudyNotFoundException();
-        });
+    public StudyRoleResponseDto studyDetail(Long studyId) {
+        Study study = getStudy(studyId);
+        // 비로그인 이므로 role은 general
+        StudyRoleResponseDto studyRoleResponseDto = new StudyRoleResponseDto(study, "general");
+        log.info("비로그인 스터디 조회: {}", studyRoleResponseDto.toString());
+        return studyRoleResponseDto;
     }
 
     // 로그인
-    public List<StudyMember> studyDetail(Long studyId, String header) throws FirebaseAuthException {
+    public StudyRoleResponseDto studyDetail(Long studyId, String header) throws FirebaseAuthException {
         FirebaseToken firebaseToken = firebaseAuth.verifyIdToken(header);
         Member member = (Member) memberService.loadUserByUsername(firebaseToken.getUid());
 
-        //uid로 조인
-        List<StudyMember> studyMembers = studyMemberRepositoryCustom.findAllByUidOrStudyId(member.getId(), studyId);
-        log.info("studyMembers 결과: {}", studyMembers.toString());
+        Study study = getStudy(studyId);
 
-        if (studyMembers.isEmpty()) {
-          studyMembers =  studyMemberRepositoryCustom.findByStudyId(studyId);
-            log.info("studyMembers 결과2: {}", studyMembers.toString());
+        List<StudyMember> studyMembers = study.getStudyMembers();
+        StudyRoleResponseDto studyRoleResponseDto = null;
+        for (StudyMember studyMember : studyMembers) {
+            if (member.getUid().equals(studyMember.getMember().getUid()) && studyId == studyMember.getStudyId()) {
+                String role = studyMember.getRole();
+                Long stId = studyMember.getStudyId();
+                studyRoleResponseDto = new StudyRoleResponseDto(study, role);
+            } else {
+                studyRoleResponseDto = new StudyRoleResponseDto(study, "general");
+            }
         }
-        return studyMembers;
+        // 리더로 참여하면 leader , 회원으로 참여하면 member, 참여하지 않으면 general
+        log.info("로그인 하여 조회한 스터에서 사용자의 역할: {}", studyRoleResponseDto.toString());
+        return studyRoleResponseDto;
     }
 
     // 스터디 조건 검색 및 페이징 처리
@@ -81,7 +90,7 @@ public class StudyService {
     public Study studyUpdate(Long studyId, StudyRequestDto requestDto , Member member) {
         Study study = null;
         // 스터디 생성자와 로그인 유저가 같은지 비교
-        Study result = studyDetail(studyId);
+        Study result = getStudy(studyId);
         if (result.getCreateUid().equals(member.getUid())) {
             Study updated = result.update(studyId, requestDto, member.getUid());
             study = studyRepository.save(updated);
@@ -96,7 +105,7 @@ public class StudyService {
     public Study studyComplete(Long studyId, Member member, StudyRequestDto studyRequestDto) {
         Study study = null;
         // 스터디 생성자와 로그인 유저가 같은지 비교
-        Study result = studyDetail(studyId);
+        Study result = getStudy(studyId);
         if (result.getCreateUid().equals(member.getUid())) {
             result = result.updateCompleteStatus(studyRequestDto.getStatus());
             study = studyRepository.save(result);
@@ -111,5 +120,12 @@ public class StudyService {
         StudyResponseDetailDto studyResponseDetailDto = new StudyResponseDetailDto();
         studyResponseDetailDto = studyResponseDetailDto.toDto(study);
         return studyResponseDetailDto;
+    }
+
+    // 스터디에 대한 정보 조회회
+    public Study getStudy(Long studyId) {
+        return studyRepository.findById(studyId).orElseThrow(() -> {
+            throw new StudyNotFoundException();
+        });
     }
 }

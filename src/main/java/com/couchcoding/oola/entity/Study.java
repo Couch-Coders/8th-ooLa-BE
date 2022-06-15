@@ -14,6 +14,8 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import static lombok.AccessLevel.PROTECTED;
 
@@ -21,7 +23,6 @@ import static lombok.AccessLevel.PROTECTED;
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = PROTECTED)
 @Getter
-@ToString
 @Entity
 @Table(name = "study")
 public class Study extends BaseTimeEntity implements Serializable {
@@ -89,14 +90,11 @@ public class Study extends BaseTimeEntity implements Serializable {
     @Column(name = "participant_status")
     private Boolean participantStatus; // 스터디 상태가 완료인 경우 참여신청 불가 , 스터디 상태가 진행중인 경우 참여신청 불가
 
-    @Column(name = "studyId", insertable = false, updatable = false)
-    private Long studyId;
+//    @Column(name = "studyId", insertable = false, updatable = false)
+//    private Long studyId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "studyId")
-    private StudyMember studyMember;
-
-
+    @OneToMany(mappedBy = "study",fetch = FetchType.LAZY)
+    private List<StudyMember> studyMembers = new ArrayList<>();
 
     @Builder
     public Study(Long studyId, @NotBlank(message = "studyType은 필수 값입니다") String studyType, @NotBlank(message = "studyName은 필수 값입니다") String studyName, @NotBlank(message = "studydays는 필수 값입니다") String studyDays, @NotBlank(message = "timeZone은 필수 값입니다") String timeZone, @NotNull(message = "participants은 필수 값입니다") int participants, int currentParticipants, @NotNull(message = "startDate은 필수 값입니다") LocalDateTime startDate, @NotBlank(message = "openChatUrl은 필수 값입니다") String openChatUrl, @NotBlank(message = "studyIntroduce은 필수 값입니다") String studyIntroduce, @NotBlank(message = "studyGoal은 필수 값입니다") String studyGoal, String status, String joinStatus, @NotNull(message = "openChatUrl은 필수 값입니다") LocalDateTime endDate, Long likeCount, String createUid, Boolean likeStatus) {
@@ -135,7 +133,7 @@ public class Study extends BaseTimeEntity implements Serializable {
        // this.joinStatus = studyRequestDto.getJoinStatus();
         this.likeStatus = studyRequestDto.getLikeStatus();
         this.currentParticipants = studyRequestDto.getCurrentParticipants();
-        this.studyId = studyId;
+        this.id = studyId;
         this.createUid = uid;
         return this;
     }

@@ -3,6 +3,7 @@ package com.couchcoding.oola.controller;
 import com.couchcoding.oola.dto.study.request.StudyRequestDto;
 import com.couchcoding.oola.dto.study.response.StudyResponseDetailDto;
 import com.couchcoding.oola.dto.study.response.StudyResponseDto;
+import com.couchcoding.oola.dto.study.response.StudyRoleResponseDto;
 import com.couchcoding.oola.dto.studymember.response.StudyMemberResponseDto;
 import com.couchcoding.oola.entity.Member;
 import com.couchcoding.oola.entity.Study;;
@@ -69,20 +70,15 @@ public class StudyController {
 
     // 스터디 단일 조회
     @GetMapping("/{studyId}")
-    public ResponseEntity<StudyResponseDetailDto> studyDetail( @PathVariable @Valid Long studyId, HttpServletRequest request) throws FirebaseAuthException {
-        List<StudyMember> studyMembers = null;
-        Study study = null;
-        StudyResponseDetailDto studyResponseDetailDto = null;
+    public ResponseEntity<StudyRoleResponseDto> studyDetail( @PathVariable @Valid Long studyId, HttpServletRequest request) throws FirebaseAuthException {
+        StudyRoleResponseDto studyRoleResponseDto = null;
         String header = RequestUtil.getAuthorizationToken(request);
-        log.info("header: {}", header);
         if (header != null) {
-            studyMembers = (List<StudyMember>) studyService.studyDetail(studyId, header);
-            studyResponseDetailDto = new StudyResponseDetailDto( studyMembers);
+            studyRoleResponseDto = studyService.studyDetail(studyId, header);
         } else {
-            study = studyService.studyDetail(studyId);
-            studyResponseDetailDto  = new StudyResponseDetailDto(study, studyMembers);
+            studyRoleResponseDto = studyService.studyDetail(studyId);
         }
-        return ResponseEntity.status(HttpStatus.OK).body(studyResponseDetailDto);
+        return ResponseEntity.status(HttpStatus.OK).body(studyRoleResponseDto);
     }
 
     // 스터디 필터링 (조건검색)
