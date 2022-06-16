@@ -3,6 +3,7 @@ package com.couchcoding.oola.controller;
 import com.couchcoding.oola.dto.study.request.StudyRequestDto;
 import com.couchcoding.oola.dto.study.response.StudyResponseDetailDto;
 import com.couchcoding.oola.dto.study.response.StudyResponseDto;
+import com.couchcoding.oola.dto.study.response.StudyRoleResponseDto;
 import com.couchcoding.oola.dto.studymember.response.StudyMemberResponseDto;
 import com.couchcoding.oola.entity.Member;
 import com.couchcoding.oola.entity.Study;;
@@ -10,7 +11,11 @@ import com.couchcoding.oola.entity.StudyMember;
 import com.couchcoding.oola.service.StudyMemberService;
 import com.couchcoding.oola.service.StudyService;
 
+import com.couchcoding.oola.util.RequestUtil;
 import com.couchcoding.oola.validation.*;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.FirebaseToken;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -37,6 +42,7 @@ public class StudyController {
 
     private final StudyService studyService;
     private final StudyMemberService studyMemberService;
+    private final FirebaseAuth firebaseAuth;
 
     @PostMapping("")
     public ResponseEntity<StudyResponseDto> createStudy(Authentication authentication,
@@ -64,11 +70,15 @@ public class StudyController {
 
     // 스터디 단일 조회
     @GetMapping("/{studyId}")
-    public ResponseEntity<StudyResponseDetailDto> studyDetail( @PathVariable @Valid Long studyId, HttpServletRequest request) throws ParseException {
-        Study study = studyService.studyDetail(studyId);
-        StudyResponseDetailDto studyResponseDetailDto = new StudyResponseDetailDto();
-        studyResponseDetailDto = studyResponseDetailDto.toDto(study);
-        return ResponseEntity.status(HttpStatus.OK).body(studyResponseDetailDto);
+    public ResponseEntity<StudyRoleResponseDto> studyDetail( @PathVariable @Valid Long studyId, HttpServletRequest request) throws FirebaseAuthException {
+        StudyRoleResponseDto studyRoleResponseDto = null;
+        String header = RequestUtil.getAuthorizationToken(request);
+        if (header != null) {
+            studyRoleResponseDto = studyService.studyDetail(studyId, header);
+        } else {
+            studyRoleResponseDto = studyService.studyDetail(studyId);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(studyRoleResponseDto);
     }
 
     // 스터디 필터링 (조건검색)

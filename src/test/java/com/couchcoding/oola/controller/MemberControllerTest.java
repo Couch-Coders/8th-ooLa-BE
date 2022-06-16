@@ -46,8 +46,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 class MemberControllerTest {
 
     //private static final String uid = "DpKLjE6P5bRd4aAqWzl1gnbaKHr1";
-    private static final String uid = "9aPftjfIvFOtrFRNEgYUpyS04N83";
-    private static final String displayName = "황유진";
+    private static final String uid = "poipoipoiuyt";
+    private static final String displayName = "홍동길";
     private static final String email = "cmk664488@gmail.com";
     private static final String blogUrl = "ttps://shiningjean.tistory.com/35";
     private static final String githubUrl = "https://shiningjean.tistory.com/35";

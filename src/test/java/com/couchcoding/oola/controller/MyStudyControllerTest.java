@@ -33,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("local")
 @SpringBootTest
 class MyStudyControllerTest {
-    private static final String uid = "aagee";
+    private static final String uid = "E3yVhQygg9SknhgqarCFoh5YeU33";
 
     @Autowired
     private WebApplicationContext wac;

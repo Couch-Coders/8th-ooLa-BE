@@ -1,5 +1,6 @@
 package com.couchcoding.oola.repository.impl;
 
+import com.couchcoding.oola.entity.QStudyMember;
 import com.couchcoding.oola.entity.StudyMember;
 import com.couchcoding.oola.repository.StudyMemberRepositoryCustom;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -50,6 +51,7 @@ public class StudyMemberRepositoryImpl extends QuerydslRepositorySupport impleme
         log.info("studyMember: {} ", studyMembers.toString());
         return studyMembers;
     }
+
 
     private BooleanExpression eqStatus(String status) {
         if (status.equals(null) || status == null) {
