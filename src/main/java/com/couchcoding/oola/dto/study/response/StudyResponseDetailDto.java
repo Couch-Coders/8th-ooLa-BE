@@ -35,7 +35,7 @@ public class StudyResponseDetailDto {
     }
 
     public StudyResponseDetailDto(Study study) {
-        this.studyId = study.getId();
+        this.studyId = study.getStudyId();
         this.studyType = study.getStudyType();
         this.studyDays = study.getStudyDays();
         this.timeZone = study.getTimeZone();

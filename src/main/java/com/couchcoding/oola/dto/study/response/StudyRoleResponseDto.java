@@ -30,7 +30,7 @@ public class StudyRoleResponseDto {
     private String role;
 
     public StudyRoleResponseDto(Study study, String role) {
-        this.studyId = study.getId();
+        this.studyId = study.getStudyId();
         this.studyType = study.getStudyType();
         this.studyName = study.getStudyName();
         this.timeZone = study.getTimeZone();

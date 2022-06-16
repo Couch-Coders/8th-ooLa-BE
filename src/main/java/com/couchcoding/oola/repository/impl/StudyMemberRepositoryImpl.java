@@ -36,9 +36,6 @@ public class StudyMemberRepositoryImpl extends QuerydslRepositorySupport impleme
     public List<StudyMember> findAllByUidAndRole(Long uid, String role) {
         List<StudyMember> studyMembers = queryFactory.selectFrom(studyMember)
                 .where(eqUid(uid), eqRole(role)).fetch();
-
-        log.info("studyMember: {} ", studyMembers.toString());
-        log.info("studyMember.get(0) : {}", studyMembers.get(0).getStudy().toString());
         return studyMembers;
     }
 
@@ -47,8 +44,6 @@ public class StudyMemberRepositoryImpl extends QuerydslRepositorySupport impleme
         List<StudyMember> studyMembers = queryFactory.selectFrom(studyMember)
                 .where(eqUid(uid), eqRole(role), eqStatus(status))
                 .fetch();
-
-        log.info("studyMember: {} ", studyMembers.toString());
         return studyMembers;
     }
 
