@@ -35,7 +35,7 @@ public class StudyMember extends BaseTimeEntity implements Serializable {
     private Long studyId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "studyId")
+    @JoinColumn(name = "id")
     private Study study;
     private String role;
 
