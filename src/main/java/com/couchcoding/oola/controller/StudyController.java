@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.text.ParseException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -47,7 +48,7 @@ public class StudyController {
     @PostMapping("")
     public ResponseEntity<StudyResponseDto> createStudy(Authentication authentication,
                                                         @RequestBody @Valid StudyRequestDto studyRequestDto, BindingResult result) {
-        if (result.hasErrors()) {
+        if (result.hasErrors() || studyRequestDto.getStartDate().isBefore(LocalDateTime.now()) && studyRequestDto.getEndDate().isBefore(LocalDateTime.now())) {
             throw  new ParameterBadRequestException(result);
         }
 
