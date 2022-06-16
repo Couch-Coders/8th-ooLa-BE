@@ -13,6 +13,8 @@ import com.couchcoding.oola.service.StudyService;
 
 import com.couchcoding.oola.util.RequestUtil;
 import com.couchcoding.oola.validation.*;
+import com.couchcoding.oola.validation.error.CustomException;
+import com.couchcoding.oola.validation.error.ErrorCode;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
@@ -25,6 +27,7 @@ import org.springframework.security.core.Authentication;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -71,11 +74,15 @@ public class StudyController {
 
     // 스터디 단일 조회
     @GetMapping("/{studyId}")
-    public ResponseEntity<StudyRoleResponseDto> studyDetail( @PathVariable @Valid Long studyId, HttpServletRequest request) throws FirebaseAuthException {
+    public ResponseEntity<StudyRoleResponseDto> studyDetail( @PathVariable @Valid Long studyId, HttpServletRequest request)  {
         StudyRoleResponseDto studyRoleResponseDto = null;
         String header = RequestUtil.getAuthorizationToken(request);
         if (header != null) {
-            studyRoleResponseDto = studyService.studyDetail(studyId, header);
+            try {
+                studyRoleResponseDto = studyService.studyDetail(studyId, header);
+            } catch (FirebaseAuthException | UsernameNotFoundException | IllegalArgumentException e) {
+                throw new CustomException(ErrorCode.MemberNotFound);
+            }
         } else {
             studyRoleResponseDto = studyService.studyDetail(studyId);
         }

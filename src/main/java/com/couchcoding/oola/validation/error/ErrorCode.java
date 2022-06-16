@@ -44,7 +44,10 @@ public enum ErrorCode {
 
     // 댓글 예외
     // 삭제된 댓글을 조회하는 경우 :404 : Not Found
-    CommentNotFound(HttpStatus.NOT_FOUND, "C0010", "삭제되어 존재하지 않는 댓글입니다.");
+    CommentNotFound(HttpStatus.NOT_FOUND, "C0010", "삭제되어 존재하지 않는 댓글입니다."),
+
+    InvalidAuthorization(HttpStatus.NOT_FOUND, "C0011", "인증 정보가 부정확합니다");
+
 
     private final HttpStatus status;
 
