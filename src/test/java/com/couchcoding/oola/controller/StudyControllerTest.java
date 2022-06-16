@@ -26,8 +26,12 @@ import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.Filter;
 import java.nio.charset.StandardCharsets;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -41,7 +45,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 class StudyControllerTest {
 
-    private static final String uid = "abc";
+    private static final String uid = "abcabcabcddddeefg";
     private static final String studyType = "프론트엔드";
     private static String studyName = "DO IT React12";
     private static String studyDays = "평일";
@@ -254,9 +258,9 @@ class StudyControllerTest {
     @Test
     @DisplayName("스터디 수정 테스트")
     void updateStudy() throws Exception {
-        int studyId = 42;
+        int studyId = 47;
 
-        String sdate = "2022-06-15 00:00:00";
+        String sdate = "2022-06-16 00:00:00";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime startDateTime = LocalDateTime.parse(sdate, formatter);
 
@@ -280,7 +284,7 @@ class StudyControllerTest {
         studyRequestDto.setStudyIntroduce(studyIntroduce);
         studyRequestDto.setStudyGoal(goal);
         studyRequestDto.setStatus(status);
-        studyRequestDto.setCurrentParticipants(3);
+        studyRequestDto.setCurrentParticipants(4);
 
 
         String studyDtoJson = objectMapper.writeValueAsString(studyRequestDto);
@@ -534,7 +538,6 @@ class StudyControllerTest {
         studyRequestDto.setStudyIntroduce(studyIntroduce);
         studyRequestDto.setStudyGoal(studyGoal);
         studyRequestDto.setStatus(status);
-     //   studyRequestDto.setJoinStatus("leader");
         studyRequestDto.setCurrentParticipants(currentParticipants);
 
 
@@ -582,7 +585,6 @@ class StudyControllerTest {
         studyRequestDto.setStudyIntroduce(studyIntroduce);
         studyRequestDto.setStudyGoal(studyGoal);
         studyRequestDto.setStatus(status);
-     //   studyRequestDto.setJoinStatus("leader");
         studyRequestDto.setCurrentParticipants(currentParticipants);
 
 
@@ -629,5 +631,75 @@ class StudyControllerTest {
                         .characterEncoding(StandardCharsets.UTF_8)
                         .accept(MediaType.APPLICATION_JSON)
         ).andDo(print());
+    }
+
+    @Test
+    @DisplayName("스터디 개설시 날짜에 따른 실패 테스트")
+    void 스터디개설시날짜에따른실패테스트() throws ParseException {
+        String now =  DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
+
+        // 포맷 정의
+        System.out.println("현재 시간: " + now);
+
+        // 프론트에서 보내준 스터더 시작일자 형식은 yyyy-MM-dd:hh:mm:ss (값형식은 년-월-일:00:00:00)
+        String stDate = "2022-06-15 00:00:00";
+        DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime startDateTime = LocalDateTime.parse(stDate, formatter2);
+        System.out.println("String to LocalDatetime : " + startDateTime);
+
+        // 날짜 비교
+        // 현재 날짜보다 이전 날짜이면 시작날짜가 될수 없어야 한다
+        if (startDateTime.isBefore(LocalDateTime.now())) {
+            System.out.println("현재 날짜 보다 과거 날짜 이므로 스터디 시작날짜로 사용할수 없습니다");
+        } else {
+            System.out.println("현재 날짜 보다 이후 날짜 이므로 스터디 시작날짜로 사용 가능");
+        }
+    }
+    
+    @Test
+    @DisplayName("스터디 개설시 날짜 테스트")
+    void 스터디개설시날짜테스트() throws Exception {
+        String sdate = "2022-05-15 00:00:00";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime startDateTime = LocalDateTime.parse(sdate, formatter);
+
+        String edate = "2022-06-15 00:00:00";
+        DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime endDateTime = LocalDateTime.parse(edate, formatter2);
+
+        if (startDateTime.isBefore(LocalDateTime.now()) && endDateTime.isBefore(LocalDateTime.now()) )  {
+            System.out.println("현재 날짜 보다 과거 날짜 이므로 스터디 시작날짜 및 종료날짜로 사용할수 없습니다");
+        } else {
+            System.out.println("현재 날짜 보다 이후 날짜 이므로 스터디 시작날짜 및 종료날짜로 사용 가능");
+
+
+            StudyRequestDto studyRequestDto = new StudyRequestDto();
+            studyRequestDto.setCreateUid(uid);
+            studyRequestDto.setStudyType(studyType);
+            studyRequestDto.setStudyName("기술면접 테스트9");
+            studyRequestDto.setStudyDays(studyDays);
+            studyRequestDto.setTimeZone(timeZone);
+            studyRequestDto.setParticipants(participants);
+            studyRequestDto.setStartDate(startDateTime);
+            studyRequestDto.setEndDate(endDateTime);
+            studyRequestDto.setOpenChatUrl(openChatUrl);
+            studyRequestDto.setStudyIntroduce(studyIntroduce);
+            studyRequestDto.setStudyGoal(studyGoal);
+            studyRequestDto.setStatus(status);
+            studyRequestDto.setCurrentParticipants(currentParticipants);
+            String studyDtoJson = objectMapper.writeValueAsString(studyRequestDto);
+
+            ResultActions resultActions = mockMvc.perform(
+                    post("/studies")
+                            .header("Authorization", "Bearer " + uid)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .characterEncoding(StandardCharsets.UTF_8)
+                            .content(studyDtoJson)
+                            .accept(MediaType.APPLICATION_JSON)
+            )
+                    .andDo(print());
+            resultActions
+                    .andExpect(status().isCreated());
+        }
     }
 }
