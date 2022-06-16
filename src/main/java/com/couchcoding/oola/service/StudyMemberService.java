@@ -1,5 +1,7 @@
 package com.couchcoding.oola.service;
 
+import com.couchcoding.oola.dto.study.response.StudyCreationDto;
+import com.couchcoding.oola.dto.study.response.StudyProgressDto;
 import com.couchcoding.oola.dto.studymember.response.StudyMemberResponseDto;
 import com.couchcoding.oola.entity.Member;
 import com.couchcoding.oola.entity.Study;
@@ -13,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -26,7 +29,10 @@ public class StudyMemberService {
     // 스터디 참여자 정보조회
     @Transactional
     public List<StudyMember> studyMembers(Long studyId) {
-        return studyMemberRepositoryCustom.findByStudyId(studyId);
+        Study study = studyRepository.findById(studyId).orElseThrow(() -> {
+            throw new StudyNotFoundException();
+        });
+        return study.getStudyMembers();
     }
 
     // 스터디 개설시 리더정보 추가
@@ -61,19 +67,34 @@ public class StudyMemberService {
     }
 
     // 마이스터디 - 내가 개설한 스터디 조회
-    public List<StudyMember> mystudies(Member member) {
+    public List<StudyCreationDto> mystudies(Member member) {
+        List<StudyCreationDto> studyCreationDtoList = new ArrayList<>();
+       StudyCreationDto studyCreationDto = null;
         String role = "leader";
         // role과 member의 uid 사용하여 검색
         Long uid = member.getId();
-        return studyMemberRepositoryCustom.findAllByUidAndRole(uid, role);
+        List<StudyMember> studyMembers = studyMemberRepositoryCustom.findAllByUidAndRole(uid, role);
+        for (StudyMember studyMember : studyMembers) {
+            Study study = studyMember.getStudy();
+            studyCreationDto = new StudyCreationDto(study);
+            studyCreationDtoList.add(studyCreationDto);
+        }
+        return studyCreationDtoList;
     }
 
     // 마이스터디 - 내가 참여한 스터디 조회
-    public List<StudyMember> myJoinStudies(Member member) {
-        //uid, role
+    public List<StudyProgressDto> myJoinStudies(Member member) {
+        List<StudyProgressDto> studyProgressDtos = new ArrayList<>();
+        StudyProgressDto studyProgressDto = null;
         String role = "member";
         Long uid = member.getId();
         String status = "진행";
-        return studyMemberRepositoryCustom.findAllByUidAndRoleAndStatus(uid, role, status);
+        List<StudyMember> studyMembers = studyMemberRepositoryCustom.findAllByUidAndRoleAndStatus(uid, role, status);
+        for (StudyMember studyMember : studyMembers) {
+            Study study = studyMember.getStudy();
+            studyProgressDto = new StudyProgressDto(study);
+            studyProgressDtos.add(studyProgressDto);
+        }
+        return studyProgressDtos;
     }
 }

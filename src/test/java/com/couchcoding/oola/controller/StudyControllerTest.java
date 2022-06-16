@@ -45,17 +45,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 class StudyControllerTest {
 
-    private static final String uid = "abcabcabcddddeefg";
-    private static final String studyType = "프론트엔드";
-    private static String studyName = "DO IT React12";
-    private static String studyDays = "평일";
-    private static final String timeZone = "오후 (12 ~ 18시)";
+    private static final String uid = "poipoipoiuyt";
+    private static final String studyType = "자료구조/알고리즘";
+    private static String studyName = "자바스크립트 알고리즘";
+    private static String studyDays = "주말";
+    private static final String timeZone = "저녁 (18:00 - 24:00)";
     private static final int participants = 7;
     private static LocalDateTime startDate = null;
     private static LocalDateTime endDate = null;
     private static final String openChatUrl = "https://open.kakao.com/o/gihbQV0d";
-    private static final String studyIntroduce = "안녕하세요 오전타임 React 스터디를 진행하고자 합니다";
-    private static final String studyGoal = "React 마스터";
+    private static final String studyIntroduce = "안녕하세요 스터디를 진행하고자 합니다";
+    private static final String studyGoal = "자바스크립트 알고리즘 마스터";
     private static final String status = "진행";
     private static Integer currentParticipants = 1;
 
@@ -92,7 +92,7 @@ class StudyControllerTest {
         StudyRequestDto studyRequestDto = new StudyRequestDto();
         studyRequestDto.setCreateUid(uid);
         studyRequestDto.setStudyType(studyType);
-        studyRequestDto.setStudyName("기술면접 테스트7");
+        studyRequestDto.setStudyName("알고리즘");
         studyRequestDto.setStudyDays(studyDays);
         studyRequestDto.setTimeZone(timeZone);
         studyRequestDto.setParticipants(participants);
@@ -110,7 +110,7 @@ class StudyControllerTest {
 
         ResultActions resultActions = mockMvc.perform(
                 post("/studies")
-                        .header("Authorization", "Bearer " + uid)
+                        .header("Authorization", "Bearer " + "poipoipoiuyt")
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding(StandardCharsets.UTF_8)
                         .content(studyDtoJson)
@@ -125,10 +125,10 @@ class StudyControllerTest {
     @DisplayName("스터디 단건 조회 테스트")
     void selectStudy() throws Exception {
         String token = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjFhZWY1NjlmNTI0MTRlOWY0YTcxMDRiNmQwNzFmMDY2ZGZlZWQ2NzciLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoi7Zmp7Jyg7KeEIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FBVFhBSnktbnhpWWZOVXlOVmF6a2E4aHN6R0dWbnFPN3NTS0JYNVRQczQwPXM5Ni1jIiwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL29vbGEtb2F1dGgiLCJhdWQiOiJvb2xhLW9hdXRoIiwiYXV0aF90aW1lIjoxNjU1MjY1NzM4LCJ1c2VyX2lkIjoiRTN5VmhReWdnOVNrbmhncWFyQ0ZvaDVZZVUzMyIsInN1YiI6IkUzeVZoUXlnZzlTa25oZ3FhckNGb2g1WWVVMzMiLCJpYXQiOjE2NTUyOTEzNTYsImV4cCI6MTY1NTI5NDk1NiwiZW1haWwiOiJjbWs2NjQ0ODhAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZ29vZ2xlLmNvbSI6WyIxMDk4MjY0NjA3OTI1NjQ4NTI5ODAiXSwiZW1haWwiOlsiY21rNjY0NDg4QGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6Imdvb2dsZS5jb20ifX0.ok-cT54scw1hMbVgTEYFi3MNs_O_vM_gJGxzPMNU1Q0ePkciKn5D1HSZtbcmNA6x1SQlhd93zJvBwqypeA8x5rUwUP3cVwdnA17jxTAz187HqOexIMqdJnm4sJkvDGzDPKvM756CMpyTGiWp7PUk2ntvSsgfTgCnGOa5CXhvvN-vVMp7vDt_ZQpShvGln-QfoBc6nDQA22RIFQVKbpgExCdOyfmaQ4lqMfphnUC3oeK35RTrjssLIv8zZLvYehd-p7Bkt0gAaumACo_SoRmiNY9OWOn8TKrTwFK4UqC_a1376-XCsFJ6PVrdPneUjm6q5j0TqquPa0cc3ebVAtZP-w";
-        int studyId = 55;
+        int studyId = 1;
         ResultActions resultActions = mockMvc.perform(
                 get("/studies/" + studyId)
-                        .header("Authorization", "Bearer " + token)
+                        //.header("Authorization", "Bearer " + uid)
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding(StandardCharsets.UTF_8)
                         .accept(MediaType.APPLICATION_JSON)
@@ -258,7 +258,7 @@ class StudyControllerTest {
     @Test
     @DisplayName("스터디 수정 테스트")
     void updateStudy() throws Exception {
-        int studyId = 47;
+        int studyId = 1;
 
         String sdate = "2022-06-16 00:00:00";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -269,13 +269,13 @@ class StudyControllerTest {
         LocalDateTime endDateTime = LocalDateTime.parse(edate, formatter2);
 
 
-        String goal = "React 격파 수정수정";
+        String goal = "React 격파";
 
         StudyRequestDto studyRequestDto = new StudyRequestDto();
         studyRequestDto.setCreateUid(uid);
         studyRequestDto.setStudyType(studyType);
-        studyRequestDto.setStudyName(studyName);
-        studyRequestDto.setStudyDays(studyDays);
+        studyRequestDto.setStudyName("React 마스터");
+        studyRequestDto.setStudyDays("평일");
         studyRequestDto.setTimeZone(timeZone);
         studyRequestDto.setParticipants(participants);
         studyRequestDto.setStartDate(startDateTime);
@@ -284,7 +284,7 @@ class StudyControllerTest {
         studyRequestDto.setStudyIntroduce(studyIntroduce);
         studyRequestDto.setStudyGoal(goal);
         studyRequestDto.setStatus(status);
-        studyRequestDto.setCurrentParticipants(4);
+        studyRequestDto.setCurrentParticipants(1);
 
 
         String studyDtoJson = objectMapper.writeValueAsString(studyRequestDto);
@@ -606,11 +606,11 @@ class StudyControllerTest {
     @Test
     @DisplayName("스터디 참여 신청 테스트")
     void 스터디참여신청테스트() throws Exception {
-        Long studyId = 45L;
+        Long studyId = 3L;
 
         ResultActions resultActions = mockMvc.perform(
                 post("/studies/" + studyId + "/members")
-                        .header("Authorization", "Bearer " + uid)
+                        .header("Authorization", "Bearer " + "aaabbcc")
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding(StandardCharsets.UTF_8)
                         .accept(MediaType.APPLICATION_JSON)
@@ -622,15 +622,20 @@ class StudyControllerTest {
     @DisplayName("스터디 참여자 조회 테스트")
     void 스터디참여자조회테스트() throws Exception {
 
-        Long studyId = 45L;
+        Long studyId = 1L;
 
         ResultActions resultActions = mockMvc.perform(
                 get("/studies/" + studyId + "/members")
-                        .header("Authorization", "Bearer " + uid)
+                        //.header("Authorization", "Bearer " + uid)
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding(StandardCharsets.UTF_8)
                         .accept(MediaType.APPLICATION_JSON)
-        ).andDo(print());
+        )
+                .andDo(print());
+        resultActions
+                .andExpect(status().isOk());
+
+
     }
 
     @Test

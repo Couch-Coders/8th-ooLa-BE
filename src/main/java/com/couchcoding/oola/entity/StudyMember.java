@@ -1,6 +1,7 @@
 package com.couchcoding.oola.entity;
 
 import com.couchcoding.oola.entity.base.BaseTimeEntity;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,7 +23,7 @@ import static lombok.AccessLevel.PROTECTED;
 public class StudyMember extends BaseTimeEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long studyMemberId;
 
     @Column(name = "uid", insertable = false, updatable = false)
     private Long uid;
@@ -31,11 +32,12 @@ public class StudyMember extends BaseTimeEntity implements Serializable {
     @JoinColumn(name = "uid")
     private Member member;
 
-    @Column(name = "id",insertable = false, updatable = false)
+    @Column(name = "study_id",insertable = false, updatable = false)
     private Long studyId;
 
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "study_id")
     private Study study;
     private String role;
 

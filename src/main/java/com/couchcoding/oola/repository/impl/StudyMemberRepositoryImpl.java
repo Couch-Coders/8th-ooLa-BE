@@ -26,7 +26,7 @@ public class StudyMemberRepositoryImpl extends QuerydslRepositorySupport impleme
     }
 
     @Override
-    public List<StudyMember> findByStudyId(Long studyId) {
+    public List<StudyMember> findAllByStudyId(Long studyId) {
         List<StudyMember> studyMembers = queryFactory.selectFrom(studyMember)
                 .where(eqStudyId(studyId)).fetch();
         return studyMembers;
