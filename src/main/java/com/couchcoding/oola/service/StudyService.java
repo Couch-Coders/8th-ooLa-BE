@@ -68,14 +68,11 @@ public class StudyService {
         for (StudyMember studyMember : studyMembers) {
             if (member.getUid().equals(studyMember.getMember().getUid()) && studyId == studyMember.getStudyId()) {
                 String role = studyMember.getRole();
-                Long stId = studyMember.getStudyId();
                 studyRoleResponseDto = new StudyRoleResponseDto(study, role);
             } else {
                 studyRoleResponseDto = new StudyRoleResponseDto(study, "general");
             }
         }
-        // 리더로 참여하면 leader , 회원으로 참여하면 member, 참여하지 않으면 general
-        log.info("로그인 하여 조회한 스터에서 사용자의 역할: {}", studyRoleResponseDto.toString());
         return studyRoleResponseDto;
     }
 
