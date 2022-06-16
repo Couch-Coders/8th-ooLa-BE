@@ -29,7 +29,7 @@ import static lombok.AccessLevel.PROTECTED;
 public class Study extends BaseTimeEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long studyId;
 
     @Column(name = "study_type")
     @NotBlank(message = "studyType은 필수 값입니다")
@@ -88,19 +88,13 @@ public class Study extends BaseTimeEntity implements Serializable {
     @Column(name = "like_status")
     private Boolean likeStatus; // 한명이라도 스터디 관심을 눌렀다면 true
 
-    @Column(name = "participant_status")
-    private Boolean participantStatus; // 스터디 상태가 완료인 경우 참여신청 불가 , 스터디 상태가 진행중인 경우 참여신청 불가
-
-    @Column(name = "study_id", insertable = false, updatable = false)
-    private Long studyId;
-
     @JsonManagedReference
     @OneToMany(mappedBy = "study",fetch = FetchType.LAZY)
     private List<StudyMember> studyMembers = new ArrayList<>();
 
     @Builder
     public Study(Long studyId, @NotBlank(message = "studyType은 필수 값입니다") String studyType, @NotBlank(message = "studyName은 필수 값입니다") String studyName, @NotBlank(message = "studydays는 필수 값입니다") String studyDays, @NotBlank(message = "timeZone은 필수 값입니다") String timeZone, @NotNull(message = "participants은 필수 값입니다") int participants, int currentParticipants, @NotNull(message = "startDate은 필수 값입니다") LocalDateTime startDate, @NotBlank(message = "openChatUrl은 필수 값입니다") String openChatUrl, @NotBlank(message = "studyIntroduce은 필수 값입니다") String studyIntroduce, @NotBlank(message = "studyGoal은 필수 값입니다") String studyGoal, String status, String joinStatus, @NotNull(message = "openChatUrl은 필수 값입니다") LocalDateTime endDate, Long likeCount, String createUid, Boolean likeStatus) {
-        this.id = studyId;
+        this.studyId = studyId;
         this.studyType = studyType;
         this.studyName = studyName;
         this.studyDays = studyDays;
@@ -112,7 +106,6 @@ public class Study extends BaseTimeEntity implements Serializable {
         this.studyIntroduce = studyIntroduce;
         this.studyGoal = studyGoal;
         this.status = status;
-        // this.joinStatus = joinStatus;
         this.endDate = endDate;
         this.likeCount = likeCount;
         this.createUid = createUid;
@@ -135,7 +128,7 @@ public class Study extends BaseTimeEntity implements Serializable {
         // this.joinStatus = studyRequestDto.getJoinStatus();
         this.likeStatus = studyRequestDto.getLikeStatus();
         this.currentParticipants = studyRequestDto.getCurrentParticipants();
-        this.id = studyId;
+        this.studyId = studyId;
         this.createUid = uid;
         return this;
     }

@@ -32,12 +32,12 @@ public class StudyMember extends BaseTimeEntity implements Serializable {
     @JoinColumn(name = "uid")
     private Member member;
 
-    @Column(name = "study_id",insertable = false, updatable = false)
+    @Column(name = "studyId",insertable = false, updatable = false)
     private Long studyId;
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "study_id")
+    @JoinColumn(name = "studyId")
     private Study study;
     private String role;
 

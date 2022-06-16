@@ -29,10 +29,8 @@ public class StudyMemberService {
     // 스터디 참여자 정보조회
     @Transactional
     public List<StudyMember> studyMembers(Long studyId) {
-        Study study = studyRepository.findById(studyId).orElseThrow(() -> {
-            throw new StudyNotFoundException();
-        });
-        return study.getStudyMembers();
+        List<StudyMember> studyMembers = studyMemberRepositoryCustom.findAllByStudyId(studyId);
+        return studyMembers;
     }
 
     // 스터디 개설시 리더정보 추가
