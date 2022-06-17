@@ -70,7 +70,7 @@ public class StudyMemberService {
        StudyCreationDto studyCreationDto = null;
         String role = "leader";
         // role과 member의 uid 사용하여 검색
-        Long uid = member.getId();
+        String uid = member.getUid();
         List<StudyMember> studyMembers = studyMemberRepositoryCustom.findAllByUidAndRole(uid, role);
         for (StudyMember studyMember : studyMembers) {
             Study study = studyMember.getStudy();
@@ -85,7 +85,7 @@ public class StudyMemberService {
         List<StudyProgressDto> studyProgressDtos = new ArrayList<>();
         StudyProgressDto studyProgressDto = null;
         String role = "member";
-        Long uid = member.getId();
+        String uid = member.getUid();
         String status = "진행";
         List<StudyMember> studyMembers = studyMemberRepositoryCustom.findAllByUidAndRoleAndStatus(uid, role, status);
         for (StudyMember studyMember : studyMembers) {

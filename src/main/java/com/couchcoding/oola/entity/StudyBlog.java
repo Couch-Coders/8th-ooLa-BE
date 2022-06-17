@@ -1,5 +1,6 @@
 package com.couchcoding.oola.entity;
 
+import com.couchcoding.oola.dto.studyblogs.request.StudyBlogRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -11,11 +12,12 @@ import javax.validation.constraints.NotBlank;
 @ToString
 @NoArgsConstructor
 @Entity
+@Table(name = "study_blog")
 public class StudyBlog {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long studyBlogId;
 
     @Column(name = "comment")
     @NotBlank(message = "comment는 필수 값입니다")
@@ -32,4 +34,11 @@ public class StudyBlog {
     @ManyToOne
     @JoinColumn(name = "uid")
     private Member member;
+
+    public StudyBlog(StudyBlogRequestDto studyBlogRequestDto, Member member, Study study) {
+        this.comment = studyBlogRequestDto.getComment();
+        this.shareLink = studyBlogRequestDto.getShareLink();
+        this.study = study;
+        this.member = member;
+    }
 }

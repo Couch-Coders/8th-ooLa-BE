@@ -1,13 +1,20 @@
 package com.couchcoding.oola.controller;
 
 import com.couchcoding.oola.dto.study.request.StudyRequestDto;
+import com.couchcoding.oola.dto.study.response.StudyProgressDto;
 import com.couchcoding.oola.dto.study.response.StudyResponseDetailDto;
 import com.couchcoding.oola.dto.study.response.StudyResponseDto;
 import com.couchcoding.oola.dto.study.response.StudyRoleResponseDto;
+import com.couchcoding.oola.dto.studyblogs.request.StudyBlogRequestDto;
+import com.couchcoding.oola.dto.studyblogs.response.LIstResponseDto;
+import com.couchcoding.oola.dto.studyblogs.response.StudyBlogListResponseDto;
+import com.couchcoding.oola.dto.studyblogs.response.StudyBlogResponseDto;
 import com.couchcoding.oola.dto.studymember.response.StudyMemberResponseDto;
 import com.couchcoding.oola.entity.Member;
 import com.couchcoding.oola.entity.Study;;
+import com.couchcoding.oola.entity.StudyBlog;
 import com.couchcoding.oola.entity.StudyMember;
+import com.couchcoding.oola.service.StudyBlogService;
 import com.couchcoding.oola.service.StudyMemberService;
 import com.couchcoding.oola.service.StudyService;
 
@@ -35,7 +42,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.text.ParseException;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Slf4j
@@ -46,6 +55,7 @@ public class StudyController {
 
     private final StudyService studyService;
     private final StudyMemberService studyMemberService;
+    private final StudyBlogService studyBlogService;
     private final FirebaseAuth firebaseAuth;
 
     @PostMapping("")
@@ -139,5 +149,21 @@ public class StudyController {
         Member member = (Member) authentication.getPrincipal();
         StudyMemberResponseDto studyMemberResponseDto = studyMemberService.studyMemberEnroll(member , studyId);
         return ResponseEntity.status(HttpStatus.CREATED).body(studyMemberResponseDto);
+    }
+
+
+    // 스터디 참여자 공유로그 추가
+    @PostMapping("/{studyId}/blogs")
+    public ResponseEntity<StudyBlogResponseDto> blogs(Authentication authentication, @RequestBody StudyBlogRequestDto studyBlogRequestDto , @PathVariable Long studyId) {
+        Member member  = (Member) authentication.getPrincipal();
+        StudyBlogResponseDto studyBlogResponseDto = studyBlogService.blogs(studyBlogRequestDto, member, studyId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(studyBlogResponseDto);
+    }
+
+    // 스터디 공유로그 목록 조회
+    @GetMapping("/{studyId}/blogs")
+    public ResponseEntity<List<StudyBlog>> blogGet(Authentication authentication , @PathVariable Long studyId) {
+        List<StudyBlog> studyBlogListResponseDtos= studyBlogService.getBlogs(studyId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(studyBlogListResponseDtos);
     }
 }

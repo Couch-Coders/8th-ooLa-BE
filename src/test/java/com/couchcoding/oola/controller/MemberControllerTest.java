@@ -45,16 +45,16 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @SpringBootTest
 class MemberControllerTest {
 
-    //private static final String uid = "aaabbcc";
-    private static final String uid = "asdfasdf";
-    private static final String displayName = "남길동";
+    private static final String uid = "aaabbcc";
+    //private static final String uid = "asdfasdf";
+    private static final String displayName = "홍길동";
     private static final String email = "cmk664488@gmail.com";
     private static final String blogUrl = "ttps://shiningjean.tistory.com/35";
     private static final String githubUrl = "https://shiningjean.tistory.com/35";
     private static final String photoUrl = "https://lh3.googleusercontent.com/a/AATXAJy-nxiYfNUyNVazka8hszGGVnqO7sSKBX5TPs40=s96-c";
     private static final String nickName = "BackRookie";
     private static final String introduce = "안녕하세요 자기소개";
-    private static List<String> techStack = Arrays.asList("HTML5", "CSS3", "React", "Typescript", "Python");
+    private static List<String> techStack = Arrays.asList("React", "Typescript", "NodeJS" , "React Native");
 
     @Autowired
     private WebApplicationContext wac;

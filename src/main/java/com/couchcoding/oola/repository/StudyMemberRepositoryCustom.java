@@ -7,6 +7,6 @@ import java.util.List;
 public interface StudyMemberRepositoryCustom {
 
     List<StudyMember> findAllByStudyId(Long studyId);
-    List<StudyMember> findAllByUidAndRole(Long uid, String role);
-    List<StudyMember> findAllByUidAndRoleAndStatus(Long uid, String role, String status);
+    List<StudyMember> findAllByUidAndRole(String uid, String role);
+    List<StudyMember> findAllByUidAndRoleAndStatus(String uid, String role, String status);
 }

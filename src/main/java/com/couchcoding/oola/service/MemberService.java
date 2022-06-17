@@ -84,7 +84,7 @@ public class MemberService implements UserDetailsService  {
         }
 
         Member entity = findByUid(uid);
-        Member memberUpdated = entity.profileUpdate(uid, entity.getId(), memberSaveRequestDto);
+        Member memberUpdated = entity.profileUpdate(entity.getUid(), memberSaveRequestDto);
         memberUpdated = memberRepository.save(memberUpdated);
         return memberUpdated;
     }
