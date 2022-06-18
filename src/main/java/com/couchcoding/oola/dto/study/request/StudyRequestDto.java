@@ -55,8 +55,6 @@ public class StudyRequestDto {
 
     private String status;
 
-//    private String joinStatus;
-
     private String createUid;
 
     private Integer currentParticipants;
@@ -65,27 +63,7 @@ public class StudyRequestDto {
 
     private Boolean participantStatus;
 
-    @Builder
     public Study toEntity(StudyRequestDto studyRequestDto , Member member) {
-        return Study.builder()
-                .studyType(studyRequestDto.getStudyType())
-                .studyName(studyRequestDto.getStudyName())
-                .studyDays(studyRequestDto.getStudyDays())
-                .timeZone(studyRequestDto.getTimeZone())
-                .participants(studyRequestDto.getParticipants())
-                .currentParticipants(0)
-                .startDate(studyRequestDto.getStartDate())
-                .openChatUrl(studyRequestDto.getOpenChatUrl())
-                .studyIntroduce(studyRequestDto.getStudyIntroduce())
-                .studyGoal(studyRequestDto.getStudyGoal())
-                .status(studyRequestDto.getStatus())
-                //.joinStatus(studyRequestDto.getJoinStatus())
-                .endDate(studyRequestDto.getEndDate())
-                .likeCount(0L)
-                .currentParticipants(1)
-                .createUid(studyRequestDto.getCreateUid())
-                .likeStatus(studyRequestDto.getLikeStatus())
-                .createUid(studyRequestDto.getCreateUid())
-                .build();
+        return new Study(studyRequestDto, member);
     }
 }
