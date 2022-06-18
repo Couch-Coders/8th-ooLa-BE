@@ -33,14 +33,14 @@ public class StudyMemberRepositoryImpl extends QuerydslRepositorySupport impleme
     }
 
     @Override
-    public List<StudyMember> findAllByUidAndRole(Long uid, String role) {
+    public List<StudyMember> findAllByUidAndRole(String uid, String role) {
         List<StudyMember> studyMembers = queryFactory.selectFrom(studyMember)
                 .where(eqUid(uid), eqRole(role)).fetch();
         return studyMembers;
     }
 
     @Override
-    public List<StudyMember> findAllByUidAndRoleAndStatus(Long uid, String role, String status) {
+    public List<StudyMember> findAllByUidAndRoleAndStatus(String uid, String role, String status) {
         List<StudyMember> studyMembers = queryFactory.selectFrom(studyMember)
                 .where(eqUid(uid), eqRole(role), eqStatus(status))
                 .fetch();
@@ -69,8 +69,8 @@ public class StudyMemberRepositoryImpl extends QuerydslRepositorySupport impleme
         return studyMember.studyId.eq(studyId);
     }
 
-    private BooleanExpression eqUid(Long uid) {
-        if (uid == null) {
+    private BooleanExpression eqUid(String uid) {
+        if (uid == null || uid.isEmpty()) {
             return null;
         }
         return studyMember.uid.eq(uid);

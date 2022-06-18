@@ -2,6 +2,7 @@ package com.couchcoding.oola.controller;
 
 import com.couchcoding.oola.dto.study.request.StudyRequestDto;
 
+import com.couchcoding.oola.dto.studyblogs.request.StudyBlogRequestDto;
 import com.couchcoding.oola.validation.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -45,7 +46,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 class StudyControllerTest {
 
-    private static final String uid = "asdfasdf";
+    private static final String uid = "aaabbcc";
     private static final String studyType = "백엔드";
     private static String studyName = "React 끝장내기";
     private static String studyDays = "주말";
@@ -269,7 +270,7 @@ class StudyControllerTest {
         LocalDateTime endDateTime = LocalDateTime.parse(edate, formatter2);
 
 
-        String goal = "알고리즘 격파";
+        String goal = "React 끝장";
 
         StudyRequestDto studyRequestDto = new StudyRequestDto();
         studyRequestDto.setCreateUid(uid);
@@ -284,7 +285,7 @@ class StudyControllerTest {
         studyRequestDto.setStudyIntroduce(studyIntroduce);
         studyRequestDto.setStudyGoal(goal);
         studyRequestDto.setStatus(status);
-        studyRequestDto.setCurrentParticipants(2);
+        studyRequestDto.setCurrentParticipants(1);
 
 
         String studyDtoJson = objectMapper.writeValueAsString(studyRequestDto);
@@ -606,7 +607,7 @@ class StudyControllerTest {
     @Test
     @DisplayName("스터디 참여 신청 테스트")
     void 스터디참여신청테스트() throws Exception {
-        Long studyId = 2L;
+        Long studyId = 1L;
 
         ResultActions resultActions = mockMvc.perform(
                 post("/studies/" + studyId + "/members")
@@ -622,7 +623,7 @@ class StudyControllerTest {
     @DisplayName("스터디 참여자 조회 테스트")
     void 스터디참여자조회테스트() throws Exception {
 
-        Long studyId = 2L;
+        Long studyId = 1L;
 
         ResultActions resultActions = mockMvc.perform(
                 get("/studies/" + studyId + "/members")
@@ -707,4 +708,72 @@ class StudyControllerTest {
                     .andExpect(status().isCreated());
         }
     }
+    
+    @Test
+    @DisplayName("스터디 참여자 공유로그 추가")
+    void 스터디참여자공유로그추가_테스트() throws Exception {
+        Long studyId = 1L;
+
+        StudyBlogRequestDto studyBlogRequestDto = new StudyBlogRequestDto();
+        studyBlogRequestDto.setComment("1번스터디 5번쨰 공유로그");
+        studyBlogRequestDto.setShareLink("https://recordsoflife.tistory.com/153");
+        String studyBlogJson = objectMapper.writeValueAsString(studyBlogRequestDto);
+
+        ResultActions resultActions = mockMvc.perform(
+                post("/studies/" + studyId + "/blogs")
+                        .header("Authorization", "Bearer " + uid)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding(StandardCharsets.UTF_8)
+                        .content(studyBlogJson)
+                        .accept(MediaType.APPLICATION_JSON)
+        ).andDo(print());
+        resultActions.andExpect(status().isCreated());
+    }
+
+
+    @Test
+    @DisplayName("스터디 참여자 공유로그 예외 테스트 - 스터디 참여자가 아닌데 공유로그를 추가하는 경우")
+    void 스터디참여자공유로그추가_예외_테스트() throws Exception {
+        // poipoipoiuyt가 4번스터디에 대한 공유로그 작성
+        Long studyId = 1L;
+
+        StudyBlogRequestDto studyBlogRequestDto = new StudyBlogRequestDto();
+        studyBlogRequestDto.setComment("두번쨰 공유로그");
+        studyBlogRequestDto.setShareLink("https://nodejs.org/en/");
+        String studyBlogJson = objectMapper.writeValueAsString(studyBlogRequestDto);
+
+       mockMvc.perform(
+                post("/studies/" + studyId + "/blogs")
+                        .header("Authorization", "Bearer " + uid)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding(StandardCharsets.UTF_8)
+                        .content(studyBlogJson)
+                        .accept(MediaType.APPLICATION_JSON)
+        ) .andExpect(
+                (result -> assertTrue(result.getResolvedException().getClass().isAssignableFrom(MemberForbiddenException.class)))
+        ).andReturn();
+    }
+
+    @Test
+    @DisplayName("스터디 공유로그 조회")
+    void 스터디공유로그_조회_테스트() throws Exception {
+
+        Long studyId = 1L;
+
+        ResultActions resultActions = mockMvc.perform(
+                get("/studies/" + studyId + "/blogs")
+                        //.header("Authorization", "Bearer " + uid)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding(StandardCharsets.UTF_8)
+                        .accept(MediaType.APPLICATION_JSON)
+        )
+                .andDo(print());
+        resultActions
+                .andExpect(status().isOk());
+
+
+    }
+    
+    
+    
 }

@@ -26,7 +26,7 @@ public class StudyMember extends BaseTimeEntity implements Serializable {
     private Long studyMemberId;
 
     @Column(name = "uid", insertable = false, updatable = false)
-    private Long uid;
+    private String uid;
 
     @ManyToOne
     @JoinColumn(name = "uid")
