@@ -103,7 +103,14 @@ public class StudyService {
         Study study = null;
         // 스터디 생성자와 로그인 유저가 같은지 비교
         Study result = getStudy(studyId);
-        if (result.getCreateUid().equals(member.getUid())) {
+        List<StudyMember> studyMembers = result.getStudyMembers();
+        String uid = null;
+        for (StudyMember studyMember : studyMembers) {
+            if (studyMember.getRole().equals("leader"))  {
+               uid =  studyMember.getMember().getUid();
+            }
+        }
+        if (uid.equals(member.getUid())) {
             result = result.updateCompleteStatus(studyRequestDto.getStatus());
             study = studyRepository.save(result);
         } else {
