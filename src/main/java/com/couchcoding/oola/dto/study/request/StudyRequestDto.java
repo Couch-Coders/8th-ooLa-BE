@@ -84,7 +84,7 @@ public class StudyRequestDto {
                 .endDate(studyRequestDto.getEndDate())
                 .likeCount(0L)
                 .currentParticipants(1)
-                .createUid(member.getUid())
+                .createUid(studyRequestDto.getCreateUid())
                 .likeStatus(studyRequestDto.getLikeStatus())
                 .createUid(studyRequestDto.getCreateUid())
                 .build();
