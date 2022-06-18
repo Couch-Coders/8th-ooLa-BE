@@ -60,7 +60,7 @@ public class StudyService {
     public StudyRoleResponseDto studyDetail(Long studyId, String header) throws FirebaseAuthException {
         FirebaseToken firebaseToken = firebaseAuth.verifyIdToken(header);
         Member member = (Member) memberService.loadUserByUsername(firebaseToken.getUid());
-
+        log.info("로그인 후 스터디 조회시 로그인된 사용자 정보: {}", member);
         Study study = getStudy(studyId);
 
         List<StudyMember> studyMembers = study.getStudyMembers();
