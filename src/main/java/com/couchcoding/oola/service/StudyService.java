@@ -76,7 +76,7 @@ public class StudyService {
         List<StudyMember> studyMembers = study.getStudyMembers();
         StudyRoleResponseDto studyRoleResponseDto = null;
         for (StudyMember studyMember : studyMembers) {
-            if (member.getUid().equals(studyMember.getMember().getUid()) || studyId == studyMember.getStudyId()) {
+            if (member.getUid().equals(studyMember.getMember().getUid()) && studyId == studyMember.getStudyId()) {
                 String role = studyMember.getRole();
                 studyRoleResponseDto = new StudyRoleResponseDto(study, role);
             } else {
