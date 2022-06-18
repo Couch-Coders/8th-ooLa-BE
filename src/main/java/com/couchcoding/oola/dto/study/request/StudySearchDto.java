@@ -7,7 +7,6 @@ import lombok.ToString;
 
 @Getter
 @NoArgsConstructor
-@ToString
 @AllArgsConstructor
 public class StudySearchDto {
 

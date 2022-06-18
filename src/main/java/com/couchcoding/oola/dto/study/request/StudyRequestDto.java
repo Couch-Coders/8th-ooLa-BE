@@ -19,7 +19,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Slf4j
-@ToString
 public class StudyRequestDto {
 
     @NotBlank(message = "studyType은 필수 값입니다")
