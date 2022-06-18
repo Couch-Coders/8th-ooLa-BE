@@ -46,7 +46,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 class StudyControllerTest {
 
-    private static final String uid = "asdfasdf";
+    private static final String uid = "aaabbcc";
     private static final String studyType = "백엔드";
     private static String studyName = "React 끝장내기";
     private static String studyDays = "주말";
@@ -712,11 +712,10 @@ class StudyControllerTest {
     @Test
     @DisplayName("스터디 참여자 공유로그 추가")
     void 스터디참여자공유로그추가_테스트() throws Exception {
-        // 2번이 3번스터디에 대한 공유로그 작성
         Long studyId = 1L;
 
         StudyBlogRequestDto studyBlogRequestDto = new StudyBlogRequestDto();
-        studyBlogRequestDto.setComment("1번스터디 2번쨰 공유로그");
+        studyBlogRequestDto.setComment("1번스터디 3번쨰 공유로그");
         studyBlogRequestDto.setShareLink("https://recordsoflife.tistory.com/153");
         String studyBlogJson = objectMapper.writeValueAsString(studyBlogRequestDto);
 

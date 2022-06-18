@@ -1,6 +1,7 @@
 package com.couchcoding.oola.entity;
 
 import com.couchcoding.oola.dto.studyblogs.request.StudyBlogRequestDto;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -27,6 +28,7 @@ public class StudyBlog {
     @NotBlank(message = "shareLink는 필수 값입니다")
     private String shareLink;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "studyId")
     private Study study;

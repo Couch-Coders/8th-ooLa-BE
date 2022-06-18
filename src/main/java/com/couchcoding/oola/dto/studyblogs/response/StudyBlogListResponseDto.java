@@ -1,25 +1,18 @@
 package com.couchcoding.oola.dto.studyblogs.response;
 
 import com.couchcoding.oola.entity.Member;
+import com.couchcoding.oola.entity.StudyBlog;
+import com.couchcoding.oola.entity.StudyMember;
 import lombok.ToString;
 
-@ToString
-public class StudyBlogListResponseDto {
-    private Long studyBlogId;
-    private String comment;
-    private String shareLink;
-    private String uid;
-    private String nickName;
-    private String photoUrl;
-    private String role;
+import java.util.ArrayList;
+import java.util.List;
 
-    public StudyBlogListResponseDto(Long studyBlogId,String comment, String shareLink, String role, Member member) {
-        this.studyBlogId = studyBlogId;
-        this.comment = comment;
-        this.shareLink = shareLink;
-        this.role = role;
-        this.uid = member.getUid();
-        this.nickName = member.getNickName();
-        this.photoUrl = member.getPhotoUrl();
+public class StudyBlogListResponseDto {
+    private List<StudyMember> studyMembers = new ArrayList<>();
+    private List<StudyBlog> studyBlogs = new ArrayList<>();
+    public StudyBlogListResponseDto(List<StudyMember> studyMembers , List<StudyBlog> studyBlogs) {
+        this.studyMembers = studyMembers;
+        this.studyBlogs = studyBlogs;
     }
 }

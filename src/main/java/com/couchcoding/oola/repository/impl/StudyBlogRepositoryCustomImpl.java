@@ -25,13 +25,6 @@ public class StudyBlogRepositoryCustomImpl extends QuerydslRepositorySupport imp
         super(QStudyBlog.class);
     }
 
-    @Override
-    public List<StudyBlog> findAllByStudyId(Long studyId) {
-       List<StudyBlog> studyBlogs  = queryFactory.selectFrom(studyBlog)
-                            .where(eqStudyId(studyId)).fetch();
-        return studyBlogs;
-    }
-
     private BooleanExpression eqStudyId(Long studyId) {
         if (studyId == null) {
             return null;
