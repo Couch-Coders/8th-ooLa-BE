@@ -16,6 +16,8 @@ import com.couchcoding.oola.validation.MemberForbiddenException;
 
 import com.couchcoding.oola.validation.StudyNotFoundException;
 
+import com.couchcoding.oola.validation.error.CustomException;
+import com.couchcoding.oola.validation.error.ErrorCode;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
@@ -23,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,10 +60,17 @@ public class StudyService {
     }
 
     // 로그인
-    public StudyRoleResponseDto studyDetail(Long studyId, String header) throws FirebaseAuthException {
-        FirebaseToken firebaseToken = firebaseAuth.verifyIdToken(header);
-        Member member = (Member) memberService.loadUserByUsername(firebaseToken.getUid());
-        log.info("로그인 후 스터디 조회시 로그인된 사용자 정보: {}", member);
+    public StudyRoleResponseDto studyDetail(Long studyId, String header) {
+
+        Member member = null;
+        try {
+            FirebaseToken firebaseToken = firebaseAuth.verifyIdToken(header);
+            member = (Member) memberService.loadUserByUsername(firebaseToken.getUid());
+            log.info("로그인 후 스터디 조회시 로그인된 사용자 정보: {}", member);
+        } catch (UsernameNotFoundException | FirebaseAuthException | IllegalArgumentException e) {
+            throw new CustomException(ErrorCode.MemberNotFound);
+        }
+
         Study study = getStudy(studyId);
 
         List<StudyMember> studyMembers = study.getStudyMembers();

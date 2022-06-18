@@ -126,10 +126,10 @@ class StudyControllerTest {
     @DisplayName("스터디 단건 조회 테스트")
     void selectStudy() throws Exception {
         String token = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjFhZWY1NjlmNTI0MTRlOWY0YTcxMDRiNmQwNzFmMDY2ZGZlZWQ2NzciLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoi7Zmp7Jyg7KeEIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FBVFhBSnktbnhpWWZOVXlOVmF6a2E4aHN6R0dWbnFPN3NTS0JYNVRQczQwPXM5Ni1jIiwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL29vbGEtb2F1dGgiLCJhdWQiOiJvb2xhLW9hdXRoIiwiYXV0aF90aW1lIjoxNjU1MjY1NzM4LCJ1c2VyX2lkIjoiRTN5VmhReWdnOVNrbmhncWFyQ0ZvaDVZZVUzMyIsInN1YiI6IkUzeVZoUXlnZzlTa25oZ3FhckNGb2g1WWVVMzMiLCJpYXQiOjE2NTUyOTEzNTYsImV4cCI6MTY1NTI5NDk1NiwiZW1haWwiOiJjbWs2NjQ0ODhAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZ29vZ2xlLmNvbSI6WyIxMDk4MjY0NjA3OTI1NjQ4NTI5ODAiXSwiZW1haWwiOlsiY21rNjY0NDg4QGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6Imdvb2dsZS5jb20ifX0.ok-cT54scw1hMbVgTEYFi3MNs_O_vM_gJGxzPMNU1Q0ePkciKn5D1HSZtbcmNA6x1SQlhd93zJvBwqypeA8x5rUwUP3cVwdnA17jxTAz187HqOexIMqdJnm4sJkvDGzDPKvM756CMpyTGiWp7PUk2ntvSsgfTgCnGOa5CXhvvN-vVMp7vDt_ZQpShvGln-QfoBc6nDQA22RIFQVKbpgExCdOyfmaQ4lqMfphnUC3oeK35RTrjssLIv8zZLvYehd-p7Bkt0gAaumACo_SoRmiNY9OWOn8TKrTwFK4UqC_a1376-XCsFJ6PVrdPneUjm6q5j0TqquPa0cc3ebVAtZP-w";
-        int studyId = 1;
+        int studyId = 6;
         ResultActions resultActions = mockMvc.perform(
                 get("/studies/" + studyId)
-                        //.header("Authorization", "Bearer " + uid)
+                        .header("Authorization", "Bearer " + "2oMPU4uFZwUWCvc7vuHM37JFlMk1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding(StandardCharsets.UTF_8)
                         .accept(MediaType.APPLICATION_JSON)
@@ -627,7 +627,7 @@ class StudyControllerTest {
 
         ResultActions resultActions = mockMvc.perform(
                 get("/studies/" + studyId + "/members")
-                        //.header("Authorization", "Bearer " + uid)
+                        .header("Authorization", "Bearer " + "2oMPU4uFZwUWCvc7vuHM37JFlMk1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding(StandardCharsets.UTF_8)
                         .accept(MediaType.APPLICATION_JSON)

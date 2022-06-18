@@ -82,11 +82,7 @@ public class StudyController {
         StudyRoleResponseDto studyRoleResponseDto = null;
         String header = RequestUtil.getAuthorizationToken(request);
         if (header != null) {
-            try {
-                studyRoleResponseDto = studyService.studyDetail(studyId, header);
-            } catch (FirebaseAuthException | UsernameNotFoundException | IllegalArgumentException e) {
-                throw new CustomException(ErrorCode.MemberNotFound);
-            }
+            studyRoleResponseDto = studyService.studyDetail(studyId, header);
         } else {
             studyRoleResponseDto = studyService.studyDetail(studyId);
         }
