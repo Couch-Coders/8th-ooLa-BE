@@ -1,18 +1,17 @@
 package com.couchcoding.oola.dto.studyblogs.response;
 
-import com.couchcoding.oola.entity.Member;
 import com.couchcoding.oola.entity.StudyBlog;
-import com.couchcoding.oola.entity.StudyMember;
-import lombok.ToString;
+import lombok.Getter;
 
-import java.util.ArrayList;
 import java.util.List;
 
+@Getter
 public class StudyBlogListResponseDto {
-    private List<StudyMember> studyMembers = new ArrayList<>();
-    private List<StudyBlog> studyBlogs = new ArrayList<>();
-    public StudyBlogListResponseDto(List<StudyMember> studyMembers , List<StudyBlog> studyBlogs) {
-        this.studyMembers = studyMembers;
+    private List<StudyBlogMemberResponseDto> studyBlogMemberResponseDtos;
+    private List<StudyBlog> studyBlogs;
+
+    public StudyBlogListResponseDto(List<StudyBlogMemberResponseDto> studyBlogMemberResponseDtos , List<StudyBlog> studyBlogs) {
+        this.studyBlogMemberResponseDtos = studyBlogMemberResponseDtos;
         this.studyBlogs = studyBlogs;
     }
 }

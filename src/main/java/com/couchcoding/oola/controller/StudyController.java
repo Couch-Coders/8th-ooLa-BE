@@ -5,6 +5,7 @@ import com.couchcoding.oola.dto.study.response.StudyResponseDetailDto;
 import com.couchcoding.oola.dto.study.response.StudyResponseDto;
 import com.couchcoding.oola.dto.study.response.StudyRoleResponseDto;
 import com.couchcoding.oola.dto.studyblogs.request.StudyBlogRequestDto;
+import com.couchcoding.oola.dto.studyblogs.response.StudyBlogListResponseDto;
 import com.couchcoding.oola.dto.studyblogs.response.StudyBlogResponseDto;
 import com.couchcoding.oola.dto.studymember.response.StudyMemberResponseDto;
 import com.couchcoding.oola.entity.Member;
@@ -155,9 +156,9 @@ public class StudyController {
 
     // 스터디 공유로그 목록 조회
     @GetMapping("/{studyId}/blogs")
-    public ResponseEntity<Study> blogGet(@PathVariable Long studyId) {
+    public StudyBlogListResponseDto blogGet(@PathVariable Long studyId) {
         // 스터디 블로그를 작성한 사람이 스터디에서 어떤 역할인지 정보도 함께 달라고 하셔서 Study를 통짜로 넘긴다
-        Study study = studyBlogService.getBlogs(studyId);
-        return ResponseEntity.status(HttpStatus.OK).body(study);
+        StudyBlogListResponseDto studyBlogListResponseDto = studyBlogService.getBlogs(studyId);
+        return studyBlogListResponseDto;
     }
 }

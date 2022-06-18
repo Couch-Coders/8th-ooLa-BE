@@ -2,6 +2,7 @@ package com.couchcoding.oola.service;
 
 import com.couchcoding.oola.dto.studyblogs.request.StudyBlogRequestDto;
 import com.couchcoding.oola.dto.studyblogs.response.StudyBlogListResponseDto;
+import com.couchcoding.oola.dto.studyblogs.response.StudyBlogMemberResponseDto;
 import com.couchcoding.oola.dto.studyblogs.response.StudyBlogResponseDto;
 import com.couchcoding.oola.entity.Member;
 import com.couchcoding.oola.entity.Study;
@@ -14,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -35,23 +37,37 @@ public class StudyBlogService {
         return studyBlogResponseDto;
     }
 
-    public Study getBlogs(Long studyId) {
+    public StudyBlogListResponseDto getBlogs(Long studyId) {
        Study study =  studyService.getStudy(studyId);
-       return study;
+       List<StudyMember> studyMembers = study.getStudyMembers();
+       List<StudyBlogMemberResponseDto> studyBlogMemberResponseDtos = new ArrayList<>();
+       for (StudyMember studyMember : studyMembers) {
+           String uid = studyMember.getUid();
+           String blogUrl = studyMember.getMember().getBlogUrl();
+           String githubUrl = studyMember.getMember().getGithubUrl();
+           List<String> techStack = studyMember.getMember().getTechStack();
+           String role = studyMember.getRole();
+           StudyBlogMemberResponseDto studyBlogMemberResponseDto = new StudyBlogMemberResponseDto(uid, blogUrl, githubUrl, techStack, role);
+           studyBlogMemberResponseDtos.add(studyBlogMemberResponseDto);
+       }
+
+       StudyBlogListResponseDto studyBlogListResponseDto = new StudyBlogListResponseDto(studyBlogMemberResponseDtos, study.getStudyBlogs());
+       return studyBlogListResponseDto;
     }
 
     // Member에 대한 권한 검사
-    public void getMember(Study study ,  Member member) {
+    public Member getMember(Study study ,  Member member) {
+        Member result = null;
         List<StudyMember> studyMembers = study.getStudyMembers();
-        int j  = 0;
         for (StudyMember studyMember : studyMembers) {
-            if (!studyMember.getMember().getUid().equals(member.getUid())) {
-                j += 1;
-                if (j == studyMembers.size()) {
-                    throw new MemberForbiddenException();
-                }
-
+            if (studyMember.getMember().getUid().equals(member.getUid())) {
+                result = studyMember.getMember();
             }
         }
+
+        if (result == null) {
+            throw new MemberForbiddenException();
+        }
+        return result;
     }
 }

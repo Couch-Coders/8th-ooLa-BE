@@ -715,7 +715,7 @@ class StudyControllerTest {
         Long studyId = 1L;
 
         StudyBlogRequestDto studyBlogRequestDto = new StudyBlogRequestDto();
-        studyBlogRequestDto.setComment("1번스터디 3번쨰 공유로그");
+        studyBlogRequestDto.setComment("1번스터디 5번쨰 공유로그");
         studyBlogRequestDto.setShareLink("https://recordsoflife.tistory.com/153");
         String studyBlogJson = objectMapper.writeValueAsString(studyBlogRequestDto);
 
@@ -738,7 +738,7 @@ class StudyControllerTest {
         Long studyId = 1L;
 
         StudyBlogRequestDto studyBlogRequestDto = new StudyBlogRequestDto();
-        studyBlogRequestDto.setComment("첫번쨰 공유로그");
+        studyBlogRequestDto.setComment("두번쨰 공유로그");
         studyBlogRequestDto.setShareLink("https://nodejs.org/en/");
         String studyBlogJson = objectMapper.writeValueAsString(studyBlogRequestDto);
 
