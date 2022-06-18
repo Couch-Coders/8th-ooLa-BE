@@ -60,17 +60,19 @@ public class StudyService {
     public StudyRoleResponseDto studyDetail(Long studyId, String header) throws FirebaseAuthException {
         FirebaseToken firebaseToken = firebaseAuth.verifyIdToken(header);
         Member member = (Member) memberService.loadUserByUsername(firebaseToken.getUid());
+        log.info("uid: {}", member.getUid());
 
         Study study = getStudy(studyId);
 
         List<StudyMember> studyMembers = study.getStudyMembers();
         StudyRoleResponseDto studyRoleResponseDto = null;
-        for (StudyMember studyMember : studyMembers) {
-            if (member.getUid().equals(studyMember.getMember().getUid()) && studyId == studyMember.getStudyId()) {
-                String role = studyMember.getRole();
-                studyRoleResponseDto = new StudyRoleResponseDto(study, role);
+        for (int i = 0; i < studyMembers.size(); i++) {
+            if (studyMembers.get(i).getMember().getUid().equals(member.getUid()) && studyMembers.get(i).getStudy().getStudyId().equals(studyId)) {
+                log.info("role: {}", studyMembers.get(i).getRole());
+                String role = studyMembers.get(i).getRole();
+                studyRoleResponseDto = new StudyRoleResponseDto(studyMembers.get(i).getStudy() , role);
             } else {
-                studyRoleResponseDto = new StudyRoleResponseDto(study, "general");
+                studyRoleResponseDto = new StudyRoleResponseDto(studyMembers.get(i).getStudy() , "general");
             }
         }
         return studyRoleResponseDto;

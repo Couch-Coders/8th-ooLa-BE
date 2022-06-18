@@ -96,6 +96,10 @@ public class Study extends BaseTimeEntity implements Serializable {
     @OneToMany(mappedBy = "study",fetch = FetchType.LAZY)
     private List<StudyBlog> studyBlogs = new ArrayList<>();
 
+    @JsonManagedReference
+    @OneToMany(mappedBy = "study",fetch = FetchType.LAZY)
+    private List<Comment> comments = new ArrayList<>();
+
     @Builder
     public Study(Long studyId, @NotBlank(message = "studyType은 필수 값입니다") String studyType, @NotBlank(message = "studyName은 필수 값입니다") String studyName, @NotBlank(message = "studydays는 필수 값입니다") String studyDays, @NotBlank(message = "timeZone은 필수 값입니다") String timeZone, @NotNull(message = "participants은 필수 값입니다") int participants, int currentParticipants, @NotNull(message = "startDate은 필수 값입니다") LocalDateTime startDate, @NotBlank(message = "openChatUrl은 필수 값입니다") String openChatUrl, @NotBlank(message = "studyIntroduce은 필수 값입니다") String studyIntroduce, @NotBlank(message = "studyGoal은 필수 값입니다") String studyGoal, String status, String joinStatus, @NotNull(message = "openChatUrl은 필수 값입니다") LocalDateTime endDate, Long likeCount, String createUid, Boolean likeStatus) {
         this.studyId = studyId;
