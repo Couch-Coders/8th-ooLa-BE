@@ -59,7 +59,7 @@ public class JwtFilter extends OncePerRequestFilter{
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());//인증 객체 생성
             SecurityContextHolder.getContext().setAuthentication(authentication);//securityContextHolder 에 인증 객체 저장
         } catch(UsernameNotFoundException e){
-            log.debug("404 에러: {}" , e.getMessage());
+            log.info("404 에러: {}" , e.getMessage());
             // ErrorMessage 응답 전송
             response.setStatus(HttpStatus.SC_NOT_FOUND);
             response.setContentType("application/json");
