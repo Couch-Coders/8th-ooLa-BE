@@ -72,8 +72,8 @@ public class StudyService {
         }
 
         Study study = getStudy(studyId);
+        List<StudyMember> studyMembers = studyMemberRepositoryCustom.findAllByStudyId(studyId);
 
-        List<StudyMember> studyMembers = study.getStudyMembers();
         StudyRoleResponseDto studyRoleResponseDto = null;
         for (StudyMember studyMember : studyMembers) {
             if (member.getUid().equals(studyMember.getMember().getUid()) && studyId == studyMember.getStudyId()) {
