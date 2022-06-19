@@ -96,7 +96,7 @@ public class StudyService {
         if (role == null) {
             log.info("study: {}" , study.toString());
             log.info("role: {}", role);
-            if (studyLike.getLikeStatus() == null) {
+            if (studyLike == null) {
                 studyRoleResponseDto = new StudyRoleResponseDto(study, "general" , false);
 
             } else  {
@@ -105,7 +105,7 @@ public class StudyService {
         } else {
             log.info("study: {}" , study.toString());
             log.info("role: {}", role);
-            if (studyLike.getLikeStatus() == null) {
+            if (studyLike == null) {
                 studyRoleResponseDto = new StudyRoleResponseDto(study, role , false);
 
             } else {
