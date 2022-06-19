@@ -85,7 +85,12 @@ public class StudyMemberService {
                     studyCreationDto = new StudyCreationDto(study, false);
                 }
             }
-            studyCreationDto = new StudyCreationDto(study , studyLike.getLikeStatus());
+
+            if (studyLike == null) {
+                studyCreationDto = new StudyCreationDto(study , null);
+            } else {
+                studyCreationDto = new StudyCreationDto(study , studyLike.getLikeStatus());
+            }
             studyCreationDtoList.add(studyCreationDto);
             i+=1;
         }
@@ -143,7 +148,12 @@ public class StudyMemberService {
                     studyCompletionDto = new StudyCompletionDto(study, false);
                 }
             }
-            studyCompletionDto = new StudyCompletionDto(study, studyLike.getLikeStatus());
+
+            if (studyLike == null) {
+                studyCompletionDto = new StudyCompletionDto(study, null);
+            } else {
+                studyCompletionDto = new StudyCompletionDto(study, studyLike.getLikeStatus());
+            }
             log.info(studyCompletionDto.toString());
             studyCompletionDtos.add(studyCompletionDto);
         }
