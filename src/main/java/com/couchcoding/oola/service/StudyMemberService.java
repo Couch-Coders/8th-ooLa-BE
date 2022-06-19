@@ -122,7 +122,6 @@ public class StudyMemberService {
                 studyProgressDto = new StudyProgressDto(study, studyLike.getLikeStatus());
             }
 
-
             log.info(studyProgressDto.toString());
             studyProgressDtos.add(studyProgressDto);
             i += 1;
