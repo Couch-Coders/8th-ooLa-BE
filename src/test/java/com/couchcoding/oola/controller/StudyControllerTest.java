@@ -142,7 +142,6 @@ class StudyControllerTest {
     @Test
     @DisplayName("스터디 필터링 (검색) 테스트")
     void studySearch() throws Exception {
-
         MultiValueMap<String, String> info = new LinkedMultiValueMap<>();
         info.add("studyType", "백엔드");
         info.add("studyDays", "주말");

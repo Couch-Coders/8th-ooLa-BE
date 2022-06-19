@@ -74,7 +74,6 @@ public class StudyService {
         Study study = getStudy(studyId);
         List<StudyMember> studyMembers = studyMemberRepositoryCustom.findAllByStudyId(studyId);
 
-
         String role = null;
         StudyRoleResponseDto studyRoleResponseDto = null;
         for (int i = 0; i < studyMembers.size(); i++) {
