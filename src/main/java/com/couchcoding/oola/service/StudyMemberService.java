@@ -85,7 +85,7 @@ public class StudyMemberService {
                     studyCreationDto = new StudyCreationDto(study, false);
                 }
             }
-            studyCreationDto = new StudyCreationDto(study , studyLike.isLikeStatus());
+            studyCreationDto = new StudyCreationDto(study , studyLike.getLikeStatus());
             studyCreationDtoList.add(studyCreationDto);
             i+=1;
         }
@@ -111,7 +111,7 @@ public class StudyMemberService {
                 }
             }
 
-            studyProgressDto = new StudyProgressDto(study, studyLike.isLikeStatus());
+            studyProgressDto = new StudyProgressDto(study, studyLike.getLikeStatus());
             log.info(studyProgressDto.toString());
             studyProgressDtos.add(studyProgressDto);
             i += 1;
@@ -137,7 +137,7 @@ public class StudyMemberService {
                     studyCompletionDto = new StudyCompletionDto(study, false);
                 }
             }
-            studyCompletionDto = new StudyCompletionDto(study, studyLike.isLikeStatus());
+            studyCompletionDto = new StudyCompletionDto(study, studyLike.getLikeStatus());
             log.info(studyCompletionDto.toString());
             studyCompletionDtos.add(studyCompletionDto);
         }
