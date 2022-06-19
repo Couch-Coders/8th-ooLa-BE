@@ -59,8 +59,6 @@ public class StudyRequestDto {
 
     private Integer currentParticipants;
 
-    private Boolean likeStatus;
-
     private Boolean participantStatus;
 
     public Study toEntity(StudyRequestDto studyRequestDto , Member member) {
