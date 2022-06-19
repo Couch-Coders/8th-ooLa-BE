@@ -103,7 +103,7 @@ public class Study extends BaseTimeEntity implements Serializable {
         this.studyDays = studyRequestDto.getStudyDays();
         this.timeZone = studyRequestDto.getTimeZone();
         this.participants = studyRequestDto.getParticipants();
-        this.currentParticipants = studyRequestDto.getCurrentParticipants();
+        this.currentParticipants = 1;
         this.startDate = studyRequestDto.getStartDate();
         this.openChatUrl = studyRequestDto.getOpenChatUrl();
         this.studyIntroduce = studyRequestDto.getStudyIntroduce();
