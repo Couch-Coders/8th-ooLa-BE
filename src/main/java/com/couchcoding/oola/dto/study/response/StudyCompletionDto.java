@@ -21,8 +21,9 @@ public class StudyCompletionDto {
     private String status;
     private LocalDateTime endDate;
     private String createUid;
+    private Boolean likeStatus;
 
-    public StudyCompletionDto(Study study) {
+    public StudyCompletionDto(Study study, Boolean likeStatus) {
         this.studyId = study.getStudyId();
         this.studyType = study.getStudyType();
         this.studyName = study.getStudyName();
@@ -37,5 +38,6 @@ public class StudyCompletionDto {
         this.status = study.getStatus();
         this.endDate = study.getEndDate();
         this.createUid = study.getCreateUid();
+        this.likeStatus = likeStatus;
     }
 }

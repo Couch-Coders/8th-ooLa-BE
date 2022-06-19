@@ -6,6 +6,7 @@ import com.couchcoding.oola.dto.study.response.StudyProgressDto;
 import com.couchcoding.oola.dto.studymember.response.StudyMemberResponseDto;
 import com.couchcoding.oola.entity.Member;
 import com.couchcoding.oola.entity.Study;
+import com.couchcoding.oola.entity.StudyLike;
 import com.couchcoding.oola.entity.StudyMember;
 import com.couchcoding.oola.repository.StudyMemberRepository;
 import com.couchcoding.oola.repository.StudyRepository;
@@ -69,14 +70,19 @@ public class StudyMemberService {
     public List<StudyCreationDto> mystudies(Member member) {
         List<StudyCreationDto> studyCreationDtoList = new ArrayList<>();
        StudyCreationDto studyCreationDto = null;
+       Study study = null;
+        StudyLike studyLike = null;
         String role = "leader";
+        int i = 0;
         // role과 member의 uid 사용하여 검색
         String uid = member.getUid();
         List<StudyMember> studyMembers = studyMemberRepositoryCustom.findAllByUidAndRole(uid, role);
         for (StudyMember studyMember : studyMembers) {
-            Study study = studyMember.getStudy();
-            studyCreationDto = new StudyCreationDto(study);
+            study = studyMember.getStudy();
+            studyLike = study.getStudyLikes().get(i);
+            studyCreationDto = new StudyCreationDto(study , studyLike.isLikeStatus());
             studyCreationDtoList.add(studyCreationDto);
+            i+=1;
         }
         return studyCreationDtoList;
     }
@@ -85,15 +91,19 @@ public class StudyMemberService {
     public List<StudyProgressDto> myJoinStudies(Member member) {
         List<StudyProgressDto> studyProgressDtos = new ArrayList<>();
         StudyProgressDto studyProgressDto = null;
+        StudyLike studyLike = null;
         String role = "member";
         String uid = member.getUid();
         String status = "진행";
+        int i = 0;
         List<StudyMember> studyMembers = studyMemberRepositoryCustom.findAllByUidAndRoleAndStatus(uid, role, status);
         for (StudyMember studyMember : studyMembers) {
             Study study = studyMember.getStudy();
-            studyProgressDto = new StudyProgressDto(study);
+            studyLike = study.getStudyLikes().get(i);
+            studyProgressDto = new StudyProgressDto(study, studyLike.isLikeStatus());
             log.info(studyProgressDto.toString());
             studyProgressDtos.add(studyProgressDto);
+            i += 1;
         }
         return studyProgressDtos;
     }
@@ -102,13 +112,16 @@ public class StudyMemberService {
     public List<StudyCompletionDto> myStudiesCompletion(Member member) {
         List<StudyCompletionDto> studyCompletionDtos = new ArrayList<>();
         StudyCompletionDto studyCompletionDto = null;
+        StudyLike studyLike = null;
         String role = "leader";
         String uid = member.getUid();
         String status = "완료";
+        int i = 0;
         List<StudyMember> studyMembers = studyMemberRepositoryCustom.findAllByUidAndRoleAndStatus(uid, role, status);
         for (StudyMember studyMember : studyMembers) {
             Study study = studyMember.getStudy();
-            studyCompletionDto = new StudyCompletionDto(study);
+            studyLike = study.getStudyLikes().get(i);
+            studyCompletionDto = new StudyCompletionDto(study, studyLike.isLikeStatus());
             log.info(studyCompletionDto.toString());
             studyCompletionDtos.add(studyCompletionDto);
         }
