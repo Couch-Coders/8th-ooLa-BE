@@ -74,15 +74,21 @@ public class StudyService {
         Study study = getStudy(studyId);
         List<StudyMember> studyMembers = studyMemberRepositoryCustom.findAllByStudyId(studyId);
 
+
+        String role = null;
         StudyRoleResponseDto studyRoleResponseDto = null;
-        for (StudyMember studyMember : studyMembers) {
-            if (member.getUid().equals(studyMember.getMember().getUid()) && studyId == studyMember.getStudyId()) {
-                String role = studyMember.getRole();
-                studyRoleResponseDto = new StudyRoleResponseDto(study, role);
-            } else {
-                studyRoleResponseDto = new StudyRoleResponseDto(study, "general");
+        for (int i = 0; i < studyMembers.size(); i++) {
+            if (studyMembers.get(i).getMember().getUid().equals(member.getUid())) {
+                role = studyMembers.get(i).getRole();
             }
         }
+
+        if (role == null) {
+            studyRoleResponseDto = new StudyRoleResponseDto(study, "general");
+        } else {
+            studyRoleResponseDto = new StudyRoleResponseDto(study, role);
+        }
+
         return studyRoleResponseDto;
     }
 
