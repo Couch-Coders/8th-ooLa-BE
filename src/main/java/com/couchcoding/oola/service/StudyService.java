@@ -75,13 +75,13 @@ public class StudyService {
         Study study = getStudy(studyId);
         StudyLike studyLike = null;
         List<StudyLike> studyLikes = study.getStudyLikes();
-        for (int i = 0; i < studyLikes.size(); i++) {
-            if (studyLikes.get(i).getMember().getUid().equals(member.getUid())) {
-                studyLike = studyLikes.get(i);
+        if (studyLikes.size() > 0) {
+            for (int i = 0; i < studyLikes.size(); i++) {
+                if (studyLikes.get(i).getMember().getUid().equals(member.getUid())) {
+                    studyLike = studyLikes.get(i);
+                }
             }
         }
-
-
 
         List<StudyMember> studyMembers = studyMemberRepositoryCustom.findAllByStudyId(studyId);
 
@@ -105,10 +105,6 @@ public class StudyService {
     // 스터디 조건 검색 및 페이징 처리
     public Page<Study> findByAllCategory(Pageable pageable, String studyType, String studyDays,
                                          String timeZone , String status, String studyName) {
-
-
-
-
         return studyRepositoryCustom.findAllBySearchOption(pageable ,studyType, studyDays, timeZone,status , studyName);
     }
 

@@ -79,9 +79,11 @@ public class StudyMemberService {
         List<StudyMember> studyMembers = studyMemberRepositoryCustom.findAllByUidAndRole(uid, role);
         for (StudyMember studyMember : studyMembers) {
             study = studyMember.getStudy();
-            studyLike = study.getStudyLikes().get(i);
-            if (studyLike == null) {
-                studyCreationDto = new StudyCreationDto(study, false);
+            if (study.getStudyLikes().size() > 0) {
+                studyLike = study.getStudyLikes().get(i);
+                if (studyLike == null) {
+                    studyCreationDto = new StudyCreationDto(study, false);
+                }
             }
             studyCreationDto = new StudyCreationDto(study , studyLike.isLikeStatus());
             studyCreationDtoList.add(studyCreationDto);
@@ -102,10 +104,13 @@ public class StudyMemberService {
         List<StudyMember> studyMembers = studyMemberRepositoryCustom.findAllByUidAndRoleAndStatus(uid, role, status);
         for (StudyMember studyMember : studyMembers) {
             Study study = studyMember.getStudy();
-            studyLike = study.getStudyLikes().get(i);
-            if (studyLike == null) {
-                studyProgressDto = new StudyProgressDto(study, false);
+            if (study.getStudyLikes().size() > 0) {
+                studyLike = study.getStudyLikes().get(i);
+                if (studyLike == null) {
+                    studyProgressDto = new StudyProgressDto(study, false);
+                }
             }
+
             studyProgressDto = new StudyProgressDto(study, studyLike.isLikeStatus());
             log.info(studyProgressDto.toString());
             studyProgressDtos.add(studyProgressDto);
@@ -126,9 +131,11 @@ public class StudyMemberService {
         List<StudyMember> studyMembers = studyMemberRepositoryCustom.findAllByUidAndRoleAndStatus(uid, role, status);
         for (StudyMember studyMember : studyMembers) {
             Study study = studyMember.getStudy();
-            studyLike = study.getStudyLikes().get(i);
-            if (studyLike == null) {
-                studyCompletionDto = new StudyCompletionDto(study, false);
+            if (study.getStudyLikes().size() > 0) {
+                studyLike = study.getStudyLikes().get(i);
+                if (studyLike == null) {
+                    studyCompletionDto = new StudyCompletionDto(study, false);
+                }
             }
             studyCompletionDto = new StudyCompletionDto(study, studyLike.isLikeStatus());
             log.info(studyCompletionDto.toString());
