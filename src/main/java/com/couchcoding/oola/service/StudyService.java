@@ -8,6 +8,7 @@ import com.couchcoding.oola.dto.study.response.StudyRoleResponseDto;
 import com.couchcoding.oola.entity.Member;
 import com.couchcoding.oola.entity.Study;
 
+import com.couchcoding.oola.entity.StudyLike;
 import com.couchcoding.oola.entity.StudyMember;
 import com.couchcoding.oola.repository.StudyMemberRepositoryCustom;
 import com.couchcoding.oola.repository.StudyRepository;
@@ -54,7 +55,7 @@ public class StudyService {
     public StudyRoleResponseDto studyDetail(Long studyId) {
         Study study = getStudy(studyId);
         // 비로그인 이므로 role은 general
-        StudyRoleResponseDto studyRoleResponseDto = new StudyRoleResponseDto(study, "general");
+        StudyRoleResponseDto studyRoleResponseDto = new StudyRoleResponseDto(study, "general" , false);
         log.info("비로그인 스터디 조회: {}", studyRoleResponseDto.toString());
         return studyRoleResponseDto;
     }
@@ -72,6 +73,16 @@ public class StudyService {
         }
 
         Study study = getStudy(studyId);
+        StudyLike studyLike = null;
+        List<StudyLike> studyLikes = study.getStudyLikes();
+        for (int i = 0; i < studyLikes.size(); i++) {
+            if (studyLikes.get(i).getMember().getUid().equals(member.getUid())) {
+                studyLike = studyLikes.get(i);
+            }
+        }
+
+
+
         List<StudyMember> studyMembers = studyMemberRepositoryCustom.findAllByStudyId(studyId);
 
         String role = null;
@@ -83,9 +94,9 @@ public class StudyService {
         }
 
         if (role == null) {
-            studyRoleResponseDto = new StudyRoleResponseDto(study, "general");
+            studyRoleResponseDto = new StudyRoleResponseDto(study, "general" , studyLike.isLikeStatus());
         } else {
-            studyRoleResponseDto = new StudyRoleResponseDto(study, role);
+            studyRoleResponseDto = new StudyRoleResponseDto(study, role , studyLike.isLikeStatus());
         }
 
         return studyRoleResponseDto;
@@ -94,6 +105,10 @@ public class StudyService {
     // 스터디 조건 검색 및 페이징 처리
     public Page<Study> findByAllCategory(Pageable pageable, String studyType, String studyDays,
                                          String timeZone , String status, String studyName) {
+
+
+
+
         return studyRepositoryCustom.findAllBySearchOption(pageable ,studyType, studyDays, timeZone,status , studyName);
     }
 

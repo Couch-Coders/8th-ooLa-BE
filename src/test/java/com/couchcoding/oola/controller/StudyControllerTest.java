@@ -3,6 +3,8 @@ package com.couchcoding.oola.controller;
 import com.couchcoding.oola.dto.study.request.StudyRequestDto;
 
 import com.couchcoding.oola.dto.studyblogs.request.StudyBlogRequestDto;
+import com.couchcoding.oola.dto.studylikes.request.StudyHateRequestDto;
+import com.couchcoding.oola.dto.studylikes.request.StudyLikeRequestDto;
 import com.couchcoding.oola.validation.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -773,6 +775,45 @@ class StudyControllerTest {
 
     }
     
-    
-    
+    @Test
+    @DisplayName("관심스터디 등록")
+    void 관심_스터디_등록_테스트() throws Exception {
+        String uid = "bTQBTghNwaY5EtAJQLJknVqk2If2";
+        Long studyId = 1L;
+
+        StudyLikeRequestDto studyLikeRequestDto = new StudyLikeRequestDto(studyId, true);
+        String json = objectMapper.writeValueAsString(studyLikeRequestDto);
+
+
+        ResultActions resultActions = mockMvc.perform(
+                post("/studies/" + studyId + "/likes")
+                        .header("Authorization", "Bearer " + uid)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding(StandardCharsets.UTF_8)
+                        .content(json)
+                        .accept(MediaType.APPLICATION_JSON)
+        ).andDo(print());
+        resultActions.andExpect(status().isCreated());
+    }
+
+
+    @Test
+    @DisplayName("관심스터디 해제")
+    void 관심_스터디_해제_테스트() throws Exception {
+        String uid = "bTQBTghNwaY5EtAJQLJknVqk2If2";
+        Long studyId = 1L;
+        Long id = 3L;
+
+        StudyHateRequestDto studyLikeRequestDto = new StudyHateRequestDto(id, studyId, true);
+        String json = objectMapper.writeValueAsString(studyLikeRequestDto);
+        ResultActions resultActions = mockMvc.perform(
+                delete("/studies/" + studyId + "/hates")
+                        .header("Authorization", "Bearer " + uid)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding(StandardCharsets.UTF_8)
+                        .content(json)
+                        .accept(MediaType.APPLICATION_JSON)
+        ).andDo(print());
+        resultActions.andExpect(status().isOk());
+    }
 }

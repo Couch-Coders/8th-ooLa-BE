@@ -96,6 +96,10 @@ public class Study extends BaseTimeEntity implements Serializable {
     @OneToMany(mappedBy = "study",fetch = FetchType.LAZY)
     private List<StudyBlog> studyBlogs = new ArrayList<>();
 
+    @JsonManagedReference
+    @OneToMany(mappedBy = "study", fetch = FetchType.LAZY)
+    private List<StudyLike> studyLikes = new ArrayList<>();
+
 
     public Study(StudyRequestDto studyRequestDto , Member member) {
         this.studyType = studyRequestDto.getStudyType();

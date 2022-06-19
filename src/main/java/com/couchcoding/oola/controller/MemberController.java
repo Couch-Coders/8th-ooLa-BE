@@ -8,6 +8,7 @@ import com.couchcoding.oola.entity.Member;
 
 import com.couchcoding.oola.service.MemberService;
 
+import com.couchcoding.oola.service.StudyService;
 import com.couchcoding.oola.validation.MemberForbiddenException;
 import com.couchcoding.oola.validation.MemberNotFoundException;
 import com.couchcoding.oola.validation.ParameterBadRequestException;
@@ -35,6 +36,7 @@ public class MemberController {
 
     private final FirebaseAuth firebaseAuth;
     private final MemberService memberService;
+    private final StudyService studyService;
 
     @PostMapping("")
     public ResponseEntity<MemberResponseDto> registerMember(
