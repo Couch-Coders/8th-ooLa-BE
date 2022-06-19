@@ -97,12 +97,21 @@ public class StudyService {
             log.info("study: {}" , study.toString());
             log.info("role: {}", role);
             log.info("likeStatus: {}", studyLike.isLikeStatus());
-            studyRoleResponseDto = new StudyRoleResponseDto(study, "general" , studyLike.isLikeStatus());
+            if (Boolean.valueOf(studyLike.isLikeStatus()) == true) {
+                studyRoleResponseDto = new StudyRoleResponseDto(study, "general" , studyLike.isLikeStatus());
+            } else {
+                studyRoleResponseDto = new StudyRoleResponseDto(study, "general" , false);
+            }
         } else {
             log.info("study: {}" , study.toString());
             log.info("role: {}", role);
             log.info("likeStatus: {}", studyLike.isLikeStatus());
-            studyRoleResponseDto = new StudyRoleResponseDto(study, role , studyLike.isLikeStatus());
+            if (Boolean.valueOf(studyLike.isLikeStatus()) == true) {
+                studyRoleResponseDto = new StudyRoleResponseDto(study, role , studyLike.isLikeStatus());
+            } else {
+                studyRoleResponseDto = new StudyRoleResponseDto(study, role , false);
+            }
+
         }
 
         return studyRoleResponseDto;
