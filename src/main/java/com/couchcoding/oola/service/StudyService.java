@@ -96,9 +96,9 @@ public class StudyService {
         if (role == null) {
             log.info("study: {}" , study.toString());
             log.info("role: {}", role);
-            if (Boolean.valueOf(studyLike.isLikeStatus()) == true) {
-                studyRoleResponseDto = new StudyRoleResponseDto(study, "general" , studyLike.isLikeStatus());
-            } else if (Boolean.valueOf(studyLike.isLikeStatus()) == null) {
+            if (studyLike.getLikeStatus() == true) {
+                studyRoleResponseDto = new StudyRoleResponseDto(study, "general" , studyLike.getLikeStatus());
+            } else if (studyLike.getLikeStatus() == null) {
                 studyRoleResponseDto = new StudyRoleResponseDto(study, "general" , null);
             } else {
                 studyRoleResponseDto = new StudyRoleResponseDto(study, "general" , false);
@@ -106,9 +106,9 @@ public class StudyService {
         } else {
             log.info("study: {}" , study.toString());
             log.info("role: {}", role);
-            if (Boolean.valueOf(studyLike.isLikeStatus()) == true) {
-                studyRoleResponseDto = new StudyRoleResponseDto(study, role , studyLike.isLikeStatus());
-            } else if (Boolean.valueOf(studyLike.isLikeStatus()) == null) {
+            if (studyLike.getLikeStatus() == true) {
+                studyRoleResponseDto = new StudyRoleResponseDto(study, role , studyLike.getLikeStatus());
+            } else if (studyLike.getLikeStatus() == null) {
                 studyRoleResponseDto = new StudyRoleResponseDto(study, role , null);
             } else {
                 studyRoleResponseDto = new StudyRoleResponseDto(study, role , false);

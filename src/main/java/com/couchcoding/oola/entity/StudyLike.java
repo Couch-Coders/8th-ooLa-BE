@@ -28,7 +28,7 @@ public class StudyLike {
     private Study study;
 
     @Column(name = "like_status")
-    private boolean likeStatus;
+    private Boolean likeStatus;
 
     public StudyLike(Member member, Study study, boolean yesLike) {
         this.member = member;
