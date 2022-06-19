@@ -27,7 +27,7 @@ public class StudyLikeService {
 
         StudyLike studyLike = new StudyLike(member, study, studyLikeRequestDto.isLikeStatus());
         StudyLike entity = studyLikeRepository.save(studyLike);
-        StudyLikeResponseDto studyLikeResponseDto = new StudyLikeResponseDto(entity.getId(),member.getUid(), study.getStudyId(), entity.isLikeStatus());
+        StudyLikeResponseDto studyLikeResponseDto = new StudyLikeResponseDto(entity.getId(),member.getUid(), study.getStudyId(), entity.getLikeStatus());
         return studyLikeResponseDto;
     }
 
