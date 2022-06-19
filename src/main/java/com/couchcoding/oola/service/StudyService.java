@@ -98,6 +98,8 @@ public class StudyService {
             log.info("role: {}", role);
             if (Boolean.valueOf(studyLike.isLikeStatus()) == true) {
                 studyRoleResponseDto = new StudyRoleResponseDto(study, "general" , studyLike.isLikeStatus());
+            } else if (Boolean.valueOf(studyLike.isLikeStatus()) == null) {
+                studyRoleResponseDto = new StudyRoleResponseDto(study, "general" , null);
             } else {
                 studyRoleResponseDto = new StudyRoleResponseDto(study, "general" , false);
             }
@@ -106,6 +108,8 @@ public class StudyService {
             log.info("role: {}", role);
             if (Boolean.valueOf(studyLike.isLikeStatus()) == true) {
                 studyRoleResponseDto = new StudyRoleResponseDto(study, role , studyLike.isLikeStatus());
+            } else if (Boolean.valueOf(studyLike.isLikeStatus()) == null) {
+                studyRoleResponseDto = new StudyRoleResponseDto(study, role , null);
             } else {
                 studyRoleResponseDto = new StudyRoleResponseDto(study, role , false);
             }

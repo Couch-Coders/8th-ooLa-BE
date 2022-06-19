@@ -29,9 +29,9 @@ public class StudyRoleResponseDto {
     private String status;
     private LocalDateTime endDate;
     private String role;
-    private boolean likeStatus;
+    private Boolean likeStatus;
 
-    public StudyRoleResponseDto(Study study, String role , boolean likeStatus) {
+    public StudyRoleResponseDto(Study study, String role , Boolean likeStatus) {
         this.studyId = study.getStudyId();
         this.studyType = study.getStudyType();
         this.studyName = study.getStudyName();
