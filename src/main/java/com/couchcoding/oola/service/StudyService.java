@@ -98,8 +98,16 @@ public class StudyService {
         Study study = null;
         // 스터디 생성자와 로그인 유저가 같은지 비교
         Study result = getStudy(studyId);
-        if (result.getCreateUid().equals(member.getUid())) {
-            Study updated = result.update(studyId, requestDto, member.getUid());
+        List<StudyMember> studyMembers = result.getStudyMembers();
+
+        Study updated = null;
+        for (StudyMember studyMember : studyMembers) {
+            if (studyMember.getMember().getUid().equals(member.getUid())) {
+                updated = result.update(studyId, requestDto, member.getUid());
+            }
+        }
+
+        if (updated != null) {
             study = studyRepository.save(updated);
         } else {
             throw new MemberForbiddenException();
