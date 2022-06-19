@@ -99,6 +99,9 @@ public class StudyService {
             log.info("likeStatus: {}", studyLike.isLikeStatus());
             studyRoleResponseDto = new StudyRoleResponseDto(study, "general" , studyLike.isLikeStatus());
         } else {
+            log.info("study: {}" , study.toString());
+            log.info("role: {}", role);
+            log.info("likeStatus: {}", studyLike.isLikeStatus());
             studyRoleResponseDto = new StudyRoleResponseDto(study, role , studyLike.isLikeStatus());
         }
 
