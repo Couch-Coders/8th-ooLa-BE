@@ -115,7 +115,7 @@ public class Study extends BaseTimeEntity implements Serializable {
         this.status = "진행";
         this.endDate = studyRequestDto.getEndDate();
         this.createUid = member.getUid();
-        this.likeStatus = null;
+        this.likeStatus = studyRequestDto.getLikeStatus();
     }
 
     // 스터디 수정
