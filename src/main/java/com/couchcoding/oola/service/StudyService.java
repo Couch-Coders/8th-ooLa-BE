@@ -96,7 +96,6 @@ public class StudyService {
         if (role == null) {
             log.info("study: {}" , study.toString());
             log.info("role: {}", role);
-            log.info("likeStatus: {}", studyLike.isLikeStatus());
             if (Boolean.valueOf(studyLike.isLikeStatus()) == true) {
                 studyRoleResponseDto = new StudyRoleResponseDto(study, "general" , studyLike.isLikeStatus());
             } else {
@@ -105,7 +104,6 @@ public class StudyService {
         } else {
             log.info("study: {}" , study.toString());
             log.info("role: {}", role);
-            log.info("likeStatus: {}", studyLike.isLikeStatus());
             if (Boolean.valueOf(studyLike.isLikeStatus()) == true) {
                 studyRoleResponseDto = new StudyRoleResponseDto(study, role , studyLike.isLikeStatus());
             } else {
