@@ -1,5 +1,6 @@
 package com.couchcoding.oola.controller;
 
+import com.couchcoding.oola.dto.study.response.StudyCompletionDto;
 import com.couchcoding.oola.dto.study.response.StudyCreationDto;
 import com.couchcoding.oola.dto.study.response.StudyProgressDto;
 import com.couchcoding.oola.entity.Member;
@@ -31,7 +32,6 @@ public class MyStudyController {
     @GetMapping("/creation")
     public ResponseEntity<List<StudyCreationDto>> mystudies(Authentication authentication) {
         Member member = (Member) authentication.getPrincipal();
-
         // role과 uid를 사용하여 검색
        List<StudyCreationDto> studyCreationDtoList = studyMemberService.mystudies(member);
        return ResponseEntity.status(HttpStatus.OK).body(studyCreationDtoList);
@@ -40,8 +40,15 @@ public class MyStudyController {
     @GetMapping("/progress")
     public ResponseEntity<List<StudyProgressDto>> mystudiesProgress(Authentication authentication) {
         Member member = (Member) authentication.getPrincipal();
-
         List<StudyProgressDto> studyProgressDtoList = studyMemberService.myJoinStudies(member);
         return ResponseEntity.status(HttpStatus.OK).body(studyProgressDtoList);
+    }
+
+    // 내가 완료한 스터디 조회
+    @GetMapping("/completion")
+    public ResponseEntity<List<StudyCompletionDto>> mystudiesCompletion(Authentication authentication) {
+        Member member = (Member) authentication.getPrincipal();
+        List<StudyCompletionDto> studyCompletionDtos  = studyMemberService.myStudiesCompletion(member);
+        return ResponseEntity.status(HttpStatus.OK).body(studyCompletionDtos);
     }
 }

@@ -1,5 +1,6 @@
 package com.couchcoding.oola.service;
 
+import com.couchcoding.oola.dto.study.response.StudyCompletionDto;
 import com.couchcoding.oola.dto.study.response.StudyCreationDto;
 import com.couchcoding.oola.dto.study.response.StudyProgressDto;
 import com.couchcoding.oola.dto.studymember.response.StudyMemberResponseDto;
@@ -91,8 +92,26 @@ public class StudyMemberService {
         for (StudyMember studyMember : studyMembers) {
             Study study = studyMember.getStudy();
             studyProgressDto = new StudyProgressDto(study);
+            log.info(studyProgressDto.toString());
             studyProgressDtos.add(studyProgressDto);
         }
         return studyProgressDtos;
+    }
+
+    // 마이스터디 - 내가 완료한 스터디
+    public List<StudyCompletionDto> myStudiesCompletion(Member member) {
+        List<StudyCompletionDto> studyCompletionDtos = new ArrayList<>();
+        StudyCompletionDto studyCompletionDto = null;
+        String role = "leader";
+        String uid = member.getUid();
+        String status = "완료";
+        List<StudyMember> studyMembers = studyMemberRepositoryCustom.findAllByUidAndRoleAndStatus(uid, role, status);
+        for (StudyMember studyMember : studyMembers) {
+            Study study = studyMember.getStudy();
+            studyCompletionDto = new StudyCompletionDto(study);
+            log.info(studyCompletionDto.toString());
+            studyCompletionDtos.add(studyCompletionDto);
+        }
+        return studyCompletionDtos;
     }
 }
