@@ -8,10 +8,16 @@ import com.couchcoding.oola.dto.studyblogs.request.StudyBlogRequestDto;
 import com.couchcoding.oola.dto.studyblogs.response.StudyBlogListResponseDto;
 import com.couchcoding.oola.dto.studyblogs.response.StudyBlogResponseDto;
 
+import com.couchcoding.oola.dto.studycomments.request.CommentRequestDto;
 import com.couchcoding.oola.dto.studycomments.request.StudyCommentRequestDto;
+import com.couchcoding.oola.dto.studycomments.response.CommentResponseDto;
 import com.couchcoding.oola.dto.studycomments.response.StudyCommentDataDto;
 import com.couchcoding.oola.dto.studycomments.response.StudyCommentMemberResponseDto;
 import com.couchcoding.oola.dto.studycomments.response.StudyCommentsResponseDto;
+import com.couchcoding.oola.dto.studylikes.request.StudyHateRequestDto;
+import com.couchcoding.oola.dto.studylikes.request.StudyLikeRequestDto;
+import com.couchcoding.oola.dto.studylikes.response.StudyLikeResponseDto;
+import com.couchcoding.oola.dto.studylikes.response.StudyLikeStatus;
 import com.couchcoding.oola.dto.studymember.response.StudyMemberResponseDto;
 import com.couchcoding.oola.entity.*;
 
@@ -60,7 +66,7 @@ public class StudyController {
 
     private final StudyMemberService studyMemberService;
     private final StudyBlogService studyBlogService;
-
+    private final StudyLikeService studyLikeService;
     private final StudyCommentService studyCommentService;
     private final FirebaseAuth firebaseAuth;
 
@@ -170,6 +176,33 @@ public class StudyController {
         return studyBlogListResponseDto;
     }
 
+    // 스터디에 대한 관심등록 누르기
+    @PostMapping("/{studyId}/likes")
+    public ResponseEntity<StudyLikeResponseDto> likeMyStudy(Authentication authentication , @RequestBody StudyLikeRequestDto studyLikeRequestDto, @PathVariable Long studyId) {
+        Member member = (Member) authentication.getPrincipal();
+        StudyLikeResponseDto studyLikeResponseDto = studyLikeService.LikeMyStudy(member, studyId , studyLikeRequestDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(studyLikeResponseDto);
+    }
+
+
+    // 스터디에 대한 관심등록 해제
+    @DeleteMapping("/{studyId}/hates")
+    public ResponseEntity hateMyStudy(Authentication authentication, @PathVariable Long studyId, @RequestBody StudyHateRequestDto studyHateRequestDto) {
+        Member member = (Member) authentication.getPrincipal();
+        studyLikeService.deleteMyStudy(member, studyId , studyHateRequestDto);
+        return  ResponseEntity.status(HttpStatus.OK).body("관심등록 해제 완료");
+    }
+
+    // 관심스터디 목로 조회
+    @GetMapping("/likes")
+    public List<StudyLikeStatus> getMyStudyLikes(Authentication authentication) {
+        Member member = (Member) authentication.getPrincipal();
+        List<StudyLikeStatus> studyLikeStatuses = studyLikeService.getMyStudysLikes(member);
+        return studyLikeStatuses;
+    }
+
+
+
     // 스터디에 대한 댓글 추가
     @PostMapping("/{studyId}/comments")
     public ResponseEntity<Comment> createComment(Authentication authentication , @RequestBody StudyCommentRequestDto studyCommentRequestDto, @PathVariable Long studyId) {
@@ -183,5 +216,20 @@ public class StudyController {
     public ResponseEntity<StudyCommentsResponseDto> getCommentList(@PathVariable Long studyId) {
         StudyCommentsResponseDto studyCommentsResponseDto = studyCommentService.getCommentList(studyId);
         return ResponseEntity.status(HttpStatus.OK).body(studyCommentsResponseDto);
+    }
+
+    // 스터디에 달린 댓글 수정
+    @PatchMapping("/{studyId}/comments/{commentId}")
+    public ResponseEntity<CommentResponseDto> updateComment(Authentication authentication, @RequestBody CommentRequestDto commentRequestDto, @PathVariable Long studyId, @PathVariable Long commentId) {
+        Member member = (Member) authentication.getPrincipal();
+        CommentResponseDto commentResponseDto = studyCommentService.updateComment(commentRequestDto, member, studyId, commentId);
+        return ResponseEntity.status(HttpStatus.OK).body(commentResponseDto);
+    }
+
+    // 스터디에 달린 댓글 삭제
+    @DeleteMapping("/comments/{commentId}")
+    public ResponseEntity deleteComment(Authentication authentication,  @PathVariable Long commentId) {
+        studyCommentService.deleteComment((Member) authentication.getPrincipal(), commentId);
+        return ResponseEntity.status(HttpStatus.OK).body("댓글 삭제 완료");
     }
 }

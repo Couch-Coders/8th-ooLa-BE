@@ -1,5 +1,6 @@
 package com.couchcoding.oola.dto.studycomments.response;
 
+import com.couchcoding.oola.entity.Comment;
 import com.couchcoding.oola.entity.Member;
 import lombok.Getter;
 
@@ -16,4 +17,6 @@ public class StudyCommentMemberResponseDto {
         this.nickName = member.getNickName();
         this.photoUrl = member.getPhotoUrl();
     }
+
+
 }

@@ -1,5 +1,6 @@
 package com.couchcoding.oola.entity;
 
+import com.couchcoding.oola.dto.studycomments.request.CommentRequestDto;
 import com.couchcoding.oola.dto.studycomments.request.StudyCommentRequestDto;
 import com.couchcoding.oola.entity.base.BaseTimeEntity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -37,6 +38,14 @@ public class Comment extends BaseTimeEntity implements Serializable {
 //
 //    @Column(name = "parent_no")
 //    private Long parentNo;
+
+    public Comment(CommentRequestDto commentRequestDto, Member member , Study study) {
+        this.id = commentRequestDto.getId();
+        this.content = commentRequestDto.getContent();
+        this.member = member;
+        this.study = study;
+
+    }
 
     public Comment(Member member, Study study, StudyCommentRequestDto studyCommentRequestDto) {
         this.member = member;
