@@ -1,5 +1,6 @@
 package com.couchcoding.oola.validation.error;
 
+import com.couchcoding.oola.validation.StudyLikeException;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
@@ -49,7 +50,12 @@ public enum ErrorCode {
     InvalidAuthorization(HttpStatus.NOT_FOUND, "C0011", "인증 정보가 부정확합니다"),
 
    // 괌심 등록되 있지 않은 스터디를 관심 해제 하려고 할때
-    StudyNotLikeException(HttpStatus.NOT_FOUND, "C0012","관심등록 되 있지 않은 스터디 입니다");
+    StudyNotLikeException(HttpStatus.NOT_FOUND, "C0012","관심등록 되 있지 않은 스터디 입니다"),
+
+   // 이미 관심등록된 스터디를 또 관심등록하는 경우
+    StudyLikeException(HttpStatus.FORBIDDEN, "C0013", "이미 관심등록된 스터디 입니다");
+
+
 
     private final HttpStatus status;
 

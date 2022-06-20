@@ -73,26 +73,23 @@ public class StudyMemberService {
        Study study = null;
         StudyLike studyLike = null;
         String role = "leader";
-        int i = 0;
+
         // role과 member의 uid 사용하여 검색
         String uid = member.getUid();
         List<StudyMember> studyMembers = studyMemberRepositoryCustom.findAllByUidAndRole(uid, role);
-        for (StudyMember studyMember : studyMembers) {
-            study = studyMember.getStudy();
+        for (int i = 0; i < studyMembers.size(); i++) {
+            study = studyMembers.get(i).getStudy();
             if (study.getStudyLikes().size() > 0) {
                 studyLike = study.getStudyLikes().get(i);
-                if (studyLike == null) {
-                    studyCreationDto = new StudyCreationDto(study, false);
-                }
             }
 
             if (studyLike == null) {
-                studyCreationDto = new StudyCreationDto(study , null);
+                studyCreationDto = new StudyCreationDto(study , false);
             } else {
                 studyCreationDto = new StudyCreationDto(study , studyLike.getLikeStatus());
             }
             studyCreationDtoList.add(studyCreationDto);
-            i+=1;
+
         }
         return studyCreationDtoList;
     }
@@ -111,13 +108,10 @@ public class StudyMemberService {
             Study study = studyMember.getStudy();
             if (study.getStudyLikes().size() > 0) {
                 studyLike = study.getStudyLikes().get(i);
-                if (studyLike == null) {
-                    studyProgressDto = new StudyProgressDto(study, false);
-                }
             }
 
             if (studyLike == null) {
-                studyProgressDto = new StudyProgressDto(study, null);
+                studyProgressDto = new StudyProgressDto(study, false);
             } else {
                 studyProgressDto = new StudyProgressDto(study, studyLike.getLikeStatus());
             }
@@ -143,13 +137,10 @@ public class StudyMemberService {
             Study study = studyMember.getStudy();
             if (study.getStudyLikes().size() > 0) {
                 studyLike = study.getStudyLikes().get(i);
-                if (studyLike == null) {
-                    studyCompletionDto = new StudyCompletionDto(study, false);
-                }
             }
 
             if (studyLike == null) {
-                studyCompletionDto = new StudyCompletionDto(study, null);
+                studyCompletionDto = new StudyCompletionDto(study, false);
             } else {
                 studyCompletionDto = new StudyCompletionDto(study, studyLike.getLikeStatus());
             }
