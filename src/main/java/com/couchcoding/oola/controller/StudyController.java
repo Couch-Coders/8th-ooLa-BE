@@ -90,7 +90,7 @@ public class StudyController {
 
     // 스터디 단일 조회
     @GetMapping("/{studyId}")
-    public ResponseEntity<StudyRoleResponseDto> studyDetail( @PathVariable @Valid Long studyId, HttpServletRequest request)  {
+    public ResponseEntity<StudyRoleResponseDto> studyDetail( @PathVariable @Valid Long studyId, HttpServletRequest request) throws FirebaseAuthException {
         StudyRoleResponseDto studyRoleResponseDto = null;
         String header = RequestUtil.getAuthorizationToken(request);
         if (header != null) {
@@ -169,19 +169,19 @@ public class StudyController {
         StudyBlogListResponseDto studyBlogListResponseDto = studyBlogService.getBlogs(studyId);
         return studyBlogListResponseDto;
     }
+
     // 스터디에 대한 댓글 추가
     @PostMapping("/{studyId}/comments")
-    public ResponseEntity<Comment> comments(Authentication authentication , @RequestBody StudyCommentRequestDto studyCommentRequestDto, @PathVariable Long studyId) {
+    public ResponseEntity<Comment> createComment(Authentication authentication , @RequestBody StudyCommentRequestDto studyCommentRequestDto, @PathVariable Long studyId) {
         Member member = (Member) authentication.getPrincipal();
-        Comment comment = studyCommentService.comments(member, studyCommentRequestDto, studyId);
+        Comment comment = studyCommentService.createComment(member, studyCommentRequestDto, studyId);
         return ResponseEntity.status(HttpStatus.CREATED).body(comment);
     }
 
     // 스터디에 달린 댓글 목록 조회
     @GetMapping("/{studyId}/comments")
-    public ResponseEntity<StudyCommentsResponseDto> commentList(@PathVariable Long studyId) {
-        StudyCommentsResponseDto studyCommentsResponseDto = studyCommentService.commentList(studyId);
+    public ResponseEntity<StudyCommentsResponseDto> getCommentList(@PathVariable Long studyId) {
+        StudyCommentsResponseDto studyCommentsResponseDto = studyCommentService.getCommentList(studyId);
         return ResponseEntity.status(HttpStatus.OK).body(studyCommentsResponseDto);
-
     }
 }

@@ -61,21 +61,16 @@ public class StudyService {
     }
 
     // 로그인
-    public StudyRoleResponseDto studyDetail(Long studyId, String header) throws FirebaseAuthException {
-        FirebaseToken firebaseToken = firebaseAuth.verifyIdToken(header);
-        Member member = (Member) memberService.loadUserByUsername(firebaseToken.getUid());
-        log.info("uid: {}", member.getUid());
-
     public StudyRoleResponseDto studyDetail(Long studyId, String header) {
-        FirebaseToken firebaseToken = firebaseAuth.verifyIdToken(header);
-        Member member = (Member) memberService.loadUserByUsername(firebaseToken.getUid());
-        log.info("uid: {}", member.getUid());
 
-        Study study = getStudy(studyId);
-
-        List<StudyMember> studyMembers = study.getStudyMembers();
-        StudyRoleResponseDto studyRoleResponseDto = null;
-
+        Member member = null;
+        try {
+            FirebaseToken firebaseToken = firebaseAuth.verifyIdToken(header);
+            member = (Member) memberService.loadUserByUsername(firebaseToken.getUid());
+            log.info("로그인 후 스터디 조회시 로그인된 사용자 정보: {}", member);
+        } catch (UsernameNotFoundException | FirebaseAuthException | IllegalArgumentException e) {
+            throw new CustomException(ErrorCode.MemberNotFound);
+        }
 
         Study study = getStudy(studyId);
         StudyLike studyLike = null;
@@ -93,14 +88,30 @@ public class StudyService {
         String role = null;
         StudyRoleResponseDto studyRoleResponseDto = null;
         for (int i = 0; i < studyMembers.size(); i++) {
-            if (studyMembers.get(i).getMember().getUid().equals(member.getUid()) && studyMembers.get(i).getStudy().getStudyId().equals(studyId)) {
-                log.info("role: {}", studyMembers.get(i).getRole());
-                String role = studyMembers.get(i).getRole();
-                studyRoleResponseDto = new StudyRoleResponseDto(studyMembers.get(i).getStudy() , role);
-            } else {
-                studyRoleResponseDto = new StudyRoleResponseDto(study, "general");
-                studyRoleResponseDto = new StudyRoleResponseDto(studyMembers.get(i).getStudy() , "general");
+            if (studyMembers.get(i).getMember().getUid().equals(member.getUid())) {
+                role = studyMembers.get(i).getRole();
             }
+        }
+
+        if (role == null) {
+            log.info("study: {}" , study.toString());
+            log.info("role: {}", role);
+            if (studyLike == null) {
+                studyRoleResponseDto = new StudyRoleResponseDto(study, "general" , false);
+
+            } else  {
+                studyRoleResponseDto = new StudyRoleResponseDto(study, "general" , studyLike.getLikeStatus());
+            }
+        } else {
+            log.info("study: {}" , study.toString());
+            log.info("role: {}", role);
+            if (studyLike == null) {
+                studyRoleResponseDto = new StudyRoleResponseDto(study, role , false);
+
+            } else {
+                studyRoleResponseDto = new StudyRoleResponseDto(study, role , studyLike.getLikeStatus());
+            }
+
         }
 
         return studyRoleResponseDto;
@@ -145,7 +156,7 @@ public class StudyService {
         String uid = null;
         for (StudyMember studyMember : studyMembers) {
             if (studyMember.getRole().equals("leader"))  {
-               uid =  studyMember.getMember().getUid();
+                uid =  studyMember.getMember().getUid();
             }
         }
         if (uid.equals(member.getUid())) {
