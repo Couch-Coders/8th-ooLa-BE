@@ -7,15 +7,18 @@ import com.couchcoding.oola.dto.study.response.StudyRoleResponseDto;
 import com.couchcoding.oola.dto.studyblogs.request.StudyBlogRequestDto;
 import com.couchcoding.oola.dto.studyblogs.response.StudyBlogListResponseDto;
 import com.couchcoding.oola.dto.studyblogs.response.StudyBlogResponseDto;
-import com.couchcoding.oola.dto.studycomments.request.StudyCommentRequestDto;
-import com.couchcoding.oola.dto.studycomments.response.StudyCommentDataDto;
-import com.couchcoding.oola.dto.studycomments.response.StudyCommentMemberResponseDto;
-import com.couchcoding.oola.dto.studycomments.response.StudyCommentsResponseDto;
+import com.couchcoding.oola.dto.studylikes.request.StudyHateRequestDto;
+import com.couchcoding.oola.dto.studylikes.request.StudyLikeRequestDto;
+import com.couchcoding.oola.dto.studylikes.response.StudyLikeResponseDto;
+import com.couchcoding.oola.dto.studylikes.response.StudyLikeStatus;
 import com.couchcoding.oola.dto.studymember.response.StudyMemberResponseDto;
-import com.couchcoding.oola.entity.*;
-;
+import com.couchcoding.oola.entity.Member;
+import com.couchcoding.oola.entity.Study;;
+import com.couchcoding.oola.entity.StudyBlog;
+import com.couchcoding.oola.entity.StudyMember;
+import com.couchcoding.oola.repository.StudyMemberRepositoryCustom;
 import com.couchcoding.oola.service.StudyBlogService;
-import com.couchcoding.oola.service.StudyCommentService;
+import com.couchcoding.oola.service.StudyLikeService;
 import com.couchcoding.oola.service.StudyMemberService;
 import com.couchcoding.oola.service.StudyService;
 
@@ -30,14 +33,11 @@ import org.springframework.data.domain.Pageable;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
+import org.springframework.security.core.Authentication;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.web.method.annotation.AuthenticationPrincipalArgumentResolver;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,10 +54,10 @@ import java.util.List;
 public class StudyController {
 
     private final StudyService studyService;
+
     private final StudyMemberService studyMemberService;
     private final StudyBlogService studyBlogService;
-    private final StudyCommentService studyCommentService;
-    private final FirebaseAuth firebaseAuth;
+    private final StudyLikeService studyLikeService;
 
     @PostMapping("")
     public ResponseEntity<StudyResponseDto> createStudy(Authentication authentication,
@@ -89,11 +89,7 @@ public class StudyController {
         StudyRoleResponseDto studyRoleResponseDto = null;
         String header = RequestUtil.getAuthorizationToken(request);
         if (header != null) {
-            try {
-                studyRoleResponseDto = studyService.studyDetail(studyId, header);
-            } catch (FirebaseAuthException | UsernameNotFoundException | IllegalArgumentException e) {
-                throw new CustomException(ErrorCode.MemberNotFound);
-            }
+            studyRoleResponseDto = studyService.studyDetail(studyId, header);
         } else {
             studyRoleResponseDto = studyService.studyDetail(studyId);
         }
@@ -163,24 +159,34 @@ public class StudyController {
 
     // 스터디 공유로그 목록 조회
     @GetMapping("/{studyId}/blogs")
-    public StudyBlogListResponseDto blogGet(@PathVariable Long studyId) {
+    public StudyBlogListResponseDto getBlog(@PathVariable Long studyId) {
         // 스터디 블로그를 작성한 사람이 스터디에서 어떤 역할인지 정보도 함께 달라고 하셔서 Study를 통짜로 넘긴다
         StudyBlogListResponseDto studyBlogListResponseDto = studyBlogService.getBlogs(studyId);
         return studyBlogListResponseDto;
     }
 
-    // 스터디에 대한 댓글 추가
-    @PostMapping("/{studyId}/comments")
-    public ResponseEntity<Comment> comments(Authentication authentication , @RequestBody StudyCommentRequestDto studyCommentRequestDto, @PathVariable Long studyId) {
+    // 스터디에 대한 관심등록 누르기
+    @PostMapping("/{studyId}/likes")
+    public ResponseEntity<StudyLikeResponseDto> likeMyStudy(Authentication authentication ,@RequestBody StudyLikeRequestDto studyLikeRequestDto, @PathVariable Long studyId) {
         Member member = (Member) authentication.getPrincipal();
-        Comment comment = studyCommentService.comments(member, studyCommentRequestDto, studyId);
-        return ResponseEntity.status(HttpStatus.CREATED).body(comment);
+        StudyLikeResponseDto studyLikeResponseDto = studyLikeService.LikeMyStudy(member, studyId , studyLikeRequestDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(studyLikeResponseDto);
+    }
+    
+    
+    // 스터디에 대한 관심등록 해제
+    @DeleteMapping("/{studyId}/hates")
+    public ResponseEntity hateMyStudy(Authentication authentication, @PathVariable Long studyId, @RequestBody StudyHateRequestDto studyHateRequestDto) {
+        Member member = (Member) authentication.getPrincipal();
+        studyLikeService.deleteMyStudy(member, studyId , studyHateRequestDto);
+        return  ResponseEntity.status(HttpStatus.OK).body("관심등록 해제 완료");
     }
 
-    // 스터디에 달린 댓글 목록 조회
-    @GetMapping("/{studyId}/comments")
-    public ResponseEntity<StudyCommentsResponseDto> commentList(@PathVariable Long studyId) {
-        StudyCommentsResponseDto studyCommentsResponseDto = studyCommentService.commentList(studyId);
-        return ResponseEntity.status(HttpStatus.OK).body(studyCommentsResponseDto);
+    // 관심스터디 목로 조회
+    @GetMapping("/likes")
+    public List<StudyLikeStatus> getMyStudyLikes(Authentication authentication) {
+        Member member = (Member) authentication.getPrincipal();
+        List<StudyLikeStatus> studyLikeStatuses = studyLikeService.getMyStudysLikes(member);
+        return studyLikeStatuses;
     }
 }

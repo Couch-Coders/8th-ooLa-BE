@@ -46,8 +46,10 @@ public enum ErrorCode {
     // 삭제된 댓글을 조회하는 경우 :404 : Not Found
     CommentNotFound(HttpStatus.NOT_FOUND, "C0010", "삭제되어 존재하지 않는 댓글입니다."),
 
-    InvalidAuthorization(HttpStatus.NOT_FOUND, "C0011", "인증 정보가 부정확합니다");
+    InvalidAuthorization(HttpStatus.NOT_FOUND, "C0011", "인증 정보가 부정확합니다"),
 
+   // 괌심 등록되 있지 않은 스터디를 관심 해제 하려고 할때
+    StudyNotLikeException(HttpStatus.NOT_FOUND, "C0012","관심등록 되 있지 않은 스터디 입니다");
 
     private final HttpStatus status;
 
