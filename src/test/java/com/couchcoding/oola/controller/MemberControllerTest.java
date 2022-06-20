@@ -8,6 +8,9 @@ import com.couchcoding.oola.service.MemberService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -27,6 +30,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.Filter;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
@@ -38,15 +42,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
+@ActiveProfiles("local")
 @ExtendWith(SpringExtension.class)
 @WebAppConfiguration
 @AutoConfigureMockMvc
-@ActiveProfiles("local")
 @SpringBootTest
 class MemberControllerTest {
 
     private static final String uid = "aaabbcc";
-    //private static final String uid = "asdfasdf";
     private static final String displayName = "홍길동";
     private static final String email = "cmk664488@gmail.com";
     private static final String blogUrl = "ttps://shiningjean.tistory.com/35";
@@ -235,5 +238,15 @@ class MemberControllerTest {
 
         resultActions
                 .andExpect(status().isOk());
+    }
+    
+    @Test
+    @DisplayName("로컬에서 토큰 생성 테스트")
+    void 로컬에서_토큰_생성_테스트() throws IOException {
+        FirebaseOptions options = FirebaseOptions.builder()
+                .setCredentials(GoogleCredentials.getApplicationDefault())
+                .setServiceAccountId("110975400098587635861@oola-oauth.iam.gserviceaccount.com")
+                .build();
+        FirebaseApp.initializeApp(options);
     }
 }
