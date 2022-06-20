@@ -780,6 +780,9 @@ class StudyControllerTest {
 
         Long studyId = 1L;
 
+   
+
+
         StudyCommentRequestDto studyCommentRequestDto = new StudyCommentRequestDto("1번 스터디에 대한 두번째 댓글");
         String studyBlogJson = objectMapper.writeValueAsString(studyCommentRequestDto);
 

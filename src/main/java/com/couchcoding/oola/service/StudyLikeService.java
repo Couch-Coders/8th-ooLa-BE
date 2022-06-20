@@ -10,6 +10,7 @@ import com.couchcoding.oola.entity.Study;
 import com.couchcoding.oola.entity.StudyLike;
 import com.couchcoding.oola.repository.StudyLikeRepository;
 import com.couchcoding.oola.validation.ParameterBadRequestException;
+import com.couchcoding.oola.validation.StudyLikeException;
 import com.couchcoding.oola.validation.StudyNotFoundException;
 import com.couchcoding.oola.validation.StudyNotLikeException;
 import com.couchcoding.oola.validation.error.CustomException;
@@ -31,6 +32,13 @@ public class StudyLikeService {
     public StudyLikeResponseDto LikeMyStudy(Member member, Long studyId , StudyLikeRequestDto studyLikeRequestDto) {
         Study study = studyService.getStudy(studyId);
         StudyLike studyLike = new StudyLike(member, study, studyLikeRequestDto.isLikeStatus());
+
+        for (int i = 0; i < study.getStudyLikes().size(); i++) {
+            if (study.getStudyId() == study.getStudyLikes().get(i).getStudy().getStudyId() && member.getUid().equals(study.getStudyLikes().get(i).getMember().getUid())) {
+                throw new StudyLikeException();
+            }
+        }
+
         StudyLike entity = studyLikeRepository.save(studyLike);
         StudyLikeResponseDto studyLikeResponseDto = new StudyLikeResponseDto(entity.getId(),member.getUid(), study.getStudyId(), entity.getLikeStatus());
         return studyLikeResponseDto;
