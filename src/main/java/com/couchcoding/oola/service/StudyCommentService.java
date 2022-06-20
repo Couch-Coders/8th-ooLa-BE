@@ -24,17 +24,16 @@ public class StudyCommentService {
     private final StudyMemberService studyMemberService;
     private final StudyCommentRepository studyCommentRepository;
 
-    public Comment comments( Member member, StudyCommentRequestDto studyCommentRequestDto , Long studyId) {
+    public Comment createComment( Member member, StudyCommentRequestDto studyCommentRequestDto , Long studyId) {
         Study study = studyService.getStudy(studyId);
         Comment comment = new Comment(member, study, studyCommentRequestDto);
         Comment result = studyCommentRepository.save(comment);
         return result;
     }
 
-    public StudyCommentsResponseDto commentList(Long studyId) {
+    public StudyCommentsResponseDto getCommentList(Long studyId) {
         Study study = studyService.getStudy(studyId);
         List<Comment> comments = study.getComments();
-
         List<StudyMember> studyMembers = studyMemberService.studyMembers(studyId);
 
         List<StudyCommentMemberResponseDto> studyCommentMemberResponseDtos = new ArrayList<>();
@@ -47,6 +46,4 @@ public class StudyCommentService {
         StudyCommentsResponseDto studyCommentsResponseDto = new StudyCommentsResponseDto(studyCommentMemberResponseDtos , comments);
         return studyCommentsResponseDto;
     }
-
-
 }

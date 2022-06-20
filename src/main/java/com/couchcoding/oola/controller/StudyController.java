@@ -7,27 +7,21 @@ import com.couchcoding.oola.dto.study.response.StudyRoleResponseDto;
 import com.couchcoding.oola.dto.studyblogs.request.StudyBlogRequestDto;
 import com.couchcoding.oola.dto.studyblogs.response.StudyBlogListResponseDto;
 import com.couchcoding.oola.dto.studyblogs.response.StudyBlogResponseDto;
+import com.couchcoding.oola.dto.studycomments.request.StudyCommentRequestDto;
+import com.couchcoding.oola.dto.studycomments.response.StudyCommentsResponseDto;
 import com.couchcoding.oola.dto.studylikes.request.StudyHateRequestDto;
 import com.couchcoding.oola.dto.studylikes.request.StudyLikeRequestDto;
 import com.couchcoding.oola.dto.studylikes.response.StudyLikeResponseDto;
 import com.couchcoding.oola.dto.studylikes.response.StudyLikeStatus;
 import com.couchcoding.oola.dto.studymember.response.StudyMemberResponseDto;
-import com.couchcoding.oola.entity.Member;
-import com.couchcoding.oola.entity.Study;;
-import com.couchcoding.oola.entity.StudyBlog;
-import com.couchcoding.oola.entity.StudyMember;
+import com.couchcoding.oola.entity.*;
+;
 import com.couchcoding.oola.repository.StudyMemberRepositoryCustom;
-import com.couchcoding.oola.service.StudyBlogService;
-import com.couchcoding.oola.service.StudyLikeService;
-import com.couchcoding.oola.service.StudyMemberService;
-import com.couchcoding.oola.service.StudyService;
+import com.couchcoding.oola.service.*;
 
 import com.couchcoding.oola.util.RequestUtil;
 import com.couchcoding.oola.validation.*;
-import com.couchcoding.oola.validation.error.CustomException;
-import com.couchcoding.oola.validation.error.ErrorCode;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthException;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -58,6 +52,7 @@ public class StudyController {
     private final StudyMemberService studyMemberService;
     private final StudyBlogService studyBlogService;
     private final StudyLikeService studyLikeService;
+    private final StudyCommentService studyCommentService;
 
     @PostMapping("")
     public ResponseEntity<StudyResponseDto> createStudy(Authentication authentication,
@@ -188,5 +183,20 @@ public class StudyController {
         Member member = (Member) authentication.getPrincipal();
         List<StudyLikeStatus> studyLikeStatuses = studyLikeService.getMyStudysLikes(member);
         return studyLikeStatuses;
+    }
+
+    // 스터디에 대한 댓글 추가
+    @PostMapping("/{studyId}/comments")
+    public ResponseEntity<Comment> createComment(Authentication authentication , @RequestBody StudyCommentRequestDto studyCommentRequestDto, @PathVariable Long studyId) {
+        Member member = (Member) authentication.getPrincipal();
+        Comment comment = studyCommentService.createComment(member, studyCommentRequestDto, studyId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(comment);
+    }
+
+    // 스터디에 달린 댓글 목록 조회
+    @GetMapping("/{studyId}/comments")
+    public ResponseEntity<StudyCommentsResponseDto> getCommentList(@PathVariable Long studyId) {
+        StudyCommentsResponseDto studyCommentsResponseDto = studyCommentService.getCommentList(studyId);
+        return ResponseEntity.status(HttpStatus.OK).body(studyCommentsResponseDto);
     }
 }
