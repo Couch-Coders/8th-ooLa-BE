@@ -73,12 +73,12 @@ public class StudyMemberService {
        Study study = null;
         StudyLike studyLike = null;
         String role = "leader";
-        int i = 0;
+
         // role과 member의 uid 사용하여 검색
         String uid = member.getUid();
         List<StudyMember> studyMembers = studyMemberRepositoryCustom.findAllByUidAndRole(uid, role);
-        for (StudyMember studyMember : studyMembers) {
-            study = studyMember.getStudy();
+        for (int i = 0; i < studyMembers.size(); i++) {
+            study = studyMembers.get(i).getStudy();
             if (study.getStudyLikes().size() > 0) {
                 studyLike = study.getStudyLikes().get(i);
             }
@@ -89,7 +89,7 @@ public class StudyMemberService {
                 studyCreationDto = new StudyCreationDto(study , studyLike.getLikeStatus());
             }
             studyCreationDtoList.add(studyCreationDto);
-            i+=1;
+
         }
         return studyCreationDtoList;
     }
