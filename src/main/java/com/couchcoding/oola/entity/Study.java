@@ -85,8 +85,8 @@ public class Study extends BaseTimeEntity implements Serializable {
     @Column(name = "create_uid")
     private String createUid;
 
-    @Column(name = "like_status")
-    private Boolean likeStatus; // 한명이라도 스터디 관심을 눌렀다면 true
+//    @Column(name = "like_status")
+//    private Boolean likeStatus; // 한명이라도 스터디 관심을 눌렀다면 true
 
     @JsonManagedReference
     @OneToMany(mappedBy = "study",fetch = FetchType.LAZY)
@@ -118,6 +118,7 @@ public class Study extends BaseTimeEntity implements Serializable {
         this.likeCount = likeCount;
         this.createUid = createUid;
         this.likeStatus = likeStatus;
+
     }
 
     // 스터디 수정
@@ -134,7 +135,7 @@ public class Study extends BaseTimeEntity implements Serializable {
         this.studyGoal = studyRequestDto.getStudyGoal();
         this.status = studyRequestDto.getStatus();
         // this.joinStatus = studyRequestDto.getJoinStatus();
-        this.likeStatus = studyRequestDto.getLikeStatus();
+        //this.likeStatus = studyRequestDto.getLikeStatus();
         this.currentParticipants = studyRequestDto.getCurrentParticipants();
         this.studyId = studyId;
         this.createUid = uid;

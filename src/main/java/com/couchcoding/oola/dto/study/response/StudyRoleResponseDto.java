@@ -1,6 +1,7 @@
 package com.couchcoding.oola.dto.study.response;
 
 import com.couchcoding.oola.entity.Study;
+import com.couchcoding.oola.entity.StudyLike;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,8 +29,9 @@ public class StudyRoleResponseDto {
     private String status;
     private LocalDateTime endDate;
     private String role;
+    private Boolean likeStatus;
 
-    public StudyRoleResponseDto(Study study, String role) {
+    public StudyRoleResponseDto(Study study, String role , Boolean likeStatus) {
         this.studyId = study.getStudyId();
         this.studyType = study.getStudyType();
         this.studyName = study.getStudyName();
@@ -44,6 +46,7 @@ public class StudyRoleResponseDto {
         this.endDate = study.getEndDate();
         this.studyDays = study.getStudyDays();
         this.role = role;
+        this.likeStatus = likeStatus;
     }
 
 

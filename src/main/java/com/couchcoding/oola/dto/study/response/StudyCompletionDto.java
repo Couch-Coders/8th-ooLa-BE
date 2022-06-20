@@ -1,23 +1,12 @@
 package com.couchcoding.oola.dto.study.response;
 
 import com.couchcoding.oola.entity.Study;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
-@NoArgsConstructor
 @Getter
-public class StudyCreationDto {
-
+public class StudyCompletionDto {
     private Long studyId;
     private String studyType;
     private String studyName;
@@ -34,7 +23,7 @@ public class StudyCreationDto {
     private String createUid;
     private Boolean likeStatus;
 
-    public StudyCreationDto(Study study , Boolean likeStatus) {
+    public StudyCompletionDto(Study study, Boolean likeStatus) {
         this.studyId = study.getStudyId();
         this.studyType = study.getStudyType();
         this.studyName = study.getStudyName();

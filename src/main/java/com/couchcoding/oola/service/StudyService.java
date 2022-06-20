@@ -8,6 +8,7 @@ import com.couchcoding.oola.dto.study.response.StudyRoleResponseDto;
 import com.couchcoding.oola.entity.Member;
 import com.couchcoding.oola.entity.Study;
 
+import com.couchcoding.oola.entity.StudyLike;
 import com.couchcoding.oola.entity.StudyMember;
 import com.couchcoding.oola.repository.StudyMemberRepositoryCustom;
 import com.couchcoding.oola.repository.StudyRepository;
@@ -16,6 +17,8 @@ import com.couchcoding.oola.validation.MemberForbiddenException;
 
 import com.couchcoding.oola.validation.StudyNotFoundException;
 
+import com.couchcoding.oola.validation.error.CustomException;
+import com.couchcoding.oola.validation.error.ErrorCode;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
@@ -23,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,7 +55,7 @@ public class StudyService {
     public StudyRoleResponseDto studyDetail(Long studyId) {
         Study study = getStudy(studyId);
         // 비로그인 이므로 role은 general
-        StudyRoleResponseDto studyRoleResponseDto = new StudyRoleResponseDto(study, "general");
+        StudyRoleResponseDto studyRoleResponseDto = new StudyRoleResponseDto(study, "general" , false);
         log.info("비로그인 스터디 조회: {}", studyRoleResponseDto.toString());
         return studyRoleResponseDto;
     }
@@ -62,9 +66,31 @@ public class StudyService {
         Member member = (Member) memberService.loadUserByUsername(firebaseToken.getUid());
         log.info("uid: {}", member.getUid());
 
+    public StudyRoleResponseDto studyDetail(Long studyId, String header) {
+        FirebaseToken firebaseToken = firebaseAuth.verifyIdToken(header);
+        Member member = (Member) memberService.loadUserByUsername(firebaseToken.getUid());
+        log.info("uid: {}", member.getUid());
+
         Study study = getStudy(studyId);
 
         List<StudyMember> studyMembers = study.getStudyMembers();
+        StudyRoleResponseDto studyRoleResponseDto = null;
+
+
+        Study study = getStudy(studyId);
+        StudyLike studyLike = null;
+        List<StudyLike> studyLikes = study.getStudyLikes();
+        if (studyLikes.size() > 0) {
+            for (int i = 0; i < studyLikes.size(); i++) {
+                if (studyLikes.get(i).getMember().getUid().equals(member.getUid())) {
+                    studyLike = studyLikes.get(i);
+                }
+            }
+        }
+
+        List<StudyMember> studyMembers = studyMemberRepositoryCustom.findAllByStudyId(studyId);
+
+        String role = null;
         StudyRoleResponseDto studyRoleResponseDto = null;
         for (int i = 0; i < studyMembers.size(); i++) {
             if (studyMembers.get(i).getMember().getUid().equals(member.getUid()) && studyMembers.get(i).getStudy().getStudyId().equals(studyId)) {
@@ -72,9 +98,11 @@ public class StudyService {
                 String role = studyMembers.get(i).getRole();
                 studyRoleResponseDto = new StudyRoleResponseDto(studyMembers.get(i).getStudy() , role);
             } else {
+                studyRoleResponseDto = new StudyRoleResponseDto(study, "general");
                 studyRoleResponseDto = new StudyRoleResponseDto(studyMembers.get(i).getStudy() , "general");
             }
         }
+
         return studyRoleResponseDto;
     }
 
@@ -90,8 +118,16 @@ public class StudyService {
         Study study = null;
         // 스터디 생성자와 로그인 유저가 같은지 비교
         Study result = getStudy(studyId);
-        if (result.getCreateUid().equals(member.getUid())) {
-            Study updated = result.update(studyId, requestDto, member.getUid());
+        List<StudyMember> studyMembers = result.getStudyMembers();
+
+        Study updated = null;
+        for (StudyMember studyMember : studyMembers) {
+            if (studyMember.getMember().getUid().equals(member.getUid())) {
+                updated = result.update(studyId, requestDto, member.getUid());
+            }
+        }
+
+        if (updated != null) {
             study = studyRepository.save(updated);
         } else {
             throw new MemberForbiddenException();
