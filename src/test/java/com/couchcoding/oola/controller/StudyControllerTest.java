@@ -3,10 +3,9 @@ package com.couchcoding.oola.controller;
 import com.couchcoding.oola.dto.study.request.StudyRequestDto;
 
 import com.couchcoding.oola.dto.studyblogs.request.StudyBlogRequestDto;
-import com.couchcoding.oola.dto.studycomments.request.StudyCommentRequestDto;
-
+import com.couchcoding.oola.dto.studylikes.request.StudyHateRequestDto;
+import com.couchcoding.oola.dto.studylikes.request.StudyLikeRequestDto;
 import com.couchcoding.oola.validation.*;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -775,60 +774,42 @@ class StudyControllerTest {
     }
     
     @Test
-    @DisplayName("스터디 댓글 추가")
-    void 스터디_댓글_추가_테스트() throws Exception {
+    @DisplayName("관심스터디 등록")
+    void 관심_스터디_등록_테스트() throws Exception {
+        Long studyId = 18L;
 
-        Long studyId = 1L;
+        StudyLikeRequestDto studyLikeRequestDto = new StudyLikeRequestDto(studyId, true);
+        String json = objectMapper.writeValueAsString(studyLikeRequestDto);
 
-        StudyCommentRequestDto studyCommentRequestDto = new StudyCommentRequestDto("1번 스터디에 대한 두번째 댓글");
-        String studyBlogJson = objectMapper.writeValueAsString(studyCommentRequestDto);
 
         ResultActions resultActions = mockMvc.perform(
-                post("/studies/" + studyId + "/comments")
+                post("/studies/" + studyId + "/likes")
                         .header("Authorization", "Bearer " + uid)
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding(StandardCharsets.UTF_8)
-                        .content(studyBlogJson)
-
-        )  .andDo(print());
-        resultActions
-                .andExpect(status().isOk());
-    }
-    
-    @Test
-    @DisplayName("스터디 댓글 목록 조회")
-    void 스터디_댓글_목록_조회_테스트() throws Exception {
-
-        Long studyId = 1L;
-
-        ResultActions resultActions = mockMvc.perform(
-                get("/studies/" + studyId + "/comments")
-                        .header("Authorization", "Bearer " + uid)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .characterEncoding(StandardCharsets.UTF_8)
+                        .content(json)
                         .accept(MediaType.APPLICATION_JSON)
-        )
-                .andDo(print());
-        resultActions
-                .andExpect(status().isOk());
+        ).andDo(print());
+        resultActions.andExpect(status().isCreated());
     }
 
 
     @Test
-    @DisplayName("스터디 댓글 단건 조회")
-    void 스터디_댓글_단건_조회_테스트() throws Exception {
+    @DisplayName("관심스터디 해제")
+    void 관심_스터디_해제_테스트() throws Exception {
+        Long studyId = 18L;
+        Long id = 42L;
 
-        Long studyId = 1L;
-        Long commentId = 1L;
+        StudyHateRequestDto studyLikeRequestDto = new StudyHateRequestDto(id, studyId, true);
+        String json = objectMapper.writeValueAsString(studyLikeRequestDto);
         ResultActions resultActions = mockMvc.perform(
-                get("/studies/" + studyId + "/comments/" + commentId)
+                delete("/studies/" + studyId + "/hates")
                         .header("Authorization", "Bearer " + uid)
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding(StandardCharsets.UTF_8)
+                        .content(json)
                         .accept(MediaType.APPLICATION_JSON)
-        )
-                .andDo(print());
-        resultActions
-                .andExpect(status().isOk());
+        ).andDo(print());
+        resultActions.andExpect(status().isOk());
     }
 }

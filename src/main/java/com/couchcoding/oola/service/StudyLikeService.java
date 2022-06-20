@@ -33,10 +33,11 @@ public class StudyLikeService {
         Study study = studyService.getStudy(studyId);
         StudyLike studyLike = new StudyLike(member, study, studyLikeRequestDto.isLikeStatus());
 
-        // 해당 스터디가 이미 관심 등록된 스터디인 경우에 대한 예외처리
-       if (study.getStudyId() == studyLike.getStudy().getStudyId()) {
-            throw new StudyLikeException();
-       }
+        for (int i = 0; i < study.getStudyLikes().size(); i++) {
+            if (study.getStudyId() == study.getStudyLikes().get(i).getStudy().getStudyId() && member.getUid().equals(study.getStudyLikes().get(i).getMember().getUid())) {
+                throw new StudyLikeException();
+            }
+        }
 
         StudyLike entity = studyLikeRepository.save(studyLike);
         StudyLikeResponseDto studyLikeResponseDto = new StudyLikeResponseDto(entity.getId(),member.getUid(), study.getStudyId(), entity.getLikeStatus());
