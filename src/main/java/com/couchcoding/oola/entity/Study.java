@@ -97,28 +97,28 @@ public class Study extends BaseTimeEntity implements Serializable {
     private List<StudyBlog> studyBlogs = new ArrayList<>();
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "study", fetch = FetchType.LAZY)
-    private List<StudyLike> studyLikes = new ArrayList<>();
-
-    @JsonManagedReference
     @OneToMany(mappedBy = "study",fetch = FetchType.LAZY)
     private List<Comment> comments = new ArrayList<>();
 
-    public Study(StudyRequestDto studyRequestDto , Member member) {
-        this.studyType = studyRequestDto.getStudyType();
-        this.studyName = studyRequestDto.getStudyName();
-        this.studyDays = studyRequestDto.getStudyDays();
-        this.timeZone = studyRequestDto.getTimeZone();
-        this.participants = studyRequestDto.getParticipants();
-        this.currentParticipants = 1;
-        this.startDate = studyRequestDto.getStartDate();
-        this.openChatUrl = studyRequestDto.getOpenChatUrl();
-        this.studyIntroduce = studyRequestDto.getStudyIntroduce();
-        this.studyGoal = studyRequestDto.getStudyGoal();
-        this.status = "진행";
-        this.endDate = studyRequestDto.getEndDate();
-        this.createUid = member.getUid();
-       // this.likeStatus = studyRequestDto.getLikeStatus();
+    @Builder
+    public Study(Long studyId, @NotBlank(message = "studyType은 필수 값입니다") String studyType, @NotBlank(message = "studyName은 필수 값입니다") String studyName, @NotBlank(message = "studydays는 필수 값입니다") String studyDays, @NotBlank(message = "timeZone은 필수 값입니다") String timeZone, @NotNull(message = "participants은 필수 값입니다") int participants, int currentParticipants, @NotNull(message = "startDate은 필수 값입니다") LocalDateTime startDate, @NotBlank(message = "openChatUrl은 필수 값입니다") String openChatUrl, @NotBlank(message = "studyIntroduce은 필수 값입니다") String studyIntroduce, @NotBlank(message = "studyGoal은 필수 값입니다") String studyGoal, String status, String joinStatus, @NotNull(message = "openChatUrl은 필수 값입니다") LocalDateTime endDate, Long likeCount, String createUid, Boolean likeStatus) {
+        this.studyId = studyId;
+        this.studyType = studyType;
+        this.studyName = studyName;
+        this.studyDays = studyDays;
+        this.timeZone = timeZone;
+        this.participants = participants;
+        this.currentParticipants = currentParticipants;
+        this.startDate = startDate;
+        this.openChatUrl = openChatUrl;
+        this.studyIntroduce = studyIntroduce;
+        this.studyGoal = studyGoal;
+        this.status = status;
+        this.endDate = endDate;
+        this.likeCount = likeCount;
+        this.createUid = createUid;
+        this.likeStatus = likeStatus;
+
     }
 
     // 스터디 수정
