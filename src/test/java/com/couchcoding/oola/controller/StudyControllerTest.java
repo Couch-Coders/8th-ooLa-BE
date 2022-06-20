@@ -48,7 +48,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 class StudyControllerTest {
 
-    private static final String uid = "aaabbcc";
+    private static final String uid = "asdfasdf";
     private static final String studyType = "백엔드";
     private static String studyName = "React 끝장내기";
     private static String studyDays = "주말";
@@ -778,8 +778,7 @@ class StudyControllerTest {
     @Test
     @DisplayName("관심스터디 등록")
     void 관심_스터디_등록_테스트() throws Exception {
-        String uid = "bTQBTghNwaY5EtAJQLJknVqk2If2";
-        Long studyId = 1L;
+        Long studyId = 18L;
 
         StudyLikeRequestDto studyLikeRequestDto = new StudyLikeRequestDto(studyId, true);
         String json = objectMapper.writeValueAsString(studyLikeRequestDto);
@@ -800,9 +799,8 @@ class StudyControllerTest {
     @Test
     @DisplayName("관심스터디 해제")
     void 관심_스터디_해제_테스트() throws Exception {
-        String uid = "bTQBTghNwaY5EtAJQLJknVqk2If2";
-        Long studyId = 1L;
-        Long id = 3L;
+        Long studyId = 18L;
+        Long id = 42L;
 
         StudyHateRequestDto studyLikeRequestDto = new StudyHateRequestDto(id, studyId, true);
         String json = objectMapper.writeValueAsString(studyLikeRequestDto);
