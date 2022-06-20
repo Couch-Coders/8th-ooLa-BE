@@ -167,7 +167,7 @@ public class StudyController {
 
     // 스터디에 대한 관심등록 누르기
     @PostMapping("/{studyId}/likes")
-    public ResponseEntity<StudyLikeResponseDto> likeMyStudy(Authentication authentication , @PathVariable Long studyId , @RequestBody StudyLikeRequestDto studyLikeRequestDto) {
+    public ResponseEntity<StudyLikeResponseDto> likeMyStudy(Authentication authentication ,@RequestBody StudyLikeRequestDto studyLikeRequestDto, @PathVariable Long studyId) {
         Member member = (Member) authentication.getPrincipal();
         StudyLikeResponseDto studyLikeResponseDto = studyLikeService.LikeMyStudy(member, studyId , studyLikeRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(studyLikeResponseDto);
