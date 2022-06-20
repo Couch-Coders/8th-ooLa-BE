@@ -81,13 +81,10 @@ public class StudyMemberService {
             study = studyMember.getStudy();
             if (study.getStudyLikes().size() > 0) {
                 studyLike = study.getStudyLikes().get(i);
-                if (studyLike == null) {
-                    studyCreationDto = new StudyCreationDto(study, false);
-                }
             }
 
             if (studyLike == null) {
-                studyCreationDto = new StudyCreationDto(study , null);
+                studyCreationDto = new StudyCreationDto(study , false);
             } else {
                 studyCreationDto = new StudyCreationDto(study , studyLike.getLikeStatus());
             }
@@ -111,13 +108,10 @@ public class StudyMemberService {
             Study study = studyMember.getStudy();
             if (study.getStudyLikes().size() > 0) {
                 studyLike = study.getStudyLikes().get(i);
-                if (studyLike == null) {
-                    studyProgressDto = new StudyProgressDto(study, false);
-                }
             }
 
             if (studyLike == null) {
-                studyProgressDto = new StudyProgressDto(study, null);
+                studyProgressDto = new StudyProgressDto(study, false);
             } else {
                 studyProgressDto = new StudyProgressDto(study, studyLike.getLikeStatus());
             }
@@ -143,13 +137,10 @@ public class StudyMemberService {
             Study study = studyMember.getStudy();
             if (study.getStudyLikes().size() > 0) {
                 studyLike = study.getStudyLikes().get(i);
-                if (studyLike == null) {
-                    studyCompletionDto = new StudyCompletionDto(study, false);
-                }
             }
 
             if (studyLike == null) {
-                studyCompletionDto = new StudyCompletionDto(study, null);
+                studyCompletionDto = new StudyCompletionDto(study, false);
             } else {
                 studyCompletionDto = new StudyCompletionDto(study, studyLike.getLikeStatus());
             }
