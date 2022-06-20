@@ -33,7 +33,7 @@ public class StudyLikeService {
         Study study = studyService.getStudy(studyId);
         StudyLike studyLike = new StudyLike(member, study, studyLikeRequestDto.isLikeStatus());
 
-        // 해당 스터디가 관심 등록되었는지 에 대한 예외처리
+        // 해당 스터디가 이미 관심 등록된 스터디인 경우에 대한 예외처리
        if (study.getStudyId() == studyLike.getStudy().getStudyId()) {
             throw new StudyLikeException();
        }
