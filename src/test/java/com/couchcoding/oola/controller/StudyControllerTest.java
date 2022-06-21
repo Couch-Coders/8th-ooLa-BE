@@ -3,6 +3,7 @@ package com.couchcoding.oola.controller;
 import com.couchcoding.oola.dto.study.request.StudyRequestDto;
 
 import com.couchcoding.oola.dto.studyblogs.request.StudyBlogRequestDto;
+import com.couchcoding.oola.dto.studycomments.request.StudyCommentRequestDto;
 import com.couchcoding.oola.dto.studylikes.request.StudyHateRequestDto;
 import com.couchcoding.oola.dto.studylikes.request.StudyLikeRequestDto;
 import com.couchcoding.oola.validation.*;
@@ -825,5 +826,98 @@ class StudyControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
         ).andDo(print());
         resultActions.andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("스터디 댓글 추가")
+    void 스터디_댓글_추가_테스트() throws Exception {
+
+        Long studyId = 1L;
+
+        StudyCommentRequestDto studyCommentRequestDto = new StudyCommentRequestDto("1번 스터디에 대한 두번째 댓글");
+        String studyBlogJson = objectMapper.writeValueAsString(studyCommentRequestDto);
+
+        ResultActions resultActions = mockMvc.perform(
+                post("/studies/" + studyId + "/comments")
+                        .header("Authorization", "Bearer " + "2oMPU4uFZwUWCvc7vuHM37JFlMk1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding(StandardCharsets.UTF_8)
+                        .content(studyBlogJson)
+                        .accept(MediaType.APPLICATION_JSON)
+        ).andDo(print());
+        resultActions.andExpect(status().isCreated());
+    }
+
+
+    @Test
+    @DisplayName("스터디 댓글 목록 조회")
+    void 스터디_댓글_목록_조회_테스트() throws Exception {
+
+        Long studyId = 1L;
+
+        ResultActions resultActions = mockMvc.perform(
+                get("/studies/" + studyId + "/comments")
+                        //.header("Authorization", "Bearer " + uid)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding(StandardCharsets.UTF_8)
+                        .accept(MediaType.APPLICATION_JSON)
+        )
+                .andDo(print());
+        resultActions
+                .andExpect(status().isOk());
+    }
+
+
+    @Test
+    @DisplayName("스터디 댓글 단건 조회")
+    void 스터디_댓글_단건_조회_테스트() throws Exception {
+
+        Long studyId = 1L;
+        Long commentId = 1L;
+        ResultActions resultActions = mockMvc.perform(
+                get("/studies/" + studyId + "/comments/" + commentId)
+                        .header("Authorization", "Bearer " + uid)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding(StandardCharsets.UTF_8)
+                        .accept(MediaType.APPLICATION_JSON)
+        )
+                .andDo(print());
+        resultActions
+                .andExpect(status().isOk());
+    }
+
+
+    @Test
+    @DisplayName("스터디 댓글 수정 테스트")
+    void 스터디_댓글_수정_테스트() throws Exception {
+
+        Long studyId = 1L;
+        Long commentId = 1L;
+        ResultActions resultActions = mockMvc.perform(
+                patch("/studies/" + studyId + "/comments/" + commentId)
+                        .header("Authorization", "Bearer " + uid)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding(StandardCharsets.UTF_8)
+                        .accept(MediaType.APPLICATION_JSON)
+        )
+                .andDo(print());
+        resultActions
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("스터디 댓글 삭제 테스트")
+    void 스터디_댓글_삭제_테스트() throws Exception {
+        Long commentId = 1L;
+        ResultActions resultActions = mockMvc.perform(
+                delete("/studies/comments/" + commentId)
+                        .header("Authorization", "Bearer " + uid)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding(StandardCharsets.UTF_8)
+                        .accept(MediaType.APPLICATION_JSON)
+        )
+                .andDo(print());
+        resultActions
+                .andExpect(status().isOk());
     }
 }

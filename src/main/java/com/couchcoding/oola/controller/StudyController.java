@@ -192,4 +192,34 @@ public class StudyController {
         studyLikeService.deleteMyStudy(member, studyId , studyHateRequestDto);
         return  ResponseEntity.status(HttpStatus.OK).body("관심등록 해제 완료");
     }
+
+    // 스터디에 대한 댓글 추가
+    @PostMapping("/{studyId}/comments")
+    public ResponseEntity<Comment> createComment(Authentication authentication , @RequestBody StudyCommentRequestDto studyCommentRequestDto, @PathVariable Long studyId) {
+        Member member = (Member) authentication.getPrincipal();
+        Comment comment = studyCommentService.createComment(member, studyCommentRequestDto, studyId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(comment);
+    }
+
+    // 스터디에 달린 댓글 목록 조회
+    @GetMapping("/{studyId}/comments")
+    public ResponseEntity<StudyCommentsResponseDto> getCommentList(@PathVariable Long studyId) {
+        StudyCommentsResponseDto studyCommentsResponseDto = studyCommentService.getCommentList(studyId);
+        return ResponseEntity.status(HttpStatus.OK).body(studyCommentsResponseDto);
+    }
+
+    // 스터디에 달린 댓글 수정
+    @PatchMapping("/{studyId}/comments/{commentId}")
+    public ResponseEntity<CommentResponseDto> updateComment(Authentication authentication, @RequestBody CommentRequestDto commentRequestDto, @PathVariable Long studyId, @PathVariable Long commentId) {
+        Member member = (Member) authentication.getPrincipal();
+        CommentResponseDto commentResponseDto = studyCommentService.updateComment(commentRequestDto, member, studyId, commentId);
+        return ResponseEntity.status(HttpStatus.OK).body(commentResponseDto);
+    }
+
+    // 스터디에 달린 댓글 삭제
+    @DeleteMapping("/comments/{commentId}")
+    public ResponseEntity deleteComment(Authentication authentication,  @PathVariable Long commentId) {
+        studyCommentService.deleteComment((Member) authentication.getPrincipal(), commentId);
+        return ResponseEntity.status(HttpStatus.OK).body("댓글 삭제 완료");
+    }
 }

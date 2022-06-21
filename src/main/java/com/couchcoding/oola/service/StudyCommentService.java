@@ -58,7 +58,7 @@ public class StudyCommentService {
         });
 
         Comment entity = null;
-        if (comment.getMember() == member) {
+        if (comment.getMember().getUid().equals(member.getUid())) {
             Comment update = new Comment(commentRequestDto , member , study);
             entity  = studyCommentRepository.save(update);
         } else {
