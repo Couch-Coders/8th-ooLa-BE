@@ -61,16 +61,16 @@ public class StudyService {
     }
 
     // 로그인
-    public StudyRoleResponseDto studyDetail(Long studyId, Member member) {
+    public StudyRoleResponseDto studyDetail(Long studyId, String header) {
 
-//        Member member = null;
-//        try {
-//            FirebaseToken firebaseToken = firebaseAuth.verifyIdToken(header);
-//            member = (Member) memberService.loadUserByUsername(firebaseToken.getUid());
-//            log.info("로그인 후 스터디 조회시 로그인된 사용자 정보: {}", member);
-//        } catch (UsernameNotFoundException | FirebaseAuthException | IllegalArgumentException e) {
-//            throw new CustomException(ErrorCode.MemberNotFound);
-//        }
+        Member member = null;
+        try {
+            FirebaseToken firebaseToken = firebaseAuth.verifyIdToken(header);
+            member = (Member) memberService.loadUserByUsername(firebaseToken.getUid());
+            log.info("로그인 후 스터디 조회시 로그인된 사용자 정보: {}", member);
+        } catch (UsernameNotFoundException | FirebaseAuthException | IllegalArgumentException e) {
+            throw new CustomException(ErrorCode.MemberNotFound);
+        }
 
         Study study = getStudy(studyId);
         StudyLike studyLike = null;
