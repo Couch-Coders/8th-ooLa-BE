@@ -87,7 +87,14 @@ public class StudyController {
     @GetMapping("/{studyId}")
     public ResponseEntity<StudyRoleResponseDto> studyDetail( @PathVariable @Valid Long studyId, HttpServletRequest request)  {
         StudyRoleResponseDto studyRoleResponseDto = null;
-        String header = RequestUtil.getAuthorizationToken(request);
+
+        String header = null;
+        try {
+            header = RequestUtil.getAuthorizationToken(request);
+        } catch (CustomException e) {
+            studyRoleResponseDto = studyService.studyDetail(studyId, header);
+        }
+
         if (header != null) {
             studyRoleResponseDto = studyService.studyDetail(studyId, header);
         } else {

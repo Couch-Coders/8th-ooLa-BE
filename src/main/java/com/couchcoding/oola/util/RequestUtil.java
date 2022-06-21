@@ -12,7 +12,7 @@ public class RequestUtil {
         log.info("header: {}", header);
         // Authorization: Bearer <access_token>
         if (header == null || !header.startsWith("Bearer ")) {
-            throw new IllegalArgumentException("Invalid authorization header");
+            throw new CustomException(ErrorCode.InvalidAuthorization);
         }
         // Remove Bearer from string
         String[] parts = header.split(" ");
