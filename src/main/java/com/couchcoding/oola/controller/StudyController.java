@@ -181,12 +181,4 @@ public class StudyController {
         studyLikeService.deleteMyStudy(member, studyId , studyHateRequestDto);
         return  ResponseEntity.status(HttpStatus.OK).body("관심등록 해제 완료");
     }
-
-    // 관심스터디 목로 조회
-    @GetMapping("/likes")
-    public List<StudyLikeStatus> getMyStudyLikes(Authentication authentication) {
-        Member member = (Member) authentication.getPrincipal();
-        List<StudyLikeStatus> studyLikeStatuses = studyLikeService.getMyStudysLikes(member);
-        return studyLikeStatuses;
-    }
 }
