@@ -92,7 +92,7 @@ public class StudyController {
         try {
             header = RequestUtil.getAuthorizationToken(request);
         } catch (CustomException e) {
-            studyRoleResponseDto = studyService.studyDetail(studyId, header);
+            studyRoleResponseDto = studyService.studyDetail(studyId);
         }
 
         if (header != null) {
