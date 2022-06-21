@@ -85,11 +85,12 @@ public class StudyController {
 
     // 스터디 단일 조회
     @GetMapping("/{studyId}")
-    public ResponseEntity<StudyRoleResponseDto> studyDetail( @PathVariable @Valid Long studyId, HttpServletRequest request)  {
+    public ResponseEntity<StudyRoleResponseDto> studyDetail(Authentication authentication, @PathVariable @Valid Long studyId)  {
         StudyRoleResponseDto studyRoleResponseDto = null;
-        String header = RequestUtil.getAuthorizationToken(request);
-        if (header != null) {
-            studyRoleResponseDto = studyService.studyDetail(studyId, header);
+//        String header = RequestUtil.getAuthorizationToken(request);
+        Member member = (Member)authentication.getPrincipal();
+        if (member != null) {
+            studyRoleResponseDto = studyService.studyDetail(studyId, member);
         } else {
             studyRoleResponseDto = studyService.studyDetail(studyId);
         }
