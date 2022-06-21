@@ -47,7 +47,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 class StudyControllerTest {
 
-    private static final String uid = "asdfasdf";
+    private static final String uid = "2oMPU4uFZwUWCvc7vuHM37JFlMk1";
     private static final String studyType = "백엔드";
     private static String studyName = "React 끝장내기";
     private static String studyDays = "주말";
@@ -833,5 +833,19 @@ class StudyControllerTest {
                 .andDo(print());
         resultActions
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("관심스터디 목록조회")
+    void 관심_스터디_목록조회_테스트() throws Exception {
+
+        ResultActions resultActions = mockMvc.perform(
+                get("/mystudies/likes")
+                        .header("Authorization", "Bearer " + uid)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding(StandardCharsets.UTF_8)
+                        .accept(MediaType.APPLICATION_JSON)
+        ).andDo(print());
+        resultActions.andExpect(status().isOk());
     }
 }
