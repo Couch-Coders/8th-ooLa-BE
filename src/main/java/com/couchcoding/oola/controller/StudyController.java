@@ -96,7 +96,7 @@ public class StudyController {
 
     // 스터디 단일 조회
     @GetMapping("/{studyId}")
-    public ResponseEntity<StudyRoleResponseDto> studyDetail( @PathVariable @Valid Long studyId, HttpServletRequest request) throws FirebaseAuthException {
+    public ResponseEntity<StudyRoleResponseDto> studyDetail( @PathVariable @Valid Long studyId, HttpServletRequest request)  {
         StudyRoleResponseDto studyRoleResponseDto = null;
         String header = RequestUtil.getAuthorizationToken(request);
         if (header != null) {
@@ -183,53 +183,13 @@ public class StudyController {
         StudyLikeResponseDto studyLikeResponseDto = studyLikeService.LikeMyStudy(member, studyId , studyLikeRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(studyLikeResponseDto);
     }
-
-
+    
+    
     // 스터디에 대한 관심등록 해제
     @DeleteMapping("/{studyId}/hates")
     public ResponseEntity hateMyStudy(Authentication authentication, @PathVariable Long studyId, @RequestBody StudyHateRequestDto studyHateRequestDto) {
         Member member = (Member) authentication.getPrincipal();
         studyLikeService.deleteMyStudy(member, studyId , studyHateRequestDto);
         return  ResponseEntity.status(HttpStatus.OK).body("관심등록 해제 완료");
-    }
-
-    // 관심스터디 목로 조회
-    @GetMapping("/likes")
-    public List<StudyLikeStatus> getMyStudyLikes(Authentication authentication) {
-        Member member = (Member) authentication.getPrincipal();
-        List<StudyLikeStatus> studyLikeStatuses = studyLikeService.getMyStudysLikes(member);
-        return studyLikeStatuses;
-    }
-
-
-
-    // 스터디에 대한 댓글 추가
-    @PostMapping("/{studyId}/comments")
-    public ResponseEntity<Comment> createComment(Authentication authentication , @RequestBody StudyCommentRequestDto studyCommentRequestDto, @PathVariable Long studyId) {
-        Member member = (Member) authentication.getPrincipal();
-        Comment comment = studyCommentService.createComment(member, studyCommentRequestDto, studyId);
-        return ResponseEntity.status(HttpStatus.CREATED).body(comment);
-    }
-
-    // 스터디에 달린 댓글 목록 조회
-    @GetMapping("/{studyId}/comments")
-    public ResponseEntity<StudyCommentsResponseDto> getCommentList(@PathVariable Long studyId) {
-        StudyCommentsResponseDto studyCommentsResponseDto = studyCommentService.getCommentList(studyId);
-        return ResponseEntity.status(HttpStatus.OK).body(studyCommentsResponseDto);
-    }
-
-    // 스터디에 달린 댓글 수정
-    @PatchMapping("/{studyId}/comments/{commentId}")
-    public ResponseEntity<CommentResponseDto> updateComment(Authentication authentication, @RequestBody CommentRequestDto commentRequestDto, @PathVariable Long studyId, @PathVariable Long commentId) {
-        Member member = (Member) authentication.getPrincipal();
-        CommentResponseDto commentResponseDto = studyCommentService.updateComment(commentRequestDto, member, studyId, commentId);
-        return ResponseEntity.status(HttpStatus.OK).body(commentResponseDto);
-    }
-
-    // 스터디에 달린 댓글 삭제
-    @DeleteMapping("/comments/{commentId}")
-    public ResponseEntity deleteComment(Authentication authentication,  @PathVariable Long commentId) {
-        studyCommentService.deleteComment((Member) authentication.getPrincipal(), commentId);
-        return ResponseEntity.status(HttpStatus.OK).body("댓글 삭제 완료");
     }
 }

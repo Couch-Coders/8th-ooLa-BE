@@ -3,9 +3,11 @@ package com.couchcoding.oola.controller;
 import com.couchcoding.oola.dto.study.response.StudyCompletionDto;
 import com.couchcoding.oola.dto.study.response.StudyCreationDto;
 import com.couchcoding.oola.dto.study.response.StudyProgressDto;
+import com.couchcoding.oola.dto.studylikes.response.StudyLikeStatus;
 import com.couchcoding.oola.entity.Member;
 import com.couchcoding.oola.entity.Study;
 import com.couchcoding.oola.entity.StudyMember;
+import com.couchcoding.oola.service.StudyLikeService;
 import com.couchcoding.oola.service.StudyMemberService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,6 +29,7 @@ import java.util.List;
 public class MyStudyController {
 
     private final StudyMemberService studyMemberService;
+    private final StudyLikeService studyLikeService;
 
     @GetMapping("/creation")
     public ResponseEntity<List<StudyCreationDto>> mystudies(Authentication authentication) {
@@ -49,5 +52,13 @@ public class MyStudyController {
         Member member = (Member) authentication.getPrincipal();
         List<StudyCompletionDto> studyCompletionDtos  = studyMemberService.myStudiesCompletion(member);
         return ResponseEntity.status(HttpStatus.OK).body(studyCompletionDtos);
+    }
+
+    // 관심스터디 목로 조회
+    @GetMapping("/likes")
+    public List<StudyLikeStatus> getMyStudyLikes(Authentication authentication) {
+        Member member = (Member) authentication.getPrincipal();
+        List<StudyLikeStatus> studyLikeStatuses = studyLikeService.getMyStudysLikes(member);
+        return studyLikeStatuses;
     }
 }
