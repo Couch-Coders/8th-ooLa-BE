@@ -48,7 +48,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 class StudyControllerTest {
 
-    private static final String uid = "2oMPU4uFZwUWCvc7vuHM37JFlMk1";
+    private static final String uid = "bTQBTghNwaY5EtAJQLJknVqk2If2";
     private static final String studyType = "백엔드";
     private static String studyName = "React 끝장내기";
     private static String studyDays = "주말";
