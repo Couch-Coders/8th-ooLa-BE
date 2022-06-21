@@ -183,8 +183,8 @@ public class StudyController {
         StudyLikeResponseDto studyLikeResponseDto = studyLikeService.LikeMyStudy(member, studyId , studyLikeRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(studyLikeResponseDto);
     }
-    
-    
+
+
     // 스터디에 대한 관심등록 해제
     @DeleteMapping("/{studyId}/hates")
     public ResponseEntity hateMyStudy(Authentication authentication, @PathVariable Long studyId, @RequestBody StudyHateRequestDto studyHateRequestDto) {
