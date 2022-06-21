@@ -8,27 +8,22 @@ import javax.servlet.http.HttpServletRequest;
 
 @Slf4j
 public class RequestUtil {
-    // 헤더값 검증
     public static String getAuthorizationToken(String header) {
         header.replace("Bearer ", "");
-        //헤더값에 Authorization 값이 없거나 유효하지 않은 경우
-        if(header == null || !header.startsWith("Bearer ")) {
-            throw new CustomException(ErrorCode.InvalidAuthorization);
+        // Authorization: Bearer <access_token>
+        if (header == null || !header.startsWith("Bearer ")) {
+            throw new IllegalArgumentException("Invalid authorization header");
         }
-
-        // parts[0] : bearer, parts[1] : token
+        // Remove Bearer from string
         String[] parts = header.split(" ");
-        if(parts.length != 2) {
-            throw new CustomException(ErrorCode.InvalidAuthorization);
+        if (parts.length != 2) {
+            throw new IllegalArgumentException("Invalid authorization header");
         }
-
-        //Token return
+        // Get token
         return parts[1];
     }
 
     public static String getAuthorizationToken(HttpServletRequest request) {
-        String authorization = request.getHeader("Authorization");
-        if (authorization == null || authorization == "") return null;
-        return getAuthorizationToken(authorization);
+        return getAuthorizationToken(request.getHeader("Authorization"));
     }
 }
