@@ -98,7 +98,14 @@ public class StudyController {
     @GetMapping("/{studyId}")
     public ResponseEntity<StudyRoleResponseDto> studyDetail( @PathVariable @Valid Long studyId, HttpServletRequest request)  {
         StudyRoleResponseDto studyRoleResponseDto = null;
-        String header = RequestUtil.getAuthorizationToken(request);
+
+        String header = null;
+        try {
+            header = RequestUtil.getAuthorizationToken(request);
+        } catch (CustomException e) {
+            studyRoleResponseDto = studyService.studyDetail(studyId);
+        }
+
         if (header != null) {
             studyRoleResponseDto = studyService.studyDetail(studyId, header);
         } else {
@@ -109,9 +116,10 @@ public class StudyController {
 
     // 스터디 필터링 (조건검색)
     @GetMapping("")
-    public Page<Study> studySearch(Pageable pageable, @RequestParam(value = "studyType", required = false ) String studyType,
+    public Page<Study> studySearch(Authentication authentication, Pageable pageable, @RequestParam(value = "studyType", required = false ) String studyType,
                                    @RequestParam( value = "studyDays", required = false)  String studyDays, @RequestParam(value = "timeZone", required = false) String timeZone
             , @RequestParam(value = "status",required = false)  String status, @RequestParam(value = "studyName", required = false) String studyName) {
+
         Page<Study> searchResult = studyService.findByAllCategory(pageable, studyType, studyDays, timeZone, status , studyName);
         if (searchResult.equals(null)) {
             throw new StudySearchNotFoundException();

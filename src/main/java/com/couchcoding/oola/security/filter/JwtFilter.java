@@ -41,10 +41,8 @@ public class JwtFilter extends OncePerRequestFilter{
         FirebaseToken decodedToken;
         try{
             String header = RequestUtil.getAuthorizationToken(request.getHeader("Authorization"));
-            log.debug("헤더 로그: {}" , header );
             decodedToken = firebaseAuth.verifyIdToken(header);//디코딩한 firebase 토큰을 반환
         } catch (FirebaseAuthException | IllegalArgumentException | CustomException e) {
-            log.debug("403 에러: {}" , e.getMessage());
             // ErrorMessage 응답 전송
             response.setStatus(HttpStatus.SC_UNAUTHORIZED);
             response.setContentType("application/json");
@@ -55,11 +53,10 @@ public class JwtFilter extends OncePerRequestFilter{
         // User를 가져와 SecurityContext에 저장한다.
         try{
             UserDetails user = memberService.loadUserByUsername(decodedToken.getUid());//uid 를 통해 회원 엔티티 조회
-            log.info("user: {}", user);
-            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());//인증 객체 생성
+            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                    user, null, user.getAuthorities());//인증 객체 생성
             SecurityContextHolder.getContext().setAuthentication(authentication);//securityContextHolder 에 인증 객체 저장
         } catch(UsernameNotFoundException e){
-            log.info("404 에러: {}" , e.getMessage());
             // ErrorMessage 응답 전송
             response.setStatus(HttpStatus.SC_NOT_FOUND);
             response.setContentType("application/json");
