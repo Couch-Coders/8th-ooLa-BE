@@ -85,8 +85,8 @@ public class Study extends BaseTimeEntity implements Serializable {
     @Column(name = "create_uid")
     private String createUid;
 
-//    @Column(name = "like_status")
-//    private Boolean likeStatus; // 한명이라도 스터디 관심을 눌렀다면 true
+    @Column(name = "like_status")
+    private Boolean likeStatus; // 로그아웃시에는 false로 처리하여 하트다 안보이도록
 
     @JsonManagedReference
     @OneToMany(mappedBy = "study",fetch = FetchType.LAZY)
