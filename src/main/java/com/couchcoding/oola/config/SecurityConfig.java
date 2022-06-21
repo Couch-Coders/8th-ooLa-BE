@@ -45,7 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         web.ignoring()
                 .antMatchers(HttpMethod.POST, "/members")
-                .antMatchers(HttpMethod.GET, "/studies/**")
+                //.antMatchers(HttpMethod.GET, "/studies/**")
                 .antMatchers("/")
                 .antMatchers("/css/**")
                 .antMatchers("/static/**")
