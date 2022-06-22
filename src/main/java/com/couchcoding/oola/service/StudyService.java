@@ -156,7 +156,7 @@ public class StudyService {
         String uid = null;
         for (StudyMember studyMember : studyMembers) {
             if (studyMember.getRole().equals("leader"))  {
-               uid =  studyMember.getMember().getUid();
+                uid =  studyMember.getMember().getUid();
             }
         }
         if (uid.equals(member.getUid())) {

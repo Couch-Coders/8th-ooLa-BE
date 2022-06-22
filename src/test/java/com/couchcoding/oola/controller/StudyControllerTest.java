@@ -3,6 +3,7 @@ package com.couchcoding.oola.controller;
 import com.couchcoding.oola.dto.study.request.StudyRequestDto;
 
 import com.couchcoding.oola.dto.studyblogs.request.StudyBlogRequestDto;
+import com.couchcoding.oola.dto.studycomments.request.StudyCommentRequestDto;
 import com.couchcoding.oola.dto.studylikes.request.StudyHateRequestDto;
 import com.couchcoding.oola.dto.studylikes.request.StudyLikeRequestDto;
 import com.couchcoding.oola.validation.*;
@@ -30,21 +31,19 @@ import org.springframework.web.context.WebApplicationContext;
 import javax.servlet.Filter;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@ActiveProfiles("local")
 @ExtendWith(SpringExtension.class)
 @WebAppConfiguration
 @AutoConfigureMockMvc
-@ActiveProfiles("local")
 @SpringBootTest
 class StudyControllerTest {
 
@@ -127,11 +126,11 @@ class StudyControllerTest {
     @Test
     @DisplayName("스터디 단건 조회 테스트")
     void selectStudy() throws Exception {
-        String token = "eyJhbGciOiJSUzI1NiIsImtpZCI6ImY5MGZiMWFlMDQ4YTU0OGZiNjgxYWQ2MDkyYjBiODY5ZWE0NjdhYzYiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiTWltaSBMZWUiLCJwaWN0dXJlIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EtL0FPaDE0R2hqb1hNalRjVXMtVnpJa3ItMGk4bTZiOTFFeGJpX0M2NjhnUjZrPXM5Ni1jIiwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL29vbGEtb2F1dGgiLCJhdWQiOiJvb2xhLW9hdXRoIiwiYXV0aF90aW1lIjoxNjU1NjEwNzExLCJ1c2VyX2lkIjoiMm9NUFU0dUZad1VXQ3ZjN3Z1SE0zN0pGbE1rMSIsInN1YiI6IjJvTVBVNHVGWndVV0N2Yzd2dUhNMzdKRmxNazEiLCJpYXQiOjE2NTU2MTA3MTEsImV4cCI6MTY1NTYxNDMxMSwiZW1haWwiOiJpdnZ2eS5lQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7Imdvb2dsZS5jb20iOlsiMTE3NTAxMDQ1MjkyOTczNjI3MzA1Il0sImVtYWlsIjpbIml2dnZ5LmVAZ21haWwuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoiZ29vZ2xlLmNvbSJ9fQ.iPXv4tsXDFWigI-adwEtvVl0TWyOmQiXeJrvB-1BNC9xjXtuoU2DfjUAJefHeXPE3lI-2XmyLJb-iPPSCRq3giryFA5BCnu_4fFdWEdaJke2I77xVaNSvJeTLEAPdLM2HR2cTP7cLayERe3-qWMRJmUmh9mkZwQ2UGRKlekfgX-MkbQ4NhtB-T-7kwONwAKZSrZmfK7GVH2UOeExS8y5XIKjINEdsiUG-TcFjRBi358Yw7q7oGpFCiMGtuAm90h3-LIRguiW9vPACN5uJ-LD56UCgkYdJQiAEc9uqlsSvy2n_qGkJt7uQsQ0Tkhgm24OXxvBX_cXxkUefWr4Avc6WA";
-        int studyId = 66;
+        int studyId = 10;
         ResultActions resultActions = mockMvc.perform(
                 get("/studies/" + studyId)
-                       // .header("Authorization", "Bearer " + token)
+                        .header("Authorization", "Bearer " + uid)
+
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding(StandardCharsets.UTF_8)
                         .accept(MediaType.APPLICATION_JSON)
@@ -628,7 +627,7 @@ class StudyControllerTest {
 
         ResultActions resultActions = mockMvc.perform(
                 get("/studies/" + studyId + "/members")
-                        .header("Authorization", "Bearer " + "2oMPU4uFZwUWCvc7vuHM37JFlMk1")
+                        .header("Authorization", "Bearer " + uid)
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding(StandardCharsets.UTF_8)
                         .accept(MediaType.APPLICATION_JSON)
@@ -800,7 +799,7 @@ class StudyControllerTest {
     @DisplayName("관심스터디 해제")
     void 관심_스터디_해제_테스트() throws Exception {
         Long studyId = 61L;
-        Long id = 76L;
+        Long id = 75L;
 
         StudyHateRequestDto studyLikeRequestDto = new StudyHateRequestDto(id, studyId, true);
         String json = objectMapper.writeValueAsString(studyLikeRequestDto);
@@ -827,5 +826,98 @@ class StudyControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
         ).andDo(print());
         resultActions.andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("스터디 댓글 추가")
+    void 스터디_댓글_추가_테스트() throws Exception {
+
+        Long studyId = 1L;
+
+        StudyCommentRequestDto studyCommentRequestDto = new StudyCommentRequestDto("1번 스터디에 대한 두번째 댓글");
+        String studyBlogJson = objectMapper.writeValueAsString(studyCommentRequestDto);
+
+        ResultActions resultActions = mockMvc.perform(
+                post("/studies/" + studyId + "/comments")
+                        .header("Authorization", "Bearer " + uid)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding(StandardCharsets.UTF_8)
+                        .content(studyBlogJson)
+                        .accept(MediaType.APPLICATION_JSON)
+        ).andDo(print());
+        resultActions.andExpect(status().isCreated());
+    }
+
+
+    @Test
+    @DisplayName("스터디 댓글 목록 조회")
+    void 스터디_댓글_목록_조회_테스트() throws Exception {
+
+        Long studyId = 1L;
+
+        ResultActions resultActions = mockMvc.perform(
+                get("/studies/" + studyId + "/comments")
+                        .header("Authorization", "Bearer " + uid)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding(StandardCharsets.UTF_8)
+                        .accept(MediaType.APPLICATION_JSON)
+        )
+                .andDo(print());
+        resultActions
+                .andExpect(status().isOk());
+    }
+
+
+    @Test
+    @DisplayName("스터디 댓글 단건 조회")
+    void 스터디_댓글_단건_조회_테스트() throws Exception {
+
+        Long studyId = 1L;
+        Long commentId = 1L;
+        ResultActions resultActions = mockMvc.perform(
+                get("/studies/" + studyId + "/comments/" + commentId)
+                        .header("Authorization", "Bearer " + uid)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding(StandardCharsets.UTF_8)
+                        .accept(MediaType.APPLICATION_JSON)
+        )
+                .andDo(print());
+        resultActions
+                .andExpect(status().isOk());
+    }
+
+
+    @Test
+    @DisplayName("스터디 댓글 수정 테스트")
+    void 스터디_댓글_수정_테스트() throws Exception {
+
+        Long studyId = 1L;
+        Long commentId = 1L;
+        ResultActions resultActions = mockMvc.perform(
+                patch("/studies/" + studyId + "/comments/" + commentId)
+                        .header("Authorization", "Bearer " + uid)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding(StandardCharsets.UTF_8)
+                        .accept(MediaType.APPLICATION_JSON)
+        )
+                .andDo(print());
+        resultActions
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("스터디 댓글 삭제 테스트")
+    void 스터디_댓글_삭제_테스트() throws Exception {
+        Long commentId = 1L;
+        ResultActions resultActions = mockMvc.perform(
+                delete("/studies/comments/" + commentId)
+                        .header("Authorization", "Bearer " + uid)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding(StandardCharsets.UTF_8)
+                        .accept(MediaType.APPLICATION_JSON)
+        )
+                .andDo(print());
+        resultActions
+                .andExpect(status().isOk());
     }
 }
