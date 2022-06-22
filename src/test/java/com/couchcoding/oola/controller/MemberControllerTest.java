@@ -8,6 +8,9 @@ import com.couchcoding.oola.service.MemberService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -27,6 +30,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.Filter;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
@@ -38,10 +42,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
+@ActiveProfiles("local")
 @ExtendWith(SpringExtension.class)
 @WebAppConfiguration
 @AutoConfigureMockMvc
-@ActiveProfiles("local")
 @SpringBootTest
 class MemberControllerTest {
 
@@ -170,7 +174,7 @@ class MemberControllerTest {
 
         ResultActions resultActions = mockMvc.perform(
                 get("/members/me")
-                        .header("Authorization", "Bearer " + uid)
+                        .header("Authorization", "Bearer " + "eyJhbGciOiJSUzI1NiIsImtpZCI6ImY5MGZiMWFlMDQ4YTU0OGZiNjgxYWQ2MDkyYjBiODY5ZWE0NjdhYzYiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoi7Zmp7Jyg7KeEIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FBVFhBSnktbnhpWWZOVXlOVmF6a2E4aHN6R0dWbnFPN3NTS0JYNVRQczQwPXM5Ni1jIiwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL29vbGEtb2F1dGgiLCJhdWQiOiJvb2xhLW9hdXRoIiwiYXV0aF90aW1lIjoxNjU1NTM3Njc0LCJ1c2VyX2lkIjoiVjlmcGFlQzNocmNsNE0yeG0wNUVGSDkybDRaMiIsInN1YiI6IlY5ZnBhZUMzaHJjbDRNMnhtMDVFRkg5Mmw0WjIiLCJpYXQiOjE2NTU1Mzc2NzQsImV4cCI6MTY1NTU0MTI3NCwiZW1haWwiOiJjbWs2NjQ0ODhAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZ29vZ2xlLmNvbSI6WyIxMDk4MjY0NjA3OTI1NjQ4NTI5ODAiXSwiZW1haWwiOlsiY21rNjY0NDg4QGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6Imdvb2dsZS5jb20ifX0.e2od56rfumTxZUJUKNGiCCjtvoMVNV6I3F1h84ZD4adZvgxiPK5EhGYAdodezGYi4BCUW-63w7c1jXRwL8F1e9k_LV5Meh5RgzJs3fyFbgqbbMr_MobcXxI6RPefMGXcsoVb86cmtSR_jPZG2za-0-4BVmy2xTYSO-0yF1Us8hNUy-f4gtPaJWLmi_ZQFPkLlbd5GvE20zVp4VvsttIijD6lDuUmNGZC0rnOsJEovX1f4i-MqNvhNtK6RSgadjpoxmXCPH9N_T8GxhxmZxyQa2ieUROUe4qnpoNs2oDcgCE-r9o2HRZpaivoLsY7ytvlcNnNjz6RF5FoO2orBz0Lbg")
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding(StandardCharsets.UTF_8)
                         .accept(MediaType.APPLICATION_JSON)
@@ -234,5 +238,15 @@ class MemberControllerTest {
 
         resultActions
                 .andExpect(status().isOk());
+    }
+    
+    @Test
+    @DisplayName("로컬에서 토큰 생성 테스트")
+    void 로컬에서_토큰_생성_테스트() throws IOException {
+        FirebaseOptions options = FirebaseOptions.builder()
+                .setCredentials(GoogleCredentials.getApplicationDefault())
+                .setServiceAccountId("110975400098587635861@oola-oauth.iam.gserviceaccount.com")
+                .build();
+        FirebaseApp.initializeApp(options);
     }
 }

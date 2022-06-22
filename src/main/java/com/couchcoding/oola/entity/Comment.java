@@ -1,6 +1,9 @@
 package com.couchcoding.oola.entity;
 
+import com.couchcoding.oola.dto.studycomments.request.CommentRequestDto;
+import com.couchcoding.oola.dto.studycomments.request.StudyCommentRequestDto;
 import com.couchcoding.oola.entity.base.BaseTimeEntity;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -11,10 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 @Getter
-@ToString
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
 @Entity
 @Table(name = "comment")
 public class Comment extends BaseTimeEntity implements Serializable {
@@ -27,19 +27,33 @@ public class Comment extends BaseTimeEntity implements Serializable {
     @JoinColumn(name = "uid")
     private Member member;
 
-    @ManyToOne
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "studyId")
     private Study study;
 
     @Column(name = "content")
     @NotBlank(message = "content는 필수 값입니다")
     private String content;
+//
+//    @Column(name = "parent_no")
+//    private Long parentNo;
 
-    @Column(name = "parent_no")
-    private Long parentNo;
+    public Comment(CommentRequestDto commentRequestDto, Member member , Study study) {
+        this.id = commentRequestDto.getId();
+        this.content = commentRequestDto.getContent();
+        this.member = member;
+        this.study = study;
+
+    }
+
+    public Comment(Member member, Study study, StudyCommentRequestDto studyCommentRequestDto) {
+        this.member = member;
+        this.study = study;
+        this.content = studyCommentRequestDto.getContent();
+    }
 
     public Comment update(Comment entity) {
-        this.parentNo = entity.getId();
         this.id = entity.getId();
         this.member = entity.getMember();
         this.study = entity.getStudy();
