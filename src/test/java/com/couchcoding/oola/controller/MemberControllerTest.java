@@ -46,7 +46,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 class MemberControllerTest {
 
     private static final String uid = "aaabbcc";
-    //private static final String uid = "asdfasdf";
     private static final String displayName = "홍길동";
     private static final String email = "cmk664488@gmail.com";
     private static final String blogUrl = "ttps://shiningjean.tistory.com/35";
@@ -162,7 +161,7 @@ class MemberControllerTest {
     public void id조회() {
         Optional<Member> byId = memberRepository.findByUid(uid);
         System.out.println("user:" + byId);
-        assertThat(byId.get().getUid()).isEqualTo("DpKLjE6P5bRd4aAqWzl1gnbaKHr1");
+        assertThat(byId.get().getUid()).isEqualTo(uid);
     }
 
     @Test
