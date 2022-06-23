@@ -108,8 +108,6 @@ public class StudyController {
 
         if (header != null) {
             studyRoleResponseDto = studyService.studyDetail(studyId, header);
-        } else {
-            studyRoleResponseDto = studyService.studyDetail(studyId);
         }
         return ResponseEntity.status(HttpStatus.OK).body(studyRoleResponseDto);
     }
