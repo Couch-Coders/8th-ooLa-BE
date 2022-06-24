@@ -10,6 +10,7 @@ import com.couchcoding.oola.entity.Study;
 
 import com.couchcoding.oola.entity.StudyLike;
 import com.couchcoding.oola.entity.StudyMember;
+import com.couchcoding.oola.repository.StudyMemberRepository;
 import com.couchcoding.oola.repository.StudyMemberRepositoryCustom;
 import com.couchcoding.oola.repository.StudyRepository;
 import com.couchcoding.oola.validation.MemberForbiddenException;
@@ -38,7 +39,7 @@ import java.util.List;
 public class StudyService {
 
     private final StudyRepository studyRepository;
-    private final StudyMemberRepositoryCustom studyMemberRepositoryCustom;
+    private final StudyMemberRepository studyMemberRepository;
     private final MemberService memberService;
     private final FirebaseAuth firebaseAuth;
 
@@ -81,7 +82,7 @@ public class StudyService {
             }
         }
 
-        List<StudyMember> studyMembers = studyMemberRepositoryCustom.findAllByStudyId(studyId);
+        List<StudyMember> studyMembers = studyMemberRepository.findAllByStudyId(studyId);
 
         String role = null;
         StudyRoleResponseDto studyRoleResponseDto = null;

@@ -24,14 +24,13 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class StudyMemberService {
-    private final StudyMemberRepositoryCustom studyMemberRepositoryCustom;
     private final StudyMemberRepository studyMemberRepository;
     private final StudyRepository studyRepository;
 
     // 스터디 참여자 정보조회
     @Transactional
     public List<StudyMember> studyMembers(Long studyId) {
-        List<StudyMember> studyMembers = studyMemberRepositoryCustom.findAllByStudyId(studyId);
+        List<StudyMember> studyMembers = studyMemberRepository.findAllByStudyId(studyId);
         return studyMembers;
     }
 
@@ -76,7 +75,7 @@ public class StudyMemberService {
 
         // role과 member의 uid 사용하여 검색
         String uid = member.getUid();
-        List<StudyMember> studyMembers = studyMemberRepositoryCustom.findAllByUidAndRole(uid, role);
+        List<StudyMember> studyMembers = studyMemberRepository.findAllByUidAndRole(uid, role);
         for (int i = 0; i < studyMembers.size(); i++) {
             study = studyMembers.get(i).getStudy();
             if (study.getStudyLikes().size() > 0) {
@@ -103,7 +102,7 @@ public class StudyMemberService {
         String uid = member.getUid();
         String status = "진행";
         int i = 0;
-        List<StudyMember> studyMembers = studyMemberRepositoryCustom.findAllByUidAndRoleAndStatus(uid, role, status);
+        List<StudyMember> studyMembers = studyMemberRepository.findAllByUidAndRoleAndStatus(uid, role, status);
         for (StudyMember studyMember : studyMembers) {
             Study study = studyMember.getStudy();
             if (study.getStudyLikes().size() > 0) {
@@ -132,7 +131,7 @@ public class StudyMemberService {
         String uid = member.getUid();
         String status = "완료";
         int i = 0;
-        List<StudyMember> studyMembers = studyMemberRepositoryCustom.findAllByUidAndRoleAndStatus(uid, role, status);
+        List<StudyMember> studyMembers = studyMemberRepository.findAllByUidAndRoleAndStatus(uid, role, status);
         for (StudyMember studyMember : studyMembers) {
             Study study = studyMember.getStudy();
             if (study.getStudyLikes().size() > 0) {

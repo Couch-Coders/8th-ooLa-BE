@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface StudyMemberRepository extends JpaRepository<StudyMember, Long> {
+public interface StudyMemberRepository extends JpaRepository<StudyMember, Long>,StudyMemberRepositoryCustom {
 
 
 }
