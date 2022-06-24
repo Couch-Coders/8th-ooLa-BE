@@ -7,6 +7,7 @@ import com.couchcoding.oola.repository.MemberRepository;
 import com.couchcoding.oola.repository.MemberRepositoryCustom;
 import com.couchcoding.oola.util.RequestUtil;
 import com.couchcoding.oola.validation.MemberForbiddenException;
+import com.couchcoding.oola.validation.MemberNotFoundException;
 import com.couchcoding.oola.validation.error.CustomException;
 import com.couchcoding.oola.validation.error.ErrorCode;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,7 +33,6 @@ import java.util.Optional;
 public class MemberService implements UserDetailsService  {
 
     private final MemberRepository memberRepository;
-    private final MemberRepositoryCustom memberRepositoryCustom;
     private final FirebaseAuth firebaseAuth;
 
     // 유저의 정보를 불러와서 UserDetails로 반환해준다
@@ -72,7 +72,9 @@ public class MemberService implements UserDetailsService  {
 
     // 회원 단건 조회
     public Member findByUid(String uid) {
-        return memberRepositoryCustom.findByUid(uid);
+        return memberRepository.findByUid(uid).orElseThrow(() -> {
+            throw new MemberNotFoundException();
+        });
     }
 
     // 마이프로필 수정

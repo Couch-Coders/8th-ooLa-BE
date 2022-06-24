@@ -22,17 +22,4 @@ public class MemberRepositoryImpl extends QuerydslRepositorySupport implements M
     public MemberRepositoryImpl() {
         super(Member.class);
     }
-
-    @Override
-    public Member findByUid(String uid) {
-        return  queryFactory.selectFrom(QMember.member)
-                .where(eqUid(uid)).fetchOne();
-    }
-
-    private BooleanExpression eqUid(String uid) {
-        if (uid == null || uid.isEmpty()) {
-            return null;
-        }
-        return member.uid.eq(uid);
-    }
 }
