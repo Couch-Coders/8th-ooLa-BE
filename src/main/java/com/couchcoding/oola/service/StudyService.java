@@ -12,7 +12,6 @@ import com.couchcoding.oola.entity.StudyLike;
 import com.couchcoding.oola.entity.StudyMember;
 import com.couchcoding.oola.repository.StudyMemberRepositoryCustom;
 import com.couchcoding.oola.repository.StudyRepository;
-import com.couchcoding.oola.repository.StudyRepositoryCustom;
 import com.couchcoding.oola.validation.MemberForbiddenException;
 
 import com.couchcoding.oola.validation.StudyNotFoundException;
@@ -39,7 +38,6 @@ import java.util.List;
 public class StudyService {
 
     private final StudyRepository studyRepository;
-    private final StudyRepositoryCustom studyRepositoryCustom;
     private final StudyMemberRepositoryCustom studyMemberRepositoryCustom;
     private final MemberService memberService;
     private final FirebaseAuth firebaseAuth;
@@ -120,7 +118,7 @@ public class StudyService {
     // 스터디 조건 검색 및 페이징 처리
     public Page<Study> findByAllCategory(Pageable pageable, String studyType, String studyDays,
                                          String timeZone , String status, String studyName) {
-        return studyRepositoryCustom.findAllBySearchOption(pageable ,studyType, studyDays, timeZone,status , studyName);
+        return studyRepository.findAllBySearchOption(pageable ,studyType, studyDays, timeZone,status , studyName);
     }
 
     // 스터디 수정

@@ -46,41 +46,6 @@ public class StudyRepositoryImpl extends QuerydslRepositorySupport implements St
         return new PageImpl<Study>(studies, pageable, query.fetchCount());
     }
 
-//    @Override
-//    public List<Study> findAllByUidAndStudyId(Long uid , Long studyId) {
-//        List<Study> studies = queryFactory.selectFrom(study)
-//                .where(eqUid(uid), eqStudyId(studyId))
-//                .fetch();
-//        return studies;
-//    }
-
-//    @Override
-//    public List<Study> findAllByUidAndStudyId(Long uid , Long studyId) {
-//        QStudy study = QStudy.study;
-//        QStudyMember studyMember = QStudyMember.studyMember;
-//        List<Study> studies = queryFactory.select(study)
-//                .from(study)
-//                .innerJoin(study.studyMember , studyMember)
-//                .on(studyMember.uid.eq(uid))
-//                .fetch();
-//        return studies;
-//    }
-
-//    private BooleanExpression eqUid(Long uid) {
-//        if (uid == null) {
-//            return null;
-//        }
-//        return study.studyMembers.get(uid);
-//    }
-
-//    private BooleanExpression eqStudyId(Long studyId) {
-//        if (studyId == null) {
-//            return null;
-//        }
-//        return study.studyId.eq(studyId);
-//    }
-
-
     private BooleanExpression eqStudyType(String studyType) {
         if (studyType == null || studyType.isEmpty()) {
             return null;

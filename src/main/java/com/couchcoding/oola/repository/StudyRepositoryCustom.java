@@ -8,5 +8,4 @@ import java.util.List;
 
 public interface StudyRepositoryCustom {
     Page<Study> findAllBySearchOption(Pageable pageable, String studyType , String studyDays, String timeZone , String status, String studyName);
-    //List<Study> findAllByUidAndStudyId(Long uid, Long studyId);
 }
