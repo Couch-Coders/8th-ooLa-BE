@@ -1,7 +1,6 @@
 package com.couchcoding.oola.controller;
 
 import com.couchcoding.oola.dto.study.request.StudyRequestDto;
-import com.couchcoding.oola.dto.study.response.StudyListResponseDto;
 import com.couchcoding.oola.dto.study.response.StudyResponseDetailDto;
 import com.couchcoding.oola.dto.study.response.StudyResponseDto;
 import com.couchcoding.oola.dto.study.response.StudyRoleResponseDto;
@@ -116,24 +115,15 @@ public class StudyController {
 
     // 스터디 필터링 (조건검색)
     @GetMapping("")
-    public StudyListResponseDto studySearch(HttpServletRequest request, Pageable pageable, @RequestParam(value = "studyType", required = false ) String studyType,
+    public Page<Study> studySearch( Pageable pageable, @RequestParam(value = "studyType", required = false ) String studyType,
                                    @RequestParam( value = "studyDays", required = false)  String studyDays, @RequestParam(value = "timeZone", required = false) String timeZone
             , @RequestParam(value = "status",required = false)  String status, @RequestParam(value = "studyName", required = false) String studyName) {
 
-        String header = null;
-        try {
-            header = RequestUtil.getAuthorizationToken(request);
-        } catch (CustomException e) {
-            studyService.findByAllCategory(pageable, studyType, studyDays, timeZone, status , studyName);
-        }
-
-
-
-        StudyListResponseDto studyListResponseDto = studyService.findByAllCategory(pageable, studyType, studyDays, timeZone, status , studyName , header);
-        if (studyListResponseDto.equals(null)) {
+        Page<Study> searchResult = studyService.findByAllCategory(pageable, studyType, studyDays, timeZone, status , studyName);
+        if (searchResult.equals(null)) {
             throw new StudySearchNotFoundException();
         }
-        return studyListResponseDto;
+        return searchResult;
     }
 
     // 스터디 수정 (단일 수정)
