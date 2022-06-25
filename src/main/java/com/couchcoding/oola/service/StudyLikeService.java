@@ -61,9 +61,10 @@ public class StudyLikeService {
         List<StudyLikeStatus> studyLikeStatus = new ArrayList<>();
 
         for (StudyLike studyLike : studyLikes) {
+            String uid = studyLike.getMember().getUid();
             Study study = studyLike.getStudy();
             Boolean status = studyLike.getLikeStatus();
-            StudyLikeStatus result = new StudyLikeStatus(study, status);
+            StudyLikeStatus result = new StudyLikeStatus(study, status, uid);
             studyLikeStatus.add(result);
         }
         return studyLikeStatus;

@@ -1,15 +1,20 @@
 package com.couchcoding.oola.service;
 
 import com.couchcoding.oola.dto.study.request.StudyRequestDto;
+import com.couchcoding.oola.dto.study.response.StudyListResponseDto;
 import com.couchcoding.oola.dto.study.response.StudyResponseDetailDto;
 import com.couchcoding.oola.dto.study.response.StudyResponseDto;
 
 import com.couchcoding.oola.dto.study.response.StudyRoleResponseDto;
+import com.couchcoding.oola.dto.studylikes.response.StudyLikeListResponseDto;
+import com.couchcoding.oola.dto.studylikes.response.StudyLikeResponseDto;
+import com.couchcoding.oola.dto.studylikes.response.StudyLikeStatus;
 import com.couchcoding.oola.entity.Member;
 import com.couchcoding.oola.entity.Study;
 
 import com.couchcoding.oola.entity.StudyLike;
 import com.couchcoding.oola.entity.StudyMember;
+import com.couchcoding.oola.repository.StudyLikeRepository;
 import com.couchcoding.oola.repository.StudyMemberRepository;
 import com.couchcoding.oola.repository.StudyMemberRepositoryCustom;
 import com.couchcoding.oola.repository.StudyRepository;
@@ -30,6 +35,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -39,8 +46,10 @@ import java.util.List;
 public class StudyService {
 
     private final StudyRepository studyRepository;
+    private final StudyLikeRepository studyLikeRepository;
     private final StudyMemberRepository studyMemberRepository;
     private final MemberService memberService;
+   // private final StudyLikeService studyLikeService;
     private final FirebaseAuth firebaseAuth;
 
     // 스터디 만들기
@@ -116,10 +125,48 @@ public class StudyService {
         return studyRoleResponseDto;
     }
 
-    // 스터디 조건 검색 및 페이징 처리
-    public Page<Study> findByAllCategory(Pageable pageable, String studyType, String studyDays,
+    // 스터디 조건 검색 및 페이징 처리 (비로그인)
+    public StudyListResponseDto findByAllCategory(Pageable pageable, String studyType, String studyDays,
                                          String timeZone , String status, String studyName) {
-        return studyRepository.findAllBySearchOption(pageable ,studyType, studyDays, timeZone,status , studyName);
+
+        Page<Study> studies = studyRepository.findAllBySearchOption(pageable ,studyType, studyDays, timeZone,status , studyName);
+        StudyListResponseDto studyListResponseDto = new StudyListResponseDto(null, null, studies);
+        return studyListResponseDto;
+    }
+
+
+
+    // 스터디 조건 검색 및 페이징 처리 (로그인)
+    public StudyListResponseDto findByAllCategory(Pageable pageable, String studyType, String studyDays,
+                                         String timeZone , String status, String studyName, String header) {
+
+        Member member = null;
+        try {
+            FirebaseToken firebaseToken = firebaseAuth.verifyIdToken(header);
+            member = (Member) memberService.loadUserByUsername(firebaseToken.getUid());
+            log.info("로그인 후 스터디 조회시 로그인된 사용자 정보: {}", member);
+        } catch (UsernameNotFoundException | FirebaseAuthException | IllegalArgumentException e) {
+            throw new CustomException(ErrorCode.MemberNotFound);
+        }
+
+        List<StudyLikeResponseDto> studyLikeResponseDtos = new ArrayList<>();
+        Page<Study> studies = studyRepository.findAllBySearchOption(pageable ,studyType, studyDays, timeZone,status , studyName);
+        List<StudyLike> studysLikes = studyLikeRepository.findAllByLikeStatusAndUid(true , member.getUid());
+        for (int i = 0; i < studysLikes.size(); i++) {
+            if (member.getUid().equals(studysLikes.get(i).getMember().getUid())) {
+                Long studyId = studysLikes.get(i).getStudy().getStudyId();
+                Boolean likeStatus = studysLikes.get(i).getLikeStatus();
+                String uid = studysLikes.get(i).getMember().getUid();
+                StudyLikeResponseDto studyLikeResponseDto = new StudyLikeResponseDto(null, uid, studyId, likeStatus);
+                studyLikeResponseDtos.add(studyLikeResponseDto);
+            }
+        }
+
+
+        String loginMemberUid = member.getUid();
+
+        StudyListResponseDto studyListResponseDto = new StudyListResponseDto(loginMemberUid,studyLikeResponseDtos , studies);
+        return studyListResponseDto;
     }
 
     // 스터디 수정
