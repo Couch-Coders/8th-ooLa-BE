@@ -3,9 +3,11 @@ package com.couchcoding.oola.dto.studycomments.response;
 import com.couchcoding.oola.entity.Comment;
 import com.couchcoding.oola.entity.Member;
 import com.couchcoding.oola.entity.Study;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 
+@Getter
 public class CommentResponseDto {
     private String content;
     private String role;

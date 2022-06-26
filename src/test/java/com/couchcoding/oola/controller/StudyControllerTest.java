@@ -3,6 +3,7 @@ package com.couchcoding.oola.controller;
 import com.couchcoding.oola.dto.study.request.StudyRequestDto;
 
 import com.couchcoding.oola.dto.studyblogs.request.StudyBlogRequestDto;
+import com.couchcoding.oola.dto.studycomments.request.CommentRequestDto;
 import com.couchcoding.oola.dto.studycomments.request.StudyCommentRequestDto;
 import com.couchcoding.oola.dto.studylikes.request.StudyHateRequestDto;
 import com.couchcoding.oola.dto.studylikes.request.StudyLikeRequestDto;
@@ -853,7 +854,7 @@ class StudyControllerTest {
     @DisplayName("스터디 댓글 목록 조회")
     void 스터디_댓글_목록_조회_테스트() throws Exception {
 
-        Long studyId = 1L;
+        Long studyId = 61L;
 
         ResultActions resultActions = mockMvc.perform(
                 get("/studies/" + studyId + "/comments")
@@ -872,8 +873,8 @@ class StudyControllerTest {
     @DisplayName("스터디 댓글 단건 조회")
     void 스터디_댓글_단건_조회_테스트() throws Exception {
 
-        Long studyId = 1L;
-        Long commentId = 1L;
+        Long studyId = 66L;
+        Long commentId = 37L;
         ResultActions resultActions = mockMvc.perform(
                 get("/studies/" + studyId + "/comments/" + commentId)
                         .header("Authorization", "Bearer " + uid)
@@ -891,13 +892,16 @@ class StudyControllerTest {
     @DisplayName("스터디 댓글 수정 테스트")
     void 스터디_댓글_수정_테스트() throws Exception {
 
-        Long studyId = 1L;
-        Long commentId = 1L;
+        Long studyId = 61L;
+        Long commentId = 77L;
+        CommentRequestDto commentRequestDto = new CommentRequestDto(commentId, "77번 댓글 수정",null,"2oMPU4uFZwUWCvc7vuHM37JFlMk1", studyId );
+        String commentJson = objectMapper.writeValueAsString(commentRequestDto);
         ResultActions resultActions = mockMvc.perform(
                 patch("/studies/" + studyId + "/comments/" + commentId)
                         .header("Authorization", "Bearer " + uid)
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding(StandardCharsets.UTF_8)
+                        .content(commentJson)
                         .accept(MediaType.APPLICATION_JSON)
         )
                 .andDo(print());
