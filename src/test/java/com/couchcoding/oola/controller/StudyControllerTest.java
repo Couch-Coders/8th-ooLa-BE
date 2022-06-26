@@ -821,7 +821,7 @@ class StudyControllerTest {
 
         ResultActions resultActions = mockMvc.perform(
                 get("/mystudies/likes")
-                        .header("Authorization", "Bearer " + uid)
+                        .header("Authorization", "Bearer " +uid)
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding(StandardCharsets.UTF_8)
                         .accept(MediaType.APPLICATION_JSON)
