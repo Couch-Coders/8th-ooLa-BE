@@ -75,7 +75,7 @@ public class StudyMemberService {
 
         // role과 member의 uid 사용하여 검색
         String uid = member.getUid();
-        List<StudyMember> studyMembers = studyMemberRepository.findAllByUidAndRole(uid, role);
+        List<StudyMember> studyMembers = studyMemberRepository.findAllByUidAndRoleAndStatus(uid, role, "진행");
         for (int i = 0; i < studyMembers.size(); i++) {
             study = studyMembers.get(i).getStudy();
             if (study.getStudyLikes().size() > 0) {
