@@ -75,7 +75,7 @@ class MyStudyControllerTest {
     void 내가참여한진행스터디조회_테스트() throws Exception {
         ResultActions resultActions = mockMvc.perform(
                 get("/mystudies/progress")
-                        .header("Authorization", "Bearer " +  uid)
+                        .header("Authorization", "Bearer " +  "2oMPU4uFZwUWCvc7vuHM37JFlMk1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding(StandardCharsets.UTF_8)
                         .accept(MediaType.APPLICATION_JSON)

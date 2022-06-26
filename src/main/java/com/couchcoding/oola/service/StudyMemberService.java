@@ -101,23 +101,23 @@ public class StudyMemberService {
         String role = "member";
         String uid = member.getUid();
         String status = "진행";
-        int i = 0;
         List<StudyMember> studyMembers = studyMemberRepository.findAllByUidAndRoleAndStatus(uid, role, status);
-        for (StudyMember studyMember : studyMembers) {
-            Study study = studyMember.getStudy();
-            if (study.getStudyLikes().size() > 0) {
-                studyLike = study.getStudyLikes().get(i);
-            }
 
-            if (studyLike == null) {
-                studyProgressDto = new StudyProgressDto(study, false);
+        List<Study> studies = new ArrayList<>();
+        for (int i = 0; i < studyMembers.size(); i++) {
+            Study study = studyMembers.get(i).getStudy();
+            log.info("study: {}" , study.toString());
+            studies.add(study);
+        }
+
+        for (int i = 0; i < studyMembers.size(); i++) {
+            if (studyMembers.get(i).getStudy().getStudyLikes().size() > 0) {
+                Boolean likeStatus = studyMembers.get(i).getStudy().getStudyLikes().get(i).getLikeStatus();
+                studyProgressDto = new StudyProgressDto(studyMembers.get(i).getStudy(), likeStatus);
             } else {
-                studyProgressDto = new StudyProgressDto(study, studyLike.getLikeStatus());
+                studyProgressDto = new StudyProgressDto(studyMembers.get(i).getStudy(), false);
             }
-
-            log.info(studyProgressDto.toString());
             studyProgressDtos.add(studyProgressDto);
-            i += 1;
         }
         return studyProgressDtos;
     }
