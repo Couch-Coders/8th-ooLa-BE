@@ -90,7 +90,7 @@ class MyStudyControllerTest {
     void 내가_완료한_스터디_조회_테스트() throws Exception {
         ResultActions resultActions = mockMvc.perform(
                 get("/mystudies/completion")
-                        .header("Authorization", "Bearer " + "TaXw94uJziYmXYyjBr8tNMvpb1v1")
+                        .header("Authorization", "Bearer " + uid)
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding(StandardCharsets.UTF_8)
                         .accept(MediaType.APPLICATION_JSON)

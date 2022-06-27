@@ -94,22 +94,13 @@ public class StudyMemberService {
 
         List<StudyMember> studyMembers2 = studyMemberRepository.findAllByUidAndRoleAndStatus(uid, role, "완료");
         for (int i = 0; i < studyMembers2.size(); i++) {
-            study = studyMembers2.get(i).getStudy();
-            if (study.getStudyLikes().size() > 0) {
-                studyLike = study.getStudyLikes().get(i);
-            }
-
-            if (studyLike == null) {
-                studyCreationDto = new StudyCreationDto(study , false);
+            if (studyMembers2.get(i).getStudy().getStudyLikes().size() > 0) {
+                studyCreationDto = new StudyCreationDto(studyMembers2.get(i).getStudy() , true);
             } else {
-                studyCreationDto = new StudyCreationDto(study , studyLike.getLikeStatus());
+                studyCreationDto = new StudyCreationDto(studyMembers2.get(i).getStudy() , false);
             }
             studyCreationDtoList.add(studyCreationDto);
-
         }
-        
-        
-        
         return studyCreationDtoList;
     }
 
