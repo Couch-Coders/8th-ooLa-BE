@@ -854,7 +854,7 @@ class StudyControllerTest {
     @DisplayName("스터디 댓글 목록 조회")
     void 스터디_댓글_목록_조회_테스트() throws Exception {
 
-        Long studyId = 61L;
+        Long studyId = 73L;
 
         ResultActions resultActions = mockMvc.perform(
                 get("/studies/" + studyId + "/comments")

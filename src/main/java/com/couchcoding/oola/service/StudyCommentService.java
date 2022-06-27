@@ -32,8 +32,8 @@ public class StudyCommentService {
 
     public StudyCommentsResponseDto getCommentList(Long studyId) {
         Study study = studyService.getStudy(studyId);
-        List<Comment> comments = study.getComments();
-        List<StudyMember> studyMembers = studyMemberService.studyMembers(studyId);
+        List<Comment> comments = studyCommentRepository.findAllByStudyId(study.getStudyId());
+        List<StudyMember> studyMembers = studyMemberService.studyMembers(study.getStudyId());
 
         List<StudyCommentMemberResponseDto> studyCommentMemberResponseDtos = new ArrayList<>();
         for (StudyMember studyMember : studyMembers) {
