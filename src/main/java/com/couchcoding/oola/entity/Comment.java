@@ -53,11 +53,11 @@ public class Comment extends BaseTimeEntity implements Serializable {
         this.content = studyCommentRequestDto.getContent();
     }
 
-    public Comment update(Comment entity) {
+    public Comment update(Comment entity , CommentRequestDto commentRequestDto) {
         this.id = entity.getId();
         this.member = entity.getMember();
         this.study = entity.getStudy();
-        this.content = entity.getContent();
+        this.content = commentRequestDto.getContent();
         return this;
     }
 }
