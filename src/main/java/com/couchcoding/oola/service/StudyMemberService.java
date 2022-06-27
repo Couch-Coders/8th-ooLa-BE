@@ -119,6 +119,25 @@ public class StudyMemberService {
             }
             studyProgressDtos.add(studyProgressDto);
         }
+
+        role = "leader";
+        List<StudyMember> studyMemberList = studyMemberRepository.findAllByUidAndRoleAndStatus(uid, role, status);
+
+        for (int i = 0; i < studyMemberList.size(); i++) {
+            Study study = studyMemberList.get(i).getStudy();
+            studies.add(study);
+        }
+
+        for (int i = 0; i < studyMemberList.size(); i++) {
+            if (studyMemberList.get(i).getStudy().getStudyLikes().size() > 0) {
+                Boolean likeStatus = studyMemberList.get(i).getStudy().getStudyLikes().get(i).getLikeStatus();
+                studyProgressDto = new StudyProgressDto(studyMemberList.get(i).getStudy(), likeStatus);
+            } else {
+                studyProgressDto = new StudyProgressDto(studyMemberList.get(i).getStudy(), false);
+            }
+            studyProgressDtos.add(studyProgressDto);
+        }
+
         return studyProgressDtos;
     }
 
