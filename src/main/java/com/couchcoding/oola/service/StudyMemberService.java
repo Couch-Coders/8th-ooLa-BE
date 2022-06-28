@@ -69,37 +69,25 @@ public class StudyMemberService {
     // 마이스터디 - 내가 개설한 스터디 조회
     public List<StudyCreationDto> mystudies(Member member) {
         List<StudyCreationDto> studyCreationDtoList = new ArrayList<>();
-       StudyCreationDto studyCreationDto = null;
-       Study study = null;
-        StudyLike studyLike = null;
         String role = "leader";
 
-        // role과 member의 uid 사용하여 검색
+        // role과 member의 uid , status 사용하여 검색
         String uid = member.getUid();
         List<StudyMember> studyMembers = studyMemberRepository.findAllByUidAndRoleAndStatus(uid, role, "진행");
-        for (int i = 0; i < studyMembers.size(); i++) {
-            study = studyMembers.get(i).getStudy();
-            if (study.getStudyLikes().size() > 0) {
-                studyLike = study.getStudyLikes().get(i);
-            }
-
-            if (studyLike == null) {
-                studyCreationDto = new StudyCreationDto(study , false);
-            } else {
-                studyCreationDto = new StudyCreationDto(study , studyLike.getLikeStatus());
-            }
-            studyCreationDtoList.add(studyCreationDto);
-
-        }
-
-
         List<StudyMember> studyMembers2 = studyMemberRepository.findAllByUidAndRoleAndStatus(uid, role, "완료");
-        for (int i = 0; i < studyMembers2.size(); i++) {
-            if (studyMembers2.get(i).getStudy().getStudyLikes().size() > 0) {
-                studyCreationDto = new StudyCreationDto(studyMembers2.get(i).getStudy() , true);
-            } else {
-                studyCreationDto = new StudyCreationDto(studyMembers2.get(i).getStudy() , false);
-            }
+
+        for (StudyMember studyMember : studyMembers2) {
+            studyMembers.add(studyMember);
+        }
+        List<StudyProgressDto> studyProgressDtos =  getInfo(studyMembers);
+
+        for (StudyProgressDto studyProgressDto : studyProgressDtos) {
+            Long studyId = studyProgressDto.getStudyId();
+            Study study = studyRepository.findById(studyId).orElseThrow(() -> {
+                throw new StudyNotFoundException();
+            });
+            Boolean likeStatus = studyProgressDto.getLikeStatus();
+            StudyCreationDto studyCreationDto = new StudyCreationDto(study, likeStatus);
             studyCreationDtoList.add(studyCreationDto);
         }
         return studyCreationDtoList;
