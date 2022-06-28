@@ -106,50 +106,21 @@ public class StudyMemberService {
 
     // 마이스터디 - 내가 참여한 스터디 조회
     public List<StudyProgressDto> myJoinStudies(Member member) {
-        List<StudyProgressDto> studyProgressDtos = new ArrayList<>();
-        StudyProgressDto studyProgressDto = null;
-        StudyLike studyLike = null;
-        String role = "member";
         String uid = member.getUid();
+
+        String role = "member";
         String status = "진행";
         List<StudyMember> studyMembers = studyMemberRepository.findAllByUidAndRoleAndStatus(uid, role, status);
 
-        List<Study> studies = new ArrayList<>();
-        for (int i = 0; i < studyMembers.size(); i++) {
-            Study study = studyMembers.get(i).getStudy();
-            log.info("study: {}" , study.toString());
-            studies.add(study);
-        }
-
-        for (int i = 0; i < studyMembers.size(); i++) {
-            if (studyMembers.get(i).getStudy().getStudyLikes().size() > 0) {
-                Boolean likeStatus = studyMembers.get(i).getStudy().getStudyLikes().get(i).getLikeStatus();
-                studyProgressDto = new StudyProgressDto(studyMembers.get(i).getStudy(), likeStatus);
-            } else {
-                studyProgressDto = new StudyProgressDto(studyMembers.get(i).getStudy(), false);
-            }
-            studyProgressDtos.add(studyProgressDto);
-        }
-
         role = "leader";
-        List<StudyMember> studyMemberList = studyMemberRepository.findAllByUidAndRoleAndStatus(uid, role, status);
+        List<StudyMember> studyMembers2 = studyMemberRepository.findAllByUidAndRoleAndStatus(uid, role, status);
 
-        for (int i = 0; i < studyMemberList.size(); i++) {
-            Study study = studyMemberList.get(i).getStudy();
-            studies.add(study);
+        for (StudyMember studyMember : studyMembers2) {
+            studyMembers.add(studyMember);
         }
-
-        for (int i = 0; i < studyMemberList.size(); i++) {
-            if (studyMemberList.get(i).getStudy().getStudyLikes().size() > 0) {
-                Boolean likeStatus = studyMemberList.get(i).getStudy().getStudyLikes().get(i).getLikeStatus();
-                studyProgressDto = new StudyProgressDto(studyMemberList.get(i).getStudy(), likeStatus);
-            } else {
-                studyProgressDto = new StudyProgressDto(studyMemberList.get(i).getStudy(), false);
-            }
-            studyProgressDtos.add(studyProgressDto);
-        }
-
-        return studyProgressDtos;
+        
+        List<StudyProgressDto> studyProgressDtosList  = getInfo(studyMembers);
+        return studyProgressDtosList;
     }
 
     // 마이스터디 - 내가 완료한 스터디
@@ -177,5 +148,24 @@ public class StudyMemberService {
             studyCompletionDtos.add(studyCompletionDto);
         }
         return studyCompletionDtos;
+    }
+
+
+    // 마이스터디 - 스터디 참여자 정보 분석
+    public List<StudyProgressDto> getInfo(List<StudyMember> studyMembers) {
+        List<StudyProgressDto> studyProgressDtos = new ArrayList<>();
+        StudyProgressDto studyProgressDto = null;
+
+        for (int i = 0; i < studyMembers.size(); i++) {
+            if (studyMembers.get(i).getStudy().getStudyLikes().size() > 0) {
+                Boolean likeStatus = studyMembers.get(i).getStudy().getStudyLikes().get(i).getLikeStatus();
+                studyProgressDto = new StudyProgressDto(studyMembers.get(i).getStudy(), likeStatus);
+            } else {
+                studyProgressDto = new StudyProgressDto(studyMembers.get(i).getStudy(), false);
+            }
+            studyProgressDtos.add(studyProgressDto);
+        }
+
+        return studyProgressDtos;
     }
 }
