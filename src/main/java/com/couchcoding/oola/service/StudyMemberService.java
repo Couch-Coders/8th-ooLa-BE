@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -126,25 +127,28 @@ public class StudyMemberService {
     // 마이스터디 - 내가 완료한 스터디
     public List<StudyCompletionDto> myStudiesCompletion(Member member) {
         List<StudyCompletionDto> studyCompletionDtos = new ArrayList<>();
-        StudyCompletionDto studyCompletionDto = null;
-        StudyLike studyLike = null;
         String role = "leader";
         String uid = member.getUid();
         String status = "완료";
-        int i = 0;
-        List<StudyMember> studyMembers = studyMemberRepository.findAllByUidAndRoleAndStatus(uid, role, status);
-        for (StudyMember studyMember : studyMembers) {
-            Study study = studyMember.getStudy();
-            if (study.getStudyLikes().size() > 0) {
-                studyLike = study.getStudyLikes().get(i);
-            }
 
-            if (studyLike == null) {
-                studyCompletionDto = new StudyCompletionDto(study, false);
-            } else {
-                studyCompletionDto = new StudyCompletionDto(study, studyLike.getLikeStatus());
-            }
-            log.info(studyCompletionDto.toString());
+        List<StudyMember> studyMembers = studyMemberRepository.findAllByUidAndRoleAndStatus(uid, role, status);
+
+        role = "member";
+        List<StudyMember> studyMemberList = studyMemberRepository.findAllByUidAndRoleAndStatus(uid, role, status);
+
+        for (StudyMember studyMember : studyMemberList) {
+            studyMembers.add(studyMember);
+        }
+
+        List<StudyProgressDto> studyProgressDtos =  getInfo(studyMembers);
+
+        for (StudyProgressDto studyProgressDto : studyProgressDtos) {
+            Long studyId = studyProgressDto.getStudyId();
+            Study study = studyRepository.findById(studyId).orElseThrow(() -> {
+                throw new StudyNotFoundException();
+            });
+            Boolean likeStatus = studyProgressDto.getLikeStatus();
+            StudyCompletionDto studyCompletionDto = new StudyCompletionDto(study, likeStatus);
             studyCompletionDtos.add(studyCompletionDto);
         }
         return studyCompletionDtos;
@@ -156,9 +160,10 @@ public class StudyMemberService {
         List<StudyProgressDto> studyProgressDtos = new ArrayList<>();
         StudyProgressDto studyProgressDto = null;
 
+        int j = 0;
         for (int i = 0; i < studyMembers.size(); i++) {
             if (studyMembers.get(i).getStudy().getStudyLikes().size() > 0) {
-                Boolean likeStatus = studyMembers.get(i).getStudy().getStudyLikes().get(i).getLikeStatus();
+                Boolean likeStatus = studyMembers.get(i).getStudy().getStudyLikes().get(j).getLikeStatus();
                 studyProgressDto = new StudyProgressDto(studyMembers.get(i).getStudy(), likeStatus);
             } else {
                 studyProgressDto = new StudyProgressDto(studyMembers.get(i).getStudy(), false);
