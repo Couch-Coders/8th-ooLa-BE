@@ -105,7 +105,6 @@ class StudyControllerTest {
         studyRequestDto.setStudyIntroduce(studyIntroduce);
         studyRequestDto.setStudyGoal(studyGoal);
         studyRequestDto.setStatus(status);
-        //studyRequestDto.setJoinStatus("leader");
         studyRequestDto.setCurrentParticipants(currentParticipants);
 
 
@@ -131,7 +130,6 @@ class StudyControllerTest {
         ResultActions resultActions = mockMvc.perform(
                 get("/studies/" + studyId)
                         .header("Authorization", "Bearer " + uid)
-
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding(StandardCharsets.UTF_8)
                         .accept(MediaType.APPLICATION_JSON)
@@ -335,10 +333,7 @@ class StudyControllerTest {
         studyRequestDto.setStudyIntroduce(studyIntroduce);
         studyRequestDto.setStudyGoal(studyGoal);
         studyRequestDto.setStatus(status);
-       // studyRequestDto.setJoinStatus("leader");
         studyRequestDto.setCurrentParticipants(currentParticipants);
-
-
         String studyDtoJson = objectMapper.writeValueAsString(studyRequestDto);
 
         ResultActions resultActions = mockMvc.perform(
@@ -383,10 +378,7 @@ class StudyControllerTest {
         studyRequestDto.setStudyIntroduce(studyIntroduce);
         studyRequestDto.setStudyGoal(studyGoal);
         studyRequestDto.setStatus(status);
-      //  studyRequestDto.setJoinStatus("leader");
         studyRequestDto.setCurrentParticipants(currentParticipants);
-
-
         String studyDtoJson = objectMapper.writeValueAsString(studyRequestDto);
 
         mockMvc.perform(
@@ -429,10 +421,7 @@ class StudyControllerTest {
         studyRequestDto.setStudyIntroduce(studyIntroduce);
         studyRequestDto.setStudyGoal(studyGoal);
         studyRequestDto.setStatus(status);
-      //  studyRequestDto.setJoinStatus("leader");
         studyRequestDto.setCurrentParticipants(currentParticipants);
-
-
         String studyDtoJson = objectMapper.writeValueAsString(studyRequestDto);
 
         mockMvc.perform(
@@ -476,9 +465,7 @@ class StudyControllerTest {
         studyRequestDto.setStudyIntroduce(studyIntroduce);
         studyRequestDto.setStudyGoal(studyGoal);
         studyRequestDto.setStatus(status);
-      //  studyRequestDto.setJoinStatus("leader");
         studyRequestDto.setCurrentParticipants(currentParticipants);
-
         String studyDtoJson = objectMapper.writeValueAsString(studyRequestDto);
 
         mockMvc.perform(
@@ -541,8 +528,6 @@ class StudyControllerTest {
         studyRequestDto.setStudyGoal(studyGoal);
         studyRequestDto.setStatus(status);
         studyRequestDto.setCurrentParticipants(currentParticipants);
-
-
         String studyDtoJson = objectMapper.writeValueAsString(studyRequestDto);
 
         mockMvc.perform(
@@ -588,8 +573,6 @@ class StudyControllerTest {
         studyRequestDto.setStudyGoal(studyGoal);
         studyRequestDto.setStatus(status);
         studyRequestDto.setCurrentParticipants(currentParticipants);
-
-
         String studyDtoJson = objectMapper.writeValueAsString(studyRequestDto);
 
         mockMvc.perform(
@@ -636,8 +619,6 @@ class StudyControllerTest {
                 .andDo(print());
         resultActions
                 .andExpect(status().isOk());
-
-
     }
 
     @Test
