@@ -35,8 +35,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 
@@ -74,7 +72,6 @@ public class StudyService {
         Study study = getStudy(studyId);
         // 비로그인 이므로 role은 general
         StudyRoleResponseDto studyRoleResponseDto = new StudyRoleResponseDto(study, "general" , false);
-        log.info("비로그인 스터디 조회: {}", studyRoleResponseDto.toString());
         return studyRoleResponseDto;
     }
 
@@ -112,8 +109,6 @@ public class StudyService {
         }
 
         if (role == null) {
-            log.info("study: {}" , study.toString());
-            log.info("role: {}", role);
             if (studyLike == null) {
                 studyRoleResponseDto = new StudyRoleResponseDto(study, "general" , false);
 
@@ -121,8 +116,6 @@ public class StudyService {
                 studyRoleResponseDto = new StudyRoleResponseDto(study, "general" , studyLike.getLikeStatus());
             }
         } else {
-            log.info("study: {}" , study.toString());
-            log.info("role: {}", role);
             if (studyLike == null) {
                 studyRoleResponseDto = new StudyRoleResponseDto(study, role , false);
 
