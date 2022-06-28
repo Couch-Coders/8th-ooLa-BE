@@ -48,8 +48,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 class StudyControllerTest {
 
-    private static final String uid = "bTQBTghNwaY5EtAJQLJknVqk2If2";
-    private static final String studyType = "백엔드";
+    private static final String uid = "dy6dEPfvXEhG2lK0bgulLOIt2As1";
+    private static final String studyType = "프론트엔드";
     private static String studyName = "React 끝장내기";
     private static String studyDays = "주말";
     private static final String timeZone = "오전 (6:00 - 12:00)";
@@ -84,7 +84,7 @@ class StudyControllerTest {
     @Test
     @DisplayName("로컬 study create 테스트")
     void createStudy() throws Exception {
-        String sdate = "2022-06-17 00:00:00";
+        String sdate = "2022-06-28 00:00:00";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime startDateTime = LocalDateTime.parse(sdate, formatter);
 

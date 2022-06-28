@@ -46,14 +46,26 @@ import java.util.List;
 public class StudyService {
 
     private final StudyRepository studyRepository;
+    private final StudyMemberService studyMemberService;
     private final StudyMemberRepository studyMemberRepository;
     private final MemberService memberService;
     private final FirebaseAuth firebaseAuth;
 
     // 스터디 만들기
     @Transactional
-    public StudyResponseDto createStudy(Study study) {
+    public StudyResponseDto createStudy(StudyRequestDto studyRequestDto, Member member) {
+        Study study = studyRequestDto.toEntity(studyRequestDto, member);
+
+        // 스터디에 참여하는 멤버 생성
+        StudyMember studyMember = StudyMember.builder()
+                .member(member)
+                .study(study)
+                .role("leader")
+                .build();
+
+
         Study saved = studyRepository.saveAndFlush(study);
+        studyMemberService.setStudyLeader(studyMember);
         return new StudyResponseDto(saved);
     }
 

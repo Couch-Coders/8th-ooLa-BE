@@ -78,18 +78,8 @@ public class StudyController {
             throw  new ParameterBadRequestException(result);
         }
 
-        // 스터디 생성
         Member member = ((Member) authentication.getPrincipal());
-        Study studyCreate = studyRequestDto.toEntity(studyRequestDto, member);
-
-        // 스터디에 참여하는 멤버 생성
-        StudyMember studyMember = StudyMember.builder()
-                .member(member)
-                .study(studyCreate)
-                .role("leader")
-                .build();
-        StudyResponseDto responseDto = studyService.createStudy(studyCreate);
-        studyMemberService.setStudyLeader(studyMember);
+        StudyResponseDto responseDto = studyService.createStudy(studyRequestDto, member);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(responseDto);
