@@ -29,9 +29,9 @@ public class StudyBlogService {
     public StudyBlogResponseDto  blogs(StudyBlogRequestDto studyBlogRequestDto, Member member , Long studyId) {
 
         Study study = studyService.getStudy(studyId);
-        getMember(study, member);
+        Member result = getMember(study, member);
 
-        StudyBlog studyBlog = new StudyBlog(studyBlogRequestDto, member, study);
+        StudyBlog studyBlog = new StudyBlog(studyBlogRequestDto, result, study);
         StudyBlog entity = studyBlogRepository.save(studyBlog);
         StudyBlogResponseDto studyBlogResponseDto = new StudyBlogResponseDto(entity);
         return studyBlogResponseDto;
