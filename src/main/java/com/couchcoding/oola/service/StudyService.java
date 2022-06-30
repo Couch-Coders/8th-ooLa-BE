@@ -75,7 +75,6 @@ public class StudyService {
 
     // 로그인후 스터디 상세 조회
     public StudyRoleResponseDto studyDetail(Long studyId, String header) {
-
         Member member = null;
         try {
             FirebaseToken firebaseToken = firebaseAuth.verifyIdToken(header);
@@ -90,30 +89,7 @@ public class StudyService {
 
         // 조회하는 스터디에 대한 role 판단
         List<StudyMember> studyMembers = studyMemberRepository.findAllByStudyId(studyId);
-
-        String role = null;
-        StudyRoleResponseDto studyRoleResponseDto = null;
-        for (int i = 0; i < studyMembers.size(); i++) {
-            if (studyMembers.get(i).getMember().getUid().equals(member.getUid())) {
-                role = studyMembers.get(i).getRole();
-            }
-        }
-
-        if (role == null) {
-            if (likeStatus == null) {
-                studyRoleResponseDto = new StudyRoleResponseDto(study, "general" , false);
-
-            } else  {
-                studyRoleResponseDto = new StudyRoleResponseDto(study, "general" , likeStatus);
-            }
-        } else {
-            if (likeStatus == null) {
-                studyRoleResponseDto = new StudyRoleResponseDto(study, role , false);
-
-            } else {
-                studyRoleResponseDto = new StudyRoleResponseDto(study, role, likeStatus);
-            }
-        }
+        StudyRoleResponseDto studyRoleResponseDto = getRole(studyMembers, study, member, likeStatus);
         return studyRoleResponseDto;
     }
 
@@ -176,7 +152,7 @@ public class StudyService {
         return studyResponseDetailDto;
     }
 
-    // 스터디에 대한 정보 조회회
+    // 스터디에 대한 정보 조회
     public Study getStudy(Long studyId) {
         return studyRepository.findById(studyId).orElseThrow(() -> {
             throw new StudyNotFoundException();
@@ -199,5 +175,33 @@ public class StudyService {
             return false;
         }
         return studyLike.getLikeStatus();
+    }
+
+    // 조회하는 스터디에 대한 role 판단
+    public StudyRoleResponseDto getRole(List<StudyMember> studyMembers, Study study, Member member, Boolean likeStatus) {
+        String role = null;
+        StudyRoleResponseDto studyRoleResponseDto = null;
+        for (int i = 0; i < studyMembers.size(); i++) {
+            if (studyMembers.get(i).getMember().getUid().equals(member.getUid())) {
+                role = studyMembers.get(i).getRole();
+            }
+        }
+
+        if (role == null) {
+            if (likeStatus == null) {
+                studyRoleResponseDto = new StudyRoleResponseDto(study, "general" , false);
+
+            } else  {
+                studyRoleResponseDto = new StudyRoleResponseDto(study, "general" , likeStatus);
+            }
+        } else {
+            if (likeStatus == null) {
+                studyRoleResponseDto = new StudyRoleResponseDto(study, role , false);
+
+            } else {
+                studyRoleResponseDto = new StudyRoleResponseDto(study, role, likeStatus);
+            }
+        }
+        return studyRoleResponseDto;
     }
 }
