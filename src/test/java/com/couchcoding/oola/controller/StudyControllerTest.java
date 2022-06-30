@@ -48,7 +48,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 class StudyControllerTest {
 
-    private static final String uid = "I6mKo2Qg8CMOhJ92X3wgiAlVlIh2";
+    private static final String uid = "dy6dEPfvXEhG2lK0bgulLOIt2As1";
     private static final String studyType = "프론트엔드";
     private static String studyName = "React 끝장내기";
     private static String studyDays = "주말";
@@ -126,7 +126,7 @@ class StudyControllerTest {
     @Test
     @DisplayName("스터디 단건 조회 테스트")
     void selectStudy() throws Exception {
-        int studyId = 10;
+        int studyId = 73;
         ResultActions resultActions = mockMvc.perform(
                 get("/studies/" + studyId)
                         .header("Authorization", "Bearer " + uid)

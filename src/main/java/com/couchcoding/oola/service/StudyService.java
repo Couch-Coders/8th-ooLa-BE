@@ -60,8 +60,6 @@ public class StudyService {
                 .study(study)
                 .role("leader")
                 .build();
-
-
         Study saved = studyRepository.saveAndFlush(study);
         studyMemberService.setStudyLeader(studyMember);
         return new StudyResponseDto(saved);
@@ -75,29 +73,22 @@ public class StudyService {
         return studyRoleResponseDto;
     }
 
-    // 로그인
+    // 로그인후 스터디 상세 조회
     public StudyRoleResponseDto studyDetail(Long studyId, String header) {
 
         Member member = null;
         try {
             FirebaseToken firebaseToken = firebaseAuth.verifyIdToken(header);
             member = (Member) memberService.loadUserByUsername(firebaseToken.getUid());
-            log.info("로그인 후 스터디 조회시 로그인된 사용자 정보: {}", member);
         } catch (UsernameNotFoundException | FirebaseAuthException | IllegalArgumentException e) {
             throw new CustomException(ErrorCode.MemberNotFound);
         }
 
         Study study = getStudy(studyId);
-        StudyLike studyLike = null;
-        List<StudyLike> studyLikes = study.getStudyLikes();
-        if (studyLikes.size() > 0) {
-            for (int i = 0; i < studyLikes.size(); i++) {
-                if (studyLikes.get(i).getMember().getUid().equals(member.getUid())) {
-                    studyLike = studyLikes.get(i);
-                }
-            }
-        }
+        // 조회하는 스터디에 대한 관심등록 여부
+        Boolean likeStatus = getStudyLikeStatus(study, member);
 
+        // 조회하는 스터디에 대한 role 판단
         List<StudyMember> studyMembers = studyMemberRepository.findAllByStudyId(studyId);
 
         String role = null;
@@ -109,22 +100,20 @@ public class StudyService {
         }
 
         if (role == null) {
-            if (studyLike == null) {
+            if (likeStatus == null) {
                 studyRoleResponseDto = new StudyRoleResponseDto(study, "general" , false);
 
             } else  {
-                studyRoleResponseDto = new StudyRoleResponseDto(study, "general" , studyLike.getLikeStatus());
+                studyRoleResponseDto = new StudyRoleResponseDto(study, "general" , likeStatus);
             }
         } else {
-            if (studyLike == null) {
+            if (likeStatus == null) {
                 studyRoleResponseDto = new StudyRoleResponseDto(study, role , false);
 
             } else {
-                studyRoleResponseDto = new StudyRoleResponseDto(study, role , studyLike.getLikeStatus());
+                studyRoleResponseDto = new StudyRoleResponseDto(study, role, likeStatus);
             }
-
         }
-
         return studyRoleResponseDto;
     }
 
@@ -192,5 +181,23 @@ public class StudyService {
         return studyRepository.findById(studyId).orElseThrow(() -> {
             throw new StudyNotFoundException();
         });
+    }
+
+    // 조회하는 스터디에 대한 관심등록 여부 -> 관심등록 되있는 경우 : True / 안되있는 경우 : False
+    public Boolean getStudyLikeStatus(Study study , Member member) {
+        StudyLike studyLike = null;
+        List<StudyLike> studyLikes = study.getStudyLikes();
+        if (studyLikes.size() > 0) {
+            for (int i = 0; i < studyLikes.size(); i++) {
+                if (studyLikes.get(i).getMember().getUid().equals(member.getUid())) {
+                    studyLike  = studyLikes.get(i);
+                }
+            }
+        }
+
+        if (studyLike == null) {
+            return false;
+        }
+        return studyLike.getLikeStatus();
     }
 }
