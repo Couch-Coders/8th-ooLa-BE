@@ -113,7 +113,7 @@
 
 [DB ERD 명세서](https://www.notion.so/ERD-21da4ff688b044578199a3675014ec0f)
 
-[API 명세서](https://www.notion.so/ooLa-URI-API-78d707a5204b4a5a828d5065a40bd3c2)
+[API 명세서](https://unique-wandflower-4cc.notion.site/ooLa-API-16f4146dab7946eb8770ed6804d122d3)
 
 ### 프론트 깃 레포
 
