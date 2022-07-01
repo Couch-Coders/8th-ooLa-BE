@@ -1,10 +1,8 @@
 # 온라인 스터디 모집 플랫폼 - OOLa
 
-## 배포 주소
+## 💡 배포 주소 [OOLa](https://studyoola.herokuapp.com/)
 
-[OOLa](https://studyoola.herokuapp.com/)
-
-## 프로젝트 기획 의도
+## 📚 프로젝트 기획 의도
 
 빠르게 변화하는 IT업계의 흐름을 쫓아가기 위해 개발자는 항상 공부 해야합니다.
 
@@ -20,7 +18,7 @@
 
 저희는 개발자들이 온라인을 통해서 스터디를 모집하고 효율적인 운영을 돕기 위해 프로젝트를 기획했습니다.
 
-## 핵심 기능
+## 📌 핵심 기능
 
 1. 온라인 스터디 모임 만들기!
 
@@ -115,11 +113,11 @@
 
 [API 명세서](https://unique-wandflower-4cc.notion.site/ooLa-API-16f4146dab7946eb8770ed6804d122d3)
 
-## 프론트 깃 레포지터리
+## 📂 프론트 깃 레포지터리
 
 [https://github.com/Couch-Coders/8th-ooLa-fe](https://github.com/Couch-Coders/8th-ooLa-fe)
 
-## 프로젝트 이슈
+## ✔️프로젝트 이슈
 
 ### 백에서 배열을 JSON 파싱하여 보냈는데 자바스크립트에서 인식하지 못하는 문제
 
@@ -142,7 +140,7 @@
 - 해결과정 : DTO에 @Getter 어노테이션을 붙여 줬다
 - 왜: @Getter가 Bean 규칙에 따라 묵시적 이름을 사용하는데 JSON으로 파싱할때도 동일하게 적용되기 때문이다
 
-## 레퍼런스
+## 🔖 레퍼런스
 
 [Why does response entity returns the json with the setter/getter name and not the datamember name](https://stackoverflow.com/questions/28870755/why-does-response-entity-returns-the-json-with-the-setter-getter-name-and-not-th)
 
