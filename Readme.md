@@ -1,8 +1,8 @@
 # 온라인 스터디 모집 플랫폼 - OOLa
 
-**배포 주소**
+## 배포 주소
 
-[https://studyoola.herokuapp.com/](https://studyoola.herokuapp.com/)
+[OOLa](https://studyoola.herokuapp.com/)
 
 ## 프로젝트 기획 의도
 
@@ -44,7 +44,7 @@
 - 참여하고 있는 스터디의 공유로그 탭에 외부 참조자료의 URL과 간단한 소개를 포스팅할 수 있습니다. 
 - 유저 타겟 : 온라인 스터디를 참여하고자 하는 개발자프로젝트 타임라인
 
-### 👨‍💻 팀원 소개
+## 👨‍💻 팀원 소개
 
 **FrontEnd**
 
@@ -54,13 +54,13 @@
 
 - 최미영
 
-### ⏰ 프로젝트 개발 기간
+## ⏰ 프로젝트 개발 기간
 
 2022.05.09 ~ 2022.05.19 프로젝트 기획
 
 2022.05.19 ~ 2022.06.27 프로젝트 개발
 
-### 🛠️ 개발 환경
+## 🛠️ 개발 환경
 
 **FrontEnd**
 
@@ -94,16 +94,16 @@
 </p>
  
 
-### ⚙️ 시스템 아키텍처
+## ⚙️ 시스템 아키텍처
 
 ![시스템 아키텍처](https://user-images.githubusercontent.com/42866800/176840686-f0665ef6-b7e9-4dac-969d-108e065b7c12.png)
 
-### ⚙ ERD 설계
+## ⚙ ERD 설계
 
 ![팀프로젝트_erd_연관관계](https://user-images.githubusercontent.com/42866800/176840483-4dfdf44e-8c10-44e9-b189-7b8acdeb6a57.png)
 
 
-### 🛠 기획 및 설계
+## 🛠 기획 및 설계
 
 [기능 명세서](https://www.notion.so/ooLa-1389c563c730413583f7b612d9235bee)
 
@@ -115,20 +115,20 @@
 
 [API 명세서](https://unique-wandflower-4cc.notion.site/ooLa-API-16f4146dab7946eb8770ed6804d122d3)
 
-### 프론트 깃 레포
+## 프론트 깃 레포지터리
 
 [https://github.com/Couch-Coders/8th-ooLa-fe](https://github.com/Couch-Coders/8th-ooLa-fe)
 
-### 프로젝트 이슈
+## 프로젝트 이슈
 
-#### 백에서 배열을 JSON 파싱하여 보냈는데 자바스크립트에서 인식하지 못하는 문제
+### 백에서 배열을 JSON 파싱하여 보냈는데 자바스크립트에서 인식하지 못하는 문제
 
 - 백에서 ArrayList를 파싱할때 toString()을 사용했더니 제대로 파싱되지 못해 프론트에서 배열을 인식하지 못하는 문제가 발생
 - 해결과정 : ArrayList를 문자열화 하여 파싱하지 않고 구조를 변경하여 ArrayList 자체를 DTO에 담아 JSON화 시키는 방향으로 코드 수정
 - tech_stack ArrayList 관련 문제였는데 이를 @ElementCollection 어노테이션을 사용하여 Member 엔티티를 기준으로 관리되도록 수정
 - MemberTechStack 이라는 새로운 값 타입을 직접 정의 하여 사용하기 위해 @Embeddable 어노테이션을 붙였다
 
-#### 구글 로그인시 JwtFilter 인증객체 생성하는 부분에서 null이 발생하여 403 예외 발생
+### 구글 로그인시 JwtFilter 인증객체 생성하는 부분에서 null이 발생하여 403 예외 발생
 
 - 원인 : 구글 로그인시 헤더에서 토큰을 꺼내 검증할때 토큰의 형식이 올바르지 않았다
 - 우리 사이트에 로그인시 백으로 전달해주는 토큰과 구글 로그인시 반환받은 토큰 형식이 일치하지 않아 구글 로그인후 필터를 통해 토큰 검증시 "인증되지 않은 회원이입니다"라는 403 예외가 발생했다
@@ -136,13 +136,13 @@
 - 프론트에서 토큰을 백으로 보낼때 json 객체로 파싱하지 않는다
 - 백에서는 구글 로그인시 전달받은 토큰을 사용하여 우리쪽 회원인지 검증할때 데이터베이스에 일치하는 회원 정보가 없는 경우 “존재하지 않는 회원입니다” 라는 예외를 띄워 회원가입을 유도하도록 코드 수정
 
-#### DTO를 ResponseEntity로 감싸 JSON으로 파싱해줄때 올바르게 파싱되지 않는 문제
+### DTO를 ResponseEntity로 감싸 JSON으로 파싱해줄때 올바르게 파싱되지 않는 문제
 
 - 컨트롤러 테스트 코드 작성시 DTO가 JSON으로 파싱되지 않아 Response Body에 값이 찍히지 않는 문제가 있었다
 - 해결과정 : DTO에 @Getter 어노테이션을 붙여 줬다
 - 왜: @Getter가 Bean 규칙에 따라 묵시적 이름을 사용하는데 JSON으로 파싱할때도 동일하게 적용되기 때문이다
 
-### 레퍼런스
+## 레퍼런스
 
 [Why does response entity returns the json with the setter/getter name and not the datamember name](https://stackoverflow.com/questions/28870755/why-does-response-entity-returns-the-json-with-the-setter-getter-name-and-not-th)
 
