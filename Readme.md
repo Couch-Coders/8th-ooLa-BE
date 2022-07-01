@@ -125,7 +125,7 @@
 
 - 백에서 ArrayList를 파싱할때 toString()을 사용했더니 제대로 파싱되지 못해 프론트에서 배열을 인식하지 못하는 문제가 발생
 - 해결과정 : ArrayList를 문자열화 하여 파싱하지 않고 구조를 변경하여 ArrayList 자체를 DTO에 담아 JSON화 시키는 방향으로 코드 수정
-- tech_stack ArrayList 관련 문제였는데 이를 @ElementCollection 어노테이션을 사용하여 Member 엔티티에 연관되어 관리되도록 수정
+- tech_stack ArrayList 관련 문제였는데 이를 @ElementCollection 어노테이션을 사용하여 Member 엔티티를 기준으로 관리되도록 수정
 - MemberTechStack 이라는 새로운 값 타입을 직접 정의 하여 사용하기 위해 @Embeddable 어노테이션을 붙였다
 
 #### 구글 로그인시 JwtFilter 인증객체 생성하는 부분에서 null이 발생하여 403 예외 발생
@@ -140,7 +140,7 @@
 
 - 컨트롤러 테스트 코드 작성시 DTO가 JSON으로 파싱되지 않아 Response Body에 값이 찍히지 않는 문제가 있었다
 - 해결과정 : DTO에 @Getter 어노테이션을 붙여 줬다
-- 왜:  JSON 파싱시 Bean 규칙에 따라 묵시적 이름을 사용하는데 JSON으로 파싱할때도 동일하게 적용되기 때문이다
+- 왜: @Getter가 Bean 규칙에 따라 묵시적 이름을 사용하는데 JSON으로 파싱할때도 동일하게 적용되기 때문이다
 
 ### 레퍼런스
 
