@@ -106,8 +106,9 @@
 
 ### 백에서 배열을 JSON 파싱하여 보냈는데 자바스크립트에서 인식하지 못하는 문제
 
-- 백에서 ArrayList를 파싱할때 toString()을 사용했더니 제대로 파싱되지 못해 프론트에서 배열을 인식하지 못하는 문제 발생
-- 해결과정 : ArrayList를 문자열화 하여 파싱하지 않고 구조를 변경하여 ArrayList 자체를 DTO에 담아 JSON화 시키는 방향으로 코드 수정
+- 원인 : 백에서 ArrayList를 파싱할때 toString()을 사용했더니 제대로 파싱되지 못해 프론트에서 배열로 인식하지 못하는 문제 발생
+- 해결과정 : 
+- ArrayList를 문자열화 하여 파싱하지 않고 구조를 변경하여 ArrayList 자체를 DTO에 담아 JSON화 시키는 방향으로 코드 수정
 - tech_stack ArrayList 관련 문제였는데 이를 @ElementCollection 어노테이션을 사용하여 Member 엔티티를 기준으로 관리되도록 수정
 - MemberTechStack 이라는 새로운 값 타입을 직접 정의 하여 사용하기 위해 @Embeddable 어노테이션을 붙임
 
@@ -116,18 +117,10 @@
 - 원인 : 구글 로그인시 헤더에서 토큰을 꺼내 검증할때 토큰의 형식이 올바르지 않음
 - 우리 사이트에 로그인시 백으로 전달해주는 토큰과 구글 로그인시 반환받은 토큰 형식이 일치하지 않아 구글 로그인후 필터를 통해 토큰 검증시 "인증되지 않은 회원이입니다"라는 403 예외가 발생
 - 해결과정 : 
-- 프론트에서 토큰을 백으로 보낼때 json 객체로 파싱하지 않는다
+- 프론트에서 토큰을 백으로 보낼때 json 객체로 파싱하지 않도록 수정
 - 백에서는 구글 로그인시 전달받은 토큰을 사용하여 우리쪽 회원인지 검증할때 데이터베이스에 일치하는 회원 정보가 없는 경우 “존재하지 않는 회원입니다” 라는 예외를 띄워 회원가입을 유도하도록 코드 수정
 
-### DTO를 ResponseEntity로 감싸 JSON으로 파싱해줄때 올바르게 파싱되지 않는 문제
-
-- 컨트롤러 테스트 코드 작성시 DTO가 JSON으로 파싱되지 않아 Response Body에 값이 찍히지 않는 문제
-- 해결과정 : DTO에 @Getter 어노테이션을 붙임
-- 왜: @Getter가 Bean 규칙에 따라 묵시적 이름을 사용하는데 JSON으로 파싱할때도 동일하게 적용됨
-
 ## 🔖 레퍼런스
-
-[Why does response entity returns the json with the setter/getter name and not the datamember name](https://stackoverflow.com/questions/28870755/why-does-response-entity-returns-the-json-with-the-setter-getter-name-and-not-th)
 
 [[JPA] 임베디드 타입(embedded type)](https://velog.io/@conatuseus/JPA-%EC%9E%84%EB%B2%A0%EB%94%94%EB%93%9C-%ED%83%80%EC%9E%85embedded-type-8ak3ygq8wo)
 
