@@ -85,8 +85,7 @@
 
 ## ⚙ ERD 설계
 
-![팀프로젝트_erd_연관관계](https://user-images.githubusercontent.com/42866800/176840483-4dfdf44e-8c10-44e9-b189-7b8acdeb6a57.png)
-
+![온라인 스터디 모집 플랫폼 ERD](https://user-images.githubusercontent.com/42866800/176939980-746476bb-b5cf-434c-b376-1db8114e56b7.png)
 
 ## 🛠 기획 및 설계
 
