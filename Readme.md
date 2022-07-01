@@ -64,16 +64,19 @@
 
 **FrontEnd**
 
+<p>
 <img src="https://img.shields.io/badge/javascript-F7DF1E?style=flat-square&logo=javascript&logoColor=white"/>
 <img src="https://img.shields.io/badge/react-61DAFB?style=flat-square&logo=react&logoColor=white"/>
 <img src="https://img.shields.io/badge/React Router-CA4245?style=flat-square&logo=React Router&logoColor=white"/>
 <img src="https://img.shields.io/badge/styled-components-DB7093?style=flat-square&logo=styled-components&logoColor=white"/>
 <img src="https://img.shields.io/badge/Ant Design -0170FE?style=flat-square&logo=Ant Design&logoColor=white"/>
 <img src="https://img.shields.io/badge/Firebase-FFCA28?style=flat-square&logo=Firebase&logoColor=white"/>
+</p>
 
 **Backend**
 
-  <img src="https://img.shields.io/badge/Spring-6DB33F?style=flat-square&logo=Spring&logoColor=white"/>
+<p>
+ <img src="https://img.shields.io/badge/Spring-6DB33F?style=flat-square&logo=Spring&logoColor=white"/>
   <img src="https://img.shields.io/badge/Spring Boot -6DB33F?style=flat-square&logo=Spring Boot&logoColor=white"/>
   <img src="https://img.shields.io/badge/SpringSecurity-6DB33F?style=flat-square&logo=SpringSecurity&logoColor=white"/>
   <img src="https://img.shields.io/badge/Data JPA-6DB33F?style=flat-square&logo=&logoColor=white"/>
@@ -81,10 +84,15 @@
   <img src="https://img.shields.io/badge/PostgreSQL -4479A1?style=flat-square&logo=PostgreSQL&logoColor=white"/>
   <img src="https://img.shields.io/badge/Oauth-4285F4?style=flat-square&logo=Google&logoColor=white"/>
 
-**Infra**
+</p>
+ 
 
-  <img src="https://img.shields.io/badge/Heroku -4479A1?style=flat-square&logo=Heroku&logoColor=white"/>
-  <img src="https://img.shields.io/badge/Github Actions-4285F4?style=flat-square&logo=Google&logoColor=white"/>
+**Infra**
+<p>
+ <img src="https://img.shields.io/badge/Heroku -4479A1?style=flat-square&logo=Heroku&logoColor=white"/>
+<img src="https://img.shields.io/badge/Github Actions-4285F4?style=flat-square&logo=Google&logoColor=white"/>
+</p>
+ 
 
 ### ⚙️ 시스템 아키텍처
 
