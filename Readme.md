@@ -67,14 +67,14 @@
   <img src="https://img.shields.io/badge/Data JPA-6DB33F?style=flat-square&logo=&logoColor=white"/>
   <img src="https://img.shields.io/badge/Query DSL-0769AD?style=flat-square&logo=&logoColor=white"/>
   <img src="https://img.shields.io/badge/PostgreSQL -4479A1?style=flat-square&logo=PostgreSQL&logoColor=white"/>
-  <img src="https://img.shields.io/badge/Oauth-4285F4?style=flat-square&logo=Google&logoColor=white"/>
+  <img src="https://img.shields.io/badge/FirebaseOauth-4285F4?style=flat-square&logo=Firebase&logoColor=white"/>
 </p>
  
 
 **Infra**
 <p>
  <img src="https://img.shields.io/badge/Heroku -4479A1?style=flat-square&logo=Heroku&logoColor=white"/>
-<img src="https://img.shields.io/badge/Github Actions-4285F4?style=flat-square&logo=Google&logoColor=white"/>
+<img src="https://img.shields.io/badge/Github Actions-4285F4?style=flat-square&logo=Github Actions&logoColor=white"/>
 </p>
  
 
