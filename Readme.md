@@ -1,5 +1,12 @@
 # 온라인 스터디 모집 플랫폼 - OOLa
 
+<br>
+
+![ezgif com-gif-maker (2)](https://user-images.githubusercontent.com/85479957/177087081-95a16e09-0c0e-4c5d-b98c-681ec67963a4.gif)
+
+<br>
+
+
 ## 💡 배포 주소 [OOLa](https://studyoola.herokuapp.com/)
 
 ## 📚 프로젝트 기획 의도
