@@ -103,24 +103,20 @@ public class StudyService {
     // 스터디 수정
     @Transactional
     public Study studyUpdate(Long studyId, StudyRequestDto requestDto , Member member) {
-        Study study = null;
-        // 스터디 생성자와 로그인 유저가 같은지 비교
         Study result = getStudy(studyId);
         List<StudyMember> studyMembers = result.getStudyMembers();
 
         Study updated = null;
         for (StudyMember studyMember : studyMembers) {
-            if (studyMember.getMember().getUid().equals(member.getUid())) {
+            if (studyMember.isLeader(member.getUid())) {
                 updated = result.update(studyId, requestDto, member.getUid());
             }
         }
 
-        if (updated != null) {
-            study = studyRepository.save(updated);
-        } else {
+        if (updated == null) {
             throw new MemberForbiddenException();
         }
-        return study;
+        return studyRepository.save(updated);
     }
 
     // 스터디 완료시 스터디 상태 수정
@@ -204,4 +200,6 @@ public class StudyService {
         }
         return studyRoleResponseDto;
     }
+
+
 }

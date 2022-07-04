@@ -258,18 +258,18 @@ class StudyControllerTest {
     @Test
     @DisplayName("스터디 수정 테스트")
     void updateStudy() throws Exception {
-        int studyId = 1;
+        int studyId = 98;
 
-        String sdate = "2022-06-17 00:00:00";
+        String sdate = "2022-06-28 00:00:00";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime startDateTime = LocalDateTime.parse(sdate, formatter);
 
-        String edate = "2022-10-06 00:00:00";
+        String edate = "2022-08-15 00:00:00";
         DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime endDateTime = LocalDateTime.parse(edate, formatter2);
 
 
-        String goal = "React 끝장";
+        String goal = "React 마스터하기";
 
         StudyRequestDto studyRequestDto = new StudyRequestDto();
         studyRequestDto.setCreateUid(uid);
@@ -284,7 +284,7 @@ class StudyControllerTest {
         studyRequestDto.setStudyIntroduce(studyIntroduce);
         studyRequestDto.setStudyGoal(goal);
         studyRequestDto.setStatus(status);
-        studyRequestDto.setCurrentParticipants(1);
+        studyRequestDto.setCurrentParticipants(2);
 
 
         String studyDtoJson = objectMapper.writeValueAsString(studyRequestDto);

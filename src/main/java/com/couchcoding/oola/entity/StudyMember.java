@@ -48,4 +48,12 @@ public class StudyMember extends BaseTimeEntity implements Serializable {
         this.study = study;
         this.role = role;
     }
+
+    // 스터디 수정시 리더 판단
+    public Boolean isLeader(String uid) {
+        if (this.getMember().getUid().equals(uid)) {
+            return true;
+        }
+        return false;
+    }
 }
