@@ -84,8 +84,7 @@
 
 ## ⚙ ERD 설계
 
-![온라인 스터디 모집 플랫폼 ERD](https://user-images.githubusercontent.com/42866800/176939980-746476bb-b5cf-434c-b376-1db8114e56b7.png)
-
+![온라인 스터디 모집 플랫폼 (ooLa)](https://user-images.githubusercontent.com/42866800/177084158-b6d091aa-32b3-4107-8bbc-b504807919e0.png)
 ## 🛠 기획 및 설계
 
 [기능 명세서](https://www.notion.so/ooLa-1389c563c730413583f7b612d9235bee)
