@@ -126,7 +126,7 @@ class StudyControllerTest {
     @Test
     @DisplayName("스터디 단건 조회 테스트")
     void selectStudy() throws Exception {
-        int studyId = 73;
+        int studyId = 98;
         ResultActions resultActions = mockMvc.perform(
                 get("/studies/" + studyId)
                         .header("Authorization", "Bearer " + uid)

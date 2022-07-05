@@ -33,13 +33,6 @@ public class StudyMemberRepositoryImpl extends QuerydslRepositorySupport impleme
     }
 
     @Override
-    public List<StudyMember> findAllByUidAndRole(String uid, String role) {
-        List<StudyMember> studyMembers = queryFactory.selectFrom(studyMember)
-                .where(eqUid(uid), eqRole(role)).fetch();
-        return studyMembers;
-    }
-
-    @Override
     public List<StudyMember> findAllByUidAndRoleAndStatus(String uid, String role, String status) {
         List<StudyMember> studyMembers = queryFactory.selectFrom(studyMember)
                 .where(eqUid(uid), eqRole(role), eqStatus(status))
