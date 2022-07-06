@@ -183,23 +183,15 @@ public class StudyService {
             }
         }
 
-        if (role == null) {
-            if (likeStatus == null) {
-                studyRoleResponseDto = new StudyRoleResponseDto(study, "general" , false);
-
-            } else  {
-                studyRoleResponseDto = new StudyRoleResponseDto(study, "general" , likeStatus);
-            }
-        } else {
-            if (likeStatus == null) {
-                studyRoleResponseDto = new StudyRoleResponseDto(study, role , false);
-
-            } else {
-                studyRoleResponseDto = new StudyRoleResponseDto(study, role, likeStatus);
-            }
+        if (likeStatus == null) {
+            likeStatus = false;
         }
+
+        if (role == null) {
+            role = "general";
+        }
+
+        studyRoleResponseDto = new StudyRoleResponseDto(study, role, likeStatus);
         return studyRoleResponseDto;
     }
-
-
 }
