@@ -11,13 +11,10 @@ import com.couchcoding.oola.dto.studyblogs.response.StudyBlogResponseDto;
 import com.couchcoding.oola.dto.studycomments.request.CommentRequestDto;
 import com.couchcoding.oola.dto.studycomments.request.StudyCommentRequestDto;
 import com.couchcoding.oola.dto.studycomments.response.CommentResponseDto;
-import com.couchcoding.oola.dto.studycomments.response.StudyCommentDataDto;
-import com.couchcoding.oola.dto.studycomments.response.StudyCommentMemberResponseDto;
 import com.couchcoding.oola.dto.studycomments.response.StudyCommentsResponseDto;
 import com.couchcoding.oola.dto.studylikes.request.StudyHateRequestDto;
 import com.couchcoding.oola.dto.studylikes.request.StudyLikeRequestDto;
 import com.couchcoding.oola.dto.studylikes.response.StudyLikeResponseDto;
-import com.couchcoding.oola.dto.studylikes.response.StudyLikeStatus;
 import com.couchcoding.oola.dto.studymember.response.StudyMemberResponseDto;
 import com.couchcoding.oola.entity.*;
 
@@ -31,29 +28,24 @@ import com.couchcoding.oola.service.StudyService;
 import com.couchcoding.oola.util.RequestUtil;
 import com.couchcoding.oola.validation.*;
 import com.couchcoding.oola.validation.error.CustomException;
-import com.couchcoding.oola.validation.error.ErrorCode;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.parameters.P;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.web.method.annotation.AuthenticationPrincipalArgumentResolver;
+
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
-import java.util.Collections;
+
 import java.util.List;
 
 
