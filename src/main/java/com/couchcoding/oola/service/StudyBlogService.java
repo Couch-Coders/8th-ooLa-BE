@@ -9,7 +9,6 @@ import com.couchcoding.oola.entity.Study;
 import com.couchcoding.oola.entity.StudyBlog;
 import com.couchcoding.oola.entity.StudyMember;
 import com.couchcoding.oola.repository.StudyBlogRepository;
-import com.couchcoding.oola.repository.StudyBlogRespositoryCustom;
 import com.couchcoding.oola.validation.MemberForbiddenException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

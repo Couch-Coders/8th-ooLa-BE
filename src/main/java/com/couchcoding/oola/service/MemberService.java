@@ -4,7 +4,6 @@ import com.couchcoding.oola.dto.member.request.MemberSaveRequestDto;
 import com.couchcoding.oola.dto.member.response.MemberResponseDto;
 import com.couchcoding.oola.entity.Member;
 import com.couchcoding.oola.repository.MemberRepository;
-import com.couchcoding.oola.repository.MemberRepositoryCustom;
 import com.couchcoding.oola.util.RequestUtil;
 import com.couchcoding.oola.validation.MemberForbiddenException;
 import com.couchcoding.oola.validation.MemberNotFoundException;

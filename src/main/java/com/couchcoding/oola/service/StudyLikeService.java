@@ -2,22 +2,21 @@ package com.couchcoding.oola.service;
 
 import com.couchcoding.oola.dto.studylikes.request.StudyHateRequestDto;
 import com.couchcoding.oola.dto.studylikes.request.StudyLikeRequestDto;
-import com.couchcoding.oola.dto.studylikes.response.StudyLikeListResponseDto;
+
 import com.couchcoding.oola.dto.studylikes.response.StudyLikeResponseDto;
 import com.couchcoding.oola.dto.studylikes.response.StudyLikeStatus;
 import com.couchcoding.oola.entity.Member;
 import com.couchcoding.oola.entity.Study;
 import com.couchcoding.oola.entity.StudyLike;
 import com.couchcoding.oola.repository.StudyLikeRepository;
-import com.couchcoding.oola.validation.ParameterBadRequestException;
+
 import com.couchcoding.oola.validation.StudyLikeException;
-import com.couchcoding.oola.validation.StudyNotFoundException;
+
 import com.couchcoding.oola.validation.StudyNotLikeException;
-import com.couchcoding.oola.validation.error.CustomException;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 

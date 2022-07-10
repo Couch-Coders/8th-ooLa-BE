@@ -1,22 +1,20 @@
 package com.couchcoding.oola.service;
 
 import com.couchcoding.oola.dto.study.request.StudyRequestDto;
-import com.couchcoding.oola.dto.study.response.StudyListResponseDto;
+
 import com.couchcoding.oola.dto.study.response.StudyResponseDetailDto;
 import com.couchcoding.oola.dto.study.response.StudyResponseDto;
 
 import com.couchcoding.oola.dto.study.response.StudyRoleResponseDto;
-import com.couchcoding.oola.dto.studylikes.response.StudyLikeListResponseDto;
-import com.couchcoding.oola.dto.studylikes.response.StudyLikeResponseDto;
-import com.couchcoding.oola.dto.studylikes.response.StudyLikeStatus;
+
 import com.couchcoding.oola.entity.Member;
 import com.couchcoding.oola.entity.Study;
 
 import com.couchcoding.oola.entity.StudyLike;
 import com.couchcoding.oola.entity.StudyMember;
-import com.couchcoding.oola.repository.StudyLikeRepository;
+
 import com.couchcoding.oola.repository.StudyMemberRepository;
-import com.couchcoding.oola.repository.StudyMemberRepositoryCustom;
+
 import com.couchcoding.oola.repository.StudyRepository;
 import com.couchcoding.oola.validation.MemberForbiddenException;
 
