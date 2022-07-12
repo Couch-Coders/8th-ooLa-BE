@@ -10,6 +10,7 @@ import com.couchcoding.oola.entity.StudyBlog;
 import com.couchcoding.oola.entity.StudyMember;
 import com.couchcoding.oola.repository.StudyBlogRepository;
 import com.couchcoding.oola.validation.MemberForbiddenException;
+import com.couchcoding.oola.validation.MemberNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -65,7 +66,7 @@ public class StudyBlogService {
         }
 
         if (result == null) {
-            throw new MemberForbiddenException();
+            throw new MemberNotFoundException();
         }
         return result;
     }
