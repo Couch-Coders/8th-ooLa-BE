@@ -79,14 +79,12 @@ public class MemberService implements UserDetailsService  {
     // 마이프로필 수정
     @Transactional
     public Member memberProfileUpdate(String uid, MemberSaveRequestDto memberSaveRequestDto) {
-
         if (!uid.equals(memberSaveRequestDto.getUid())) {
             throw new MemberForbiddenException();
         }
 
         Member entity = findByUid(uid);
         Member memberUpdated = entity.profileUpdate(entity.getUid(), memberSaveRequestDto);
-        memberUpdated = memberRepository.save(memberUpdated);
-        return memberUpdated;
+        return memberRepository.save(memberUpdated);
     }
 }
