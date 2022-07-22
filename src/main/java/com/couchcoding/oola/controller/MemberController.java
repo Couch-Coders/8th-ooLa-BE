@@ -1,7 +1,6 @@
 package com.couchcoding.oola.controller;
 
 import com.couchcoding.oola.dto.member.request.MemberSaveRequestDto;
-import com.couchcoding.oola.dto.member.response.MemberLoginResponseDto;
 import com.couchcoding.oola.dto.member.response.MemberProfileResponseDto;
 import com.couchcoding.oola.dto.member.response.MemberResponseDto;
 import com.couchcoding.oola.entity.Member;
@@ -10,7 +9,7 @@ import com.couchcoding.oola.service.MemberService;
 
 import com.couchcoding.oola.service.StudyService;
 import com.couchcoding.oola.validation.MemberForbiddenException;
-import com.couchcoding.oola.validation.MemberNotFoundException;
+
 import com.couchcoding.oola.validation.ParameterBadRequestException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseToken;
@@ -20,7 +19,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,16 +32,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MemberController {
 
-    private final FirebaseAuth firebaseAuth;
     private final MemberService memberService;
-    private final StudyService studyService;
 
     @PostMapping("")
     public ResponseEntity<MemberResponseDto> registerMember(
             @RequestHeader("Authorization") String header,
             @RequestBody @Valid MemberSaveRequestDto memberSaveRequestDto) {
 
-        log.debug("헤더: {}", header);
         // TOKEN을 가져온다.
         FirebaseToken decodedToken = memberService.decodeToken(header);
 
@@ -82,7 +77,6 @@ public class MemberController {
     @GetMapping("/me")
     public ResponseEntity<MemberResponseDto> login(Authentication authentication) {
         Member member = ((Member) authentication.getPrincipal());
-        log.info("member: {}", member);
         return ResponseEntity.ok(new MemberResponseDto(member));
     }
 
